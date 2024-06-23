@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+	<title><?php echo $page_title; ?></title>
+	<style type="text/css" media="all">@import "./includes_manager/layou.css";</style>
+</head>
+<body>
+<div id="wrapper"><!-- Goes with the CSS layout. -->
+
+	<div id="content"><!-- Goes with the CSS layout. -->
+
+		<div id="nav"><!-- Links section -->
+			<h3>Menu</h3>
+			<ul>
+			<li class="navtop"><a href="add_vehicle.php" title="Add a vehicle to the rental system">Add Vehicle</a></li>
+			<li class="navtop"><a href="list_vehicle.php" title="List vehicle records available">List Vehicle</a></li>
+			<li class="navtop"><a href="update_vehicleInfo.php" title="Update vehicle records">Update Vehicle</a></li>
+			<li class="navtop"><a href="delete_vehicle.php" title="Delete a vehicle record">Delete Vehicle</a></li>
+			<li class="navtop"><a href="mngr_listReq.php" title="List or search a rental request records">List Requests</a></li>
+			<li class="navtop"><a href="appv_rentalReq.php" title="Approve vehicle rental request made by customers">Approve Request</a></li>
+			<li><?php
+				// Create a login/logout link.
+				if ( (isset($_SESSION['managerID'])) && (!strpos($_SERVER['PHP_SELF'], 'logout_manager.php')) ) {
+					echo '<a href="logout_manager.php" title="Logout">Logout</a>';
+				} else {
+					echo '<a href="login_manager.php" title="Login">Login</a>';
+				}
+				?></li>
+			</ul>
+		</div>

@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+	<title><?php echo $page_title; ?></title>
+	<style type="text/css" media="all">@import "./includes_customer/lay.css";</style>
+</head>
+<body>
+<div id="wrapper"><!-- Goes with the CSS layout. -->
+
+	<div id="content"><!-- Goes with the CSS layout. -->
+
+		<div id="nav"><!-- Links section -->
+			<h3>Menu</h3>
+			<ul>
+			<li class="navtop"><a href="cust_addReq.php" title="Make a request rental for a vehicle">Request Vehicle Rental</a></li>
+			<li class="navtop"><a href="cust_listReq.php" title="List of vehicle rental requests">List of Requests</a></li>
+			<li class="navtop"><a href="cust_delReq.php" title="Delete a pending vehicle rental request">Delete Pending</a></li>
+			<li><?php
+				// Create a login/logout link.
+				if ( (isset($_SESSION['customerID'])) && (!strpos($_SERVER['PHP_SELF'], 'logout_customer.php')) ) {
+					echo '<a href="logout_manager.php" title="Logout">Logout</a>';
+				} else {
+					echo '<a href="login_manager.php" title="Login">Login</a>';
+				}
+				?></li>
+			</ul>
+		</div>
