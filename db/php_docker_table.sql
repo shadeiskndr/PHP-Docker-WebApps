@@ -32,7 +32,7 @@ CREATE TABLE `php_docker_table` (
   `title` varchar(255) NOT NULL,
   `body` text NOT NULL,
   `date_created` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `php_docker_table`

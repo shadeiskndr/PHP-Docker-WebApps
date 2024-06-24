@@ -1,154 +1,239 @@
 <?php
 session_start(); // Start the session.
-$page_title = 'Vehicle List';
-include ('./includes_manager/header.html');
-?>
-<form action="list_vehicle.php" method="post">
-<h1>Vehicle List</h1>
-<h3>List all or search vehicle by type</h3>
-<label for="vehicleType"><p>Vehicle type:</label>
-	<?php
-		$mysqli = New mysqli ('localhost', 'root', '', 'projectrental');
-		$resultSet = $mysqli->query("SELECT DISTINCT vehicleType FROM vehicle");
-	?>
-<select id ="vehicleType" name="vehicleType">
-<option value="">Choose a vehicle type </option>
-		<?php
-		while ($row = $resultSet -> fetch_assoc()){
-			$vehicleType = $row ["vehicleType"];
-			echo "<option value = '$vehicleType' >$vehicleType</option>";
-		}
-	?>
-</select> <input type="submit" name="search" value="Search" /><p></p>
-	<input type="submit" name="list" value="List All" /></p>
-	<input type="hidden" name="" value="" />
-</form>
-</br>
-<fieldset>
-
-<?php
-// Search for a vehicle type and display the vehicles related to that type
-if (isset($_POST['search'])) {
-	require_once ('mysqli.php'); // Connect to the db.
-	global $dbc;
-
-	$errorMessage = array(); // Initialize error array.
-
-	//Validate vehicle type
-	if(isset($_POST['vehicleType']) && $_POST['vehicleType'] == ""){
-		$vehicleTypeSearch = NULL;
-		$errorMessage[] = 'You forgot to choose vehicle type!';
-	}else{
-		$vehicleTypeSearch = $_POST['vehicleType'];
-	}
-
-	if (empty($errorMessage)) { // If everything's OK.
-		//Search for vehicle record with vehice type.
-		$query = "SELECT vehicleID, vehicleType, vehicleModel, ratePerHour, ratePerDay FROM vehicle WHERE vehicleType = '$vehicleTypeSearch'";
-		$result = @mysqli_query ($dbc,$query); // Run the query.
-		$num = mysqli_num_rows($result);
-		if (mysqli_num_rows($result) > 0) { // Match was made.
-
-			echo "<p>There are currently $num vehicle record.</p>\n";
-			
-			// Table header.
-			echo '
-			<table align="center" cellspacing="0" cellpadding="5">
-			<tr>
-			<td align="left"><b>ID</b></td>
-			<td align="left"><b>Type</b></td>
-			<td align="left"><b>Model</b></td>
-			<td align="left"><b>Hour Rate (RM)</b></td>
-			<td align="left"><b>Day Rate (RM)</b></td>
-			</tr>
-			';
-			
-			// Fetch and print all the records.
-			while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-				echo '
-				<tr>
-				<td align="left">' . $row['vehicleID'] . '</td>
-				<td align="left">' . $row['vehicleType'] . '</td>
-				<td align="left">' . $row['vehicleModel'] . '</td>
-				<td align="left">' . $row['ratePerHour'] . '</td>
-				<td align="left">' . $row['ratePerDay'] . '</td>
-				</tr>
-				';
-			}
-			echo '</table>';
-			mysqli_free_result($result); // Free up the resources.	
-			
-
-		}else { // If it did not run OK.
-			echo '<p class="error">There are currently no vehicles with the following type.</p>';
-		}
-	}else { // Report the errors.
-	
-	echo '<h1 id="mainhead">Error!</h1>
-	<p class="error">The following error(s) occurred:<br />';
-	foreach ($errorMessage as $msg) { // Print each error.
-		echo " - $msg<br />\n";
-	}
-	echo '</p><p>Please try again.</p><p><br /></p>';
-	}	
-
+// Check if the user is logged in
+if (!isset($_SESSION['managerID'])) {
+    // If not, redirect to login page
+    header("Location: login_manager.php");
+    exit();
 }
+$page_title = 'Vehicle List';
+$connect = mysqli_connect(
+    'db', # hostname
+    'php_docker', # username
+    'password', # password
+    'php_docker' # db
+);
 ?>
 
-<?php
-// Check if the form has been submitted.
-if (isset($_POST['list'])) {
-	require_once ('mysqli.php'); // Connect to the db.
-	global $dbc;
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../output.css" rel="stylesheet">
+    <title>Vehicle List</title>
+</head>
+<body class="bg-gray-100 text-gray-900">
+    <div class="flex">
+        <!-- Vertical Navigation Bar -->
+        <nav class="w-64 bg-gray-800 text-white min-h-screen p-4">
+            <h2 class="text-2xl font-bold mb-6">Navigation</h2>
+            <ul class="space-y-4">
+				<li><a href="../index.php" class="block py-2 px-4 rounded hover:bg-blue-700">Home</a></li>
+                <li><a href="../quiz1/puteriClothes.php" class="block py-2 px-4 rounded hover:bg-blue-700">Puteri Clothes Calculator</a></li>
+                <li><a href="../Assignment1/airform2.php" class="block py-2 px-4 rounded hover:bg-blue-700">Air Conditioner Calculator</a></li>
+                <li><a href="../LabWorkX8/Discount.php" class="block py-2 px-4 rounded hover:bg-blue-700">Discount Calculator</a></li>
+                <li><a href="../LabWork3/speed_converter.php" class="block py-2 px-4 rounded hover:bg-blue-700">Speed Converter</a></li>
+                <li><a href="../LabWork3/tax_form.php" class="block py-2 px-4 rounded hover:bg-blue-700">Tax Calculator</a></li>
+                <li><a href="../LabWork3/BMI_form_sticky.php" class="block py-2 px-4 rounded hover:bg-blue-700">BMI Calculator</a></li>
+                <li><a href="../LabWork4/biggest_num.php" class="block py-2 px-4 rounded hover:bg-blue-700">Biggest Number</a></li>
+                <li><a href="../LabWork1/integers.php" class="block py-2 px-4 rounded hover:bg-blue-700">Add 3 Integers</a></li>
+                <li><a href="../updateInventory/updateInventory.php" class="block py-2 px-4 rounded hover:bg-blue-700">Mawar Boutique Inventory</a></li>
+                <li><a href="../CinemaTicketing/admin_listMovie.php" class="block py-2 px-4 rounded hover:bg-blue-700">Movies I Watched</a></li>
+                <li><a href="../CarForSale/view_carList.php" class="block py-2 px-4 rounded hover:bg-blue-700">Cars Database</a></li>
+                <li><a href="homepage.php" class="block py-2 px-4 rounded hover:bg-blue-700">Vehicle Rental Project</a></li>
+            </ul>
+        </nav>
 
-	// Make the query.
-	$query = "SELECT vehicleID, vehicleType, vehicleModel, ratePerHour, ratePerDay FROM vehicle";		
-	$result = @mysqli_query ($dbc,$query); // Run the query.
-	$num = mysqli_num_rows($result);
+        <!-- Main Content -->
+        <div class="flex-1 p-4">
+            <header class="bg-blue-600 text-white p-4 rounded mb-4">
+                <h1 class="text-4xl font-bold">Vehicle List</h1>
+            </header>
 
-	if ($num > 0) { // If it ran OK, display the records.
+            <!-- Navigation Links -->
+            <nav class="bg-white shadow-md rounded-lg p-4 mb-4">
+                <ul class="flex space-x-4">
+                    <li><a href="add_vehicle.php" class="px-3 py-2 bg-blue-600 text-white font-semibold rounded-md shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75">Add Vehicle</a></li>
+                    <li><a class="px-3 bg-transparent text-white font-semibold"></a></li>
+                    <li><a href="update_vehicleInfo.php" class="px-3 py-2 bg-blue-600 text-white font-semibold rounded-md shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75">Update Vehicle Info</a></li>
+                    <li><a class="px-3 bg-transparent text-white font-semibold"></a></li>
+                    <li><a href="delete_vehicle.php" class="px-3 py-2 bg-blue-600 text-white font-semibold rounded-md shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75">Delete Vehicle</a></li>
+                    <li><a class="px-3 bg-transparent text-white font-semibold"></a></li>
+                    <li><a href="mngr_listReq.php" class="px-3 py-2 bg-blue-600 text-white font-semibold rounded-md shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75">Requests List</a></li>
+                    <li><a class="px-3 bg-transparent text-white font-semibold"></a></li>
+                    <li><a href="appv_rentalReq.php" class="px-3 py-2 bg-blue-600 text-white font-semibold rounded-md shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75">Approve Request</a></li>
+                    <li><a class="px-3 bg-transparent text-white font-semibold"></a></li>
+                    <li>
+                        <?php
+                        // Create a login/logout link.
+                        if ((isset($_SESSION['managerID'])) && (!strpos($_SERVER['PHP_SELF'], 'logout_manager.php'))) {
+                            echo '<a href="logout_manager.php" class="px-3 py-2 bg-gray-800 text-white font-semibold rounded-md shadow-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-75" title="Logout">Logout</a>';
+                        } else {
+                            echo '<a href="login_manager.php" class="px-3 py-2 bg-gray-800 text-white font-semibold rounded-md shadow-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-75" title="Login">Login</a>';
+                        }
+                        ?>
+                    </li>
+                </ul>
+            </nav>
 
-		echo "<p>There are currently $num vehicle record.</p>\n";
+            <main class="mt-8">
+                <section class="my-8">
+                    <h2 class="text-3xl font-semibold mb-4">List all or search vehicle by type</h2>
+                    <form action="list_vehicle.php" method="post" class="space-y-4">
+                        <div>
+                            <label for="vehicleType" class="block text-lg font-medium text-gray-700">Vehicle type:</label>
+                            <select id="vehicleType" name="vehicleType" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
+                                <option value="">Choose a vehicle type</option>
+                                <?php
+                                    $resultSet = mysqli_query($connect, "SELECT DISTINCT vehicleType FROM vehicle");
+                                    while ($row = $resultSet->fetch_assoc()){
+                                        $vehicleType = $row["vehicleType"];
+                                        echo "<option value='$vehicleType'>$vehicleType</option>";
+                                    }
+                                ?>
+                            </select>
+                        </div>
+                        <div>
+                            <input type="submit" name="search" value="Search" class="px-4 py-2 bg-blue-600 text-white font-semibold rounded-md shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75" />
+                            <input type="submit" name="list" value="List All" class="px-4 py-2 bg-blue-600 text-white font-semibold rounded-md shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75" />
+                        </div>
+                    </form>
+                </section>
 
-		// Table header.
-		echo '
-			<table align="center" cellspacing="0" cellpadding="5">
-			<tr>
-			<td align="left"><b>ID</b></td>
-			<td align="left"><b>Type</b></td>
-			<td align="left"><b>Model</b></td>
-			<td align="left"><b>Hour Rate (RM)</b></td>
-			<td align="left"><b>Day Rate (RM)</b></td>
-			</tr>
-			';
-		
-		// Fetch and print all the records.
-		while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-			echo '
-				<tr>
-				<td align="left">' . $row['vehicleID'] . '</td>
-				<td align="left">' . $row['vehicleType'] . '</td>
-				<td align="left">' . $row['vehicleModel'] . '</td>
-				<td align="left">' . $row['ratePerHour'] . '</td>
-				<td align="left">' . $row['ratePerDay'] . '</td>
-				</tr>
-				';
-		}
+                <section class="my-8">
+                    <fieldset class="bg-white shadow-md rounded-lg p-4">
+                        <?php
+                        // Search for a vehicle type and display the vehicles related to that type
+                        if (isset($_POST['search'])) {
 
-		echo '</table>';
-	
-		mysqli_free_result($result); // Free up the resources.	
+                            $errorMessage = array(); // Initialize error array.
 
-	} else { // If it did not run OK.
-		echo '<p class="error">There are currently no registered vehicles in the database.</p>';
-	}
+                            // Validate vehicle type
+                            if(isset($_POST['vehicleType']) && $_POST['vehicleType'] == ""){
+                                $vehicleTypeSearch = NULL;
+                                $errorMessage[] = 'You forgot to choose vehicle type!';
+                            }else{
+                                $vehicleTypeSearch = $_POST['vehicleType'];
+                            }
 
-	mysqli_close($dbc); // Close the database connection.
-		
-} // End of the main Submit conditional.
+                            if (empty($errorMessage)) { // If everything's OK.
+                                // Search for vehicle record with vehicle type.
+                                $query = "SELECT vehicleID, vehicleType, vehicleModel, ratePerHour, ratePerDay FROM vehicle WHERE vehicleType = '$vehicleTypeSearch'";
+                                $result = @mysqli_query ($connect,$query); // Run the query.
+                                $num = mysqli_num_rows($result);
+                                if ($num > 0) { // Match was made.
 
-?>
-</fieldset>
-<?php
-include ('./includes_manager/footer.html');
-?>
+                                    echo "<p>There are currently $num vehicle records.</p>\n";
+                                    
+                                    // Table header.
+                                    echo '
+                                    <table class="min-w-full bg-white">
+                                    <thead>
+                                    <tr>
+                                    <th class="py-2">ID</th>
+                                    <th class="py-2">Type</th>
+                                    <th class="py-2">Model</th>
+                                    <th class="py-2">Hour Rate (RM)</th>
+                                    <th class="py-2">Day Rate (RM)</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    ';
+                                    
+                                    // Fetch and print all the records.
+                                    while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+                                        echo '
+                                        <tr>
+                                        <td class="border px-4 py-2">' . $row['vehicleID'] . '</td>
+                                        <td class="border px-4 py-2">' . $row['vehicleType'] . '</td>
+                                        <td class="border px-4 py-2">' . $row['vehicleModel'] . '</td>
+                                        <td class="border px-4 py-2">' . $row['ratePerHour'] . '</td>
+                                        <td class="border px-4 py-2">' . $row['ratePerDay'] . '</td>
+                                        </tr>
+                                        ';
+                                    }
+                                    echo '</tbody></table>';
+                                    mysqli_free_result($result); // Free up the resources.    
+                                    
+
+                                }else { // If it did not run OK.
+                                    echo '<p class="error">There are currently no vehicles with the following type.</p>';
+                                }
+                            }else { // Report the errors.
+                            
+                            echo '<h1 id="mainhead">Error!</h1>
+                            <p class="error">The following error(s) occurred:<br />';
+                            foreach ($errorMessage as $msg) { // Print each error.
+                                echo " - $msg<br />\n";
+                            }
+                            echo '</p><p>Please try again.</p><p><br /></p>';
+                            }    
+
+                        }
+                        ?>
+
+                        <?php
+                        // Check if the form has been submitted.
+                        if (isset($_POST['list'])) {
+
+                            // Make the query.
+                            $query = "SELECT vehicleID, vehicleType, vehicleModel, ratePerHour, ratePerDay FROM vehicle";        
+                            $result = @mysqli_query ($connect,$query); // Run the query.
+                            $num = mysqli_num_rows($result);
+
+                            if ($num > 0) { // If it ran OK, display the records.
+
+                                echo "<p>There are currently $num vehicle records.</p>\n";
+
+                                // Table header.
+                                echo '
+                                    <table class="min-w-full bg-white">
+                                    <thead>
+                                    <tr>
+                                    <th class="py-2">ID</th>
+                                    <th class="py-2">Type</th>
+                                    <th class="py-2">Model</th>
+                                    <th class="py-2">Hour Rate (RM)</th>
+                                    <th class="py-2">Day Rate (RM)</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    ';
+                                
+                                // Fetch and print all the records.
+                                while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+                                    echo '
+                                        <tr>
+                                        <td class="border px-4 py-2">' . $row['vehicleID'] . '</td>
+                                        <td class="border px-4 py-2">' . $row['vehicleType'] . '</td>
+                                        <td class="border px-4 py-2">' . $row['vehicleModel'] . '</td>
+                                        <td class="border px-4 py-2">' . $row['ratePerHour'] . '</td>
+                                        <td class="border px-4 py-2">' . $row['ratePerDay'] . '</td>
+                                        </tr>
+                                        ';
+                                }
+
+                                echo '</tbody></table>';
+                            
+                                mysqli_free_result($result); // Free up the resources.    
+
+                            } else { // If it did not run OK.
+                                echo '<p class="error">There are currently no registered vehicles in the database.</p>';
+                            }
+
+                            mysqli_close($connect); // Close the database connection.
+                                
+                        } // End of the main Submit conditional.
+
+                        ?>
+                    </fieldset>
+                </section>
+            </main>
+            <footer class="bg-blue-600 text-white p-4 text-center rounded">
+                <p>&copy; 2024 Vehicle Rental Project</p>
+            </footer>
+        </div>
+    </div>
+</body>
+</html>
