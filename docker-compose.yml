@@ -3,8 +3,8 @@ services:
   db: 
     image: mysql:latest
     environment:
-      - MYSQL_DATABASE=php_docker
-      - MYSQL_USER=php_docker
+      - MYSQL_DATABASE=mydatabase
+      - MYSQL_USER=admindb
       - MYSQL_PASSWORD=password # this should live in a env var
       - MYSQL_ALLOW_EMPTY_PASSWORD=1 # equivalent to True
     volumes:
@@ -21,5 +21,5 @@ services:
     ports:
       - 8001:80
     environment:
-      - PMA_HOST=db
+      - PMA_HOST=localhost
       - PMA_PORT=3306
