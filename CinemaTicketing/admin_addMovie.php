@@ -1,9 +1,9 @@
 <?php
 $connect = mysqli_connect(
-    'db', # hostname
-    'php_docker', # username
+    'localhost', # hostname
+    'admindb', # username
     'password', # password
-    'php_docker' # db
+    'database' # db
 );
 $page_title = 'Add a Movie';
 ?>

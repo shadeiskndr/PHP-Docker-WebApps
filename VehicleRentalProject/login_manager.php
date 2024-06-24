@@ -2,10 +2,10 @@
 // Begin the page now.
 
 $connect = mysqli_connect(
-    'db', # service name
-    'php_docker', # username
+    'localhost', # hostname
+    'admindb', # username
     'password', # password
-    'php_docker' # db table
+    'database' # db
 );
 
 $page_title = 'Manager Log in';

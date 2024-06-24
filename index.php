@@ -51,10 +51,10 @@
                     <div class="bg-white shadow-md rounded-lg p-4">
                         <?php
                         $connect = mysqli_connect(
-                            'db', # service name
-                            'php_docker', # username
+                            'localhost', # hostname
+                            'admindb', # username
                             'password', # password
-                            'php_docker' # db table
+                            'database' # db
                         );
 
                         $table_name = "php_docker_table";

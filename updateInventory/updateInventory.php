@@ -1,10 +1,10 @@
 <?php
 
 $connect = mysqli_connect(
-    'db', # service name
-    'php_docker', # username
+    'localhost', # hostname
+    'admindb', # username
     'password', # password
-    'php_docker' # db table
+    'database' # db
 );
 
 $table_name = "inventorybaju";

@@ -9,10 +9,10 @@ if (!isset($_SESSION['managerID'])) {
 $page_title = 'Delete Vehicle Rental';
 
 $connect = mysqli_connect(
-    'db', # hostname
-    'php_docker', # username
+    'localhost', # hostname
+    'admindb', # username
     'password', # password
-    'php_docker' # db
+    'database' # db
 );
 ?>
 

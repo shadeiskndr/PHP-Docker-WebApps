@@ -2,10 +2,10 @@
 session_start(); // Start the session.
 $page_title = 'Public Vehicle List';
 $connect = mysqli_connect(
-    'db', # hostname
-    'php_docker', # username
+    'localhost', # hostname
+    'admindb', # username
     'password', # password
-    'php_docker' # db
+    'database' # db
 );
 ?>
 

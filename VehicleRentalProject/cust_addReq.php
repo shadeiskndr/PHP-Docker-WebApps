@@ -9,10 +9,10 @@ if (!isset($_SESSION['customerID'])) {
 $page_title = 'Add Vehicle Rental Request';
 
 $connect = mysqli_connect(
-    'db', # hostname
-    'php_docker', # username
+    'localhost', # hostname
+    'admindb', # username
     'password', # password
-    'php_docker' # db
+    'database' # db
 );
 
 ?>
