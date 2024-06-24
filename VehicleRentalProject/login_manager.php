@@ -5,7 +5,7 @@ $connect = mysqli_connect(
     'localhost', # hostname
     'admindb', # username
     'password', # password
-    'database' # db
+    'mydatabase' # db
 );
 
 $page_title = 'Manager Log in';

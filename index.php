@@ -54,7 +54,7 @@
                             'localhost', # hostname
                             'admindb', # username
                             'password', # password
-                            'database' # db
+                            'mydatabase' # db
                         );
 
                         $table_name = "php_docker_table";

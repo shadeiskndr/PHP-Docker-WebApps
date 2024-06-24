@@ -4,7 +4,7 @@ $connect = mysqli_connect(
     'localhost', # hostname
     'admindb', # username
     'password', # password
-    'database' # db
+    'mydatabase' # db
 );
 
 // Set the page title and include the HTML header.
