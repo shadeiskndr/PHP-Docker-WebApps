@@ -1,4 +1,6 @@
 <?php
+ob_start(); // Start output buffering
+session_start(); // Start the session
 // Begin the page now.
 
 $connect = mysqli_connect(
