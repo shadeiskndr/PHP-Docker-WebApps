@@ -1,6 +1,6 @@
 <?php
 $connect = mysqli_connect(
-    'localhost', # hostname
+    'db', # hostname
     'admindb', # username
     'password', # password
     'mydatabase' # db

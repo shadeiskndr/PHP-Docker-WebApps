@@ -32,7 +32,7 @@
         <div class="flex-1 p-4">
             <header class="bg-gray-800 text-white p-4 rounded">
                 <h1 class="text-4xl font-bold">
-                    Welcome to My PHP Full-Stack Web App
+                    Welcome to My PHP Docker Web App
                 </h1>
             </header>
             <main class="mt-8">
@@ -41,7 +41,7 @@
                         Hello world!
                     </h2>
                     <p class="text-lg">
-                        This is a simple PHP web application running inside of a DigitalOcean Droplet (Ubuntu VM) container.
+                        This is a simple PHP web application running inside of a Docker container.
                     </p>
                 </section>
                 <section class="my-8">
@@ -51,7 +51,7 @@
                     <div class="bg-white shadow-md rounded-lg p-4">
                         <?php
                         $connect = mysqli_connect(
-                            'localhost', # hostname
+                            'db', # hostname
                             'admindb', # username
                             'password', # password
                             'mydatabase' # db

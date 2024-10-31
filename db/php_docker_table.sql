@@ -39,8 +39,8 @@ CREATE TABLE `php_docker_table` (
 --
 
 INSERT INTO `php_docker_table` (`id`, `title`, `body`, `date_created`) VALUES
-(1, 'first post', 'first body text', '2022-09-01'),
-(2, 'second post', 'second body text', '2022-09-03');
+(1, 'My PHP Assignments', 'This was created to show my PHP assignments during my time at university. Also to learn more on how to use docker compose', '2024-10-31'),
+(2, 'Learning project', 'Powered by Apache web server and MySQL database docker images. Tailwind CSS used for HTML styling', '2024-10-31');
 
 --
 -- Indexes for dumped tables

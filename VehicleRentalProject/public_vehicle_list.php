@@ -2,7 +2,7 @@
 session_start(); // Start the session.
 $page_title = 'Public Vehicle List';
 $connect = mysqli_connect(
-    'localhost', # hostname
+    'db', # hostname
     'admindb', # username
     'password', # password
     'mydatabase' # db

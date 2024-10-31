@@ -9,7 +9,7 @@ if (!isset($_SESSION['managerID'])) {
 $page_title = 'Approve Pending Rental Requests';
 
 $connect = mysqli_connect(
-    'localhost', # hostname
+    'db', # hostname
     'admindb', # username
     'password', # password
     'mydatabase' # db

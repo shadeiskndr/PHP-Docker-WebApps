@@ -8,7 +8,7 @@ if (!isset($_SESSION['customerID'])) {
 }
 $page_title = 'Rental Request List';
 $connect = mysqli_connect(
-    'localhost', # hostname
+    'db', # hostname
     'admindb', # username
     'password', # password
     'mydatabase' # db
