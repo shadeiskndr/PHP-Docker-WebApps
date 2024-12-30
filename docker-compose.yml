@@ -6,6 +6,8 @@ services:
       - MYSQL_USER=admindb
       - MYSQL_PASSWORD=password
       - MYSQL_ALLOW_EMPTY_PASSWORD=1
+    ports:
+      - "3306:3306"
     volumes:
       - "./db:/docker-entrypoint-initdb.d"
   www:
