@@ -31,16 +31,16 @@ This is a simple PHP, MySQL, Apache web application that has been dockerized int
 
 - One-time build:
 
-  ```bash
-  npm run build
+```bash
+npm run build
 
-  ```
+```
 
 - Development watch mode:
 
-  ```bash
-  npm run watch
-  ```
+```bash
+npm run watch
+```
 
 ## Deploying on DigitalOcean VM
 
@@ -83,7 +83,7 @@ This is a simple PHP, MySQL, Apache web application that has been dockerized int
  docker exec -it CONTAINER_ID bash # Replace CONTAINER_ID with your container ID
 ```
 
-# OR
+#### OR
 
 ```bash
 docker-compose exec www bash # Using service name
