@@ -29,18 +29,25 @@ This is a simple PHP, MySQL, Apache web application that has been dockerized int
 
 2. Build Tailwind CSS:
 
+- Development watch mode:
+
+```bash
+npm run dev
+```
+
 - One-time build:
 
 ```bash
 npm run build
-
 ```
 
-- Development watch mode:
+### Rebuild and Restart Containers
 
-```bash
-npm run watch
-```
+- docker-compose down
+
+- docker-compose build
+
+- docker-compose up -d
 
 ## Deploying on DigitalOcean VM
 

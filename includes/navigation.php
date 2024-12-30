@@ -18,6 +18,16 @@ $navItems = [
 ?>
 <nav class="w-64 bg-gray-800 text-white min-h-screen p-4">
     <h2 class="text-2xl font-bold mb-6">Navigation</h2>
+    <!-- Dark mode toggle -->
+    <button 
+        id="darkModeToggle" 
+        aria-label="Toggle dark mode"
+        class="mb-6 px-4 py-2 bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500">
+        <span id="darkIcon" class="inline dark:hidden">🌙</span>
+        <span id="lightIcon" class="hidden dark:inline">☀️</span>
+        Toggle Dark Mode
+    </button>
+    <!-- Rest of navigation -->
     <ul class="space-y-4">
         <?php foreach($navItems as $item): ?>
             <li>
