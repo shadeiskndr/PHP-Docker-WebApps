@@ -20,19 +20,19 @@ $navItems = [
     <h2 class="text-2xl font-bold mb-6">Navigation</h2>
     <!-- Dark mode toggle -->
     <button 
-        id="darkModeToggle" 
-        aria-label="Toggle dark mode"
-        class="mb-6 px-4 py-2 bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500">
-        <span id="darkIcon" class="inline dark:hidden">🌙</span>
-        <span id="lightIcon" class="hidden dark:inline">☀️</span>
-        Toggle Dark Mode
+      id="darkModeToggle" 
+      aria-label="Toggle dark mode"
+      class="mb-6 px-4 py-2 bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 flex items-center">
+      <span id="darkIcon" class="inline dark:hidden fas fa-moon text-xl text-yellow-500 mr-2"></span>
+      <span id="lightIcon" class="hidden dark:inline fas fa-sun text-xl text-yellow-400 mr-2"></span>
+      <span class="text-white">Toggle Dark Mode</span>
     </button>
     <!-- Rest of navigation -->
     <ul class="space-y-4">
         <?php foreach($navItems as $item): ?>
             <li>
                 <a href="<?= htmlspecialchars($item['url']) ?>" 
-                   class="block py-2 px-4 rounded hover:bg-blue-700">
+                   class="block py-2 px-4 rounded hover:bg-blue-500">
                     <?= htmlspecialchars($item['text']) ?>
                 </a>
             </li>

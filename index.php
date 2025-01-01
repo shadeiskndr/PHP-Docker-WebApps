@@ -18,7 +18,6 @@ require_once __DIR__ . '/includes/db.php';
     <meta name="description" content="PHP Docker Web Application with various calculators and tools">
     <link href="output.css" rel="stylesheet">
     <title>My PHP Docker Web App</title>
-    <script src="public/js/darkMode.js" defer></script>
 </head>
 <body class="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 text-gray-900 dark:text-gray-100 min-h-screen transition-colors duration-200">
     <div class="flex min-h-screen">
@@ -70,5 +69,7 @@ require_once __DIR__ . '/includes/db.php';
             </footer>
         </div>
     </div>
+    <script src="public/js/darkMode.js" defer></script>
+    <script src="public/js/all.min.js"></script>
 </body>
 </html>
