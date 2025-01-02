@@ -1,18 +1,34 @@
 <?php
+function getBasePath() {
+    // Get the absolute path to document root
+    $docRoot = $_SERVER['DOCUMENT_ROOT'];
+    // Get the current script's absolute path
+    $scriptPath = dirname($_SERVER['SCRIPT_FILENAME']);
+    // Remove document root from script path to get web root relative path
+    $webPath = str_replace($docRoot, '', $scriptPath);
+    // Count directory levels from web root
+    $levelsUp = substr_count($webPath, DIRECTORY_SEPARATOR);
+    // Return path to root with correct number of "../"
+    return $levelsUp > 0 ? str_repeat('../', $levelsUp) : './';
+}
+
+// Use this base path for all navigation items
+$baseUrl = '/'; // This will always point to web root
+
 $navItems = [
-    ['url' => 'index.php', 'text' => 'Home', 'icon' => 'fas fa-home'],
-    ['url' => 'quiz1/puteriClothes.php', 'text' => 'Puteri Clothes Calculator', 'icon' => 'fas fa-tshirt'],
-    ['url' => 'Assignment1/airform2.php', 'text' => 'Air Conditioner Calculator', 'icon' => 'fas fa-fan'],
-    ['url' => 'LabWorkX8/Discount.php', 'text' => 'Discount Calculator', 'icon' => 'fas fa-tags'],
-    ['url' => 'LabWork3/speed_converter.php', 'text' => 'Speed Converter', 'icon' => 'fas fa-tachometer-alt'],
-    ['url' => 'LabWork3/tax_form.php', 'text' => 'Tax Calculator', 'icon' => 'fas fa-calculator'],
-    ['url' => 'LabWork3/BMI_form_sticky.php', 'text' => 'BMI Calculator', 'icon' => 'fas fa-weight'],
-    ['url' => 'LabWork4/biggest_num.php', 'text' => 'Biggest Number', 'icon' => 'fas fa-sort-numeric-up'],
-    ['url' => 'LabWork1/integers.php', 'text' => 'Add 3 Integers', 'icon' => 'fas fa-plus'],
-    ['url' => 'updateInventory/updateInventory.php', 'text' => 'Boutique Inventory', 'icon' => 'fas fa-warehouse'],
-    ['url' => 'CinemaTicketing/admin_listMovie.php', 'text' => 'Movies I Watched', 'icon' => 'fas fa-film'],
-    ['url' => 'CarForSale/view_carList.php', 'text' => 'Cars Database', 'icon' => 'fas fa-car'],
-    ['url' => 'VehicleRentalProject/homepage.php', 'text' => 'Vehicle Rental Project', 'icon' => 'fas fa-car-side']
+    ['url' => $baseUrl . 'index.php', 'text' => 'Home', 'icon' => 'fas fa-home'],
+    ['url' => $baseUrl . 'quiz1/puteriClothes.php', 'text' => 'Puteri Clothes Calculator', 'icon' => 'fas fa-tshirt'],
+    ['url' => $baseUrl . 'Assignment1/airform2.php', 'text' => 'Air Conditioner Calculator', 'icon' => 'fas fa-fan'],
+    ['url' => $baseUrl . 'LabWorkX8/Discount.php', 'text' => 'Discount Calculator', 'icon' => 'fas fa-tags'],
+    ['url' => $baseUrl . 'LabWork3/speed_converter.php', 'text' => 'Speed Converter', 'icon' => 'fas fa-tachometer-alt'],
+    ['url' => $baseUrl . 'LabWork3/tax_form.php', 'text' => 'Tax Calculator', 'icon' => 'fas fa-calculator'],
+    ['url' => $baseUrl . 'LabWork3/BMI_form_sticky.php', 'text' => 'BMI Calculator', 'icon' => 'fas fa-weight'],
+    ['url' => $baseUrl . 'LabWork4/biggest_num.php', 'text' => 'Biggest Number', 'icon' => 'fas fa-sort-numeric-up'],
+    ['url' => $baseUrl . 'LabWork1/integers.php', 'text' => 'Add 3 Integers', 'icon' => 'fas fa-plus'],
+    ['url' => $baseUrl . 'updateInventory/updateInventory.php', 'text' => 'Boutique Inventory', 'icon' => 'fas fa-warehouse'],
+    ['url' => $baseUrl . 'CinemaTicketing/admin_listMovie.php', 'text' => 'Movies I Watched', 'icon' => 'fas fa-film'],
+    ['url' => $baseUrl . 'CarForSale/view_carList.php', 'text' => 'Cars Database', 'icon' => 'fas fa-car'],
+    ['url' => $baseUrl . 'VehicleRentalProject/homepage.php', 'text' => 'Vehicle Rental Project', 'icon' => 'fas fa-car-side']
 ];
 ?>
 

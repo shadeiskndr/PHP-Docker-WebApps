@@ -1,159 +1,182 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="../output.css" rel="stylesheet">
     <title>Puteri Clothes Calculator</title>
 </head>
-<body class="bg-gray-100 text-gray-900">
-    <div class="flex">
-        <!-- Vertical Navigation Bar -->
-        <nav class="w-64 bg-gray-800 text-white min-h-screen p-4">
-            <h2 class="text-2xl font-bold mb-6">Navigation</h2>
-            <ul class="space-y-4">
-                <li><a href="../index.php" class="block py-2 px-4 rounded hover:bg-blue-700">Home</a></li>
-                <li><a href="puteriClothes.php" class="block py-2 px-4 rounded hover:bg-blue-700">Puteri Clothes Calculator</a></li>
-                <li><a href="../Assignment1/airform2.php" class="block py-2 px-4 rounded hover:bg-blue-700">Air Conditioner Calculator</a></li>
-                <li><a href="../LabWorkX8/Discount.php" class="block py-2 px-4 rounded hover:bg-blue-700">Discount Calculator</a></li>
-                <li><a href="../LabWork3/speed_converter.php" class="block py-2 px-4 rounded hover:bg-blue-700">Speed Converter</a></li>
-                <li><a href="../LabWork3/tax_form.php" class="block py-2 px-4 rounded hover:bg-blue-700">Tax Calculator</a></li>
-                <li><a href="../LabWork3/BMI_form_sticky.php" class="block py-2 px-4 rounded hover:bg-blue-700">BMI Calculator</a></li>
-                <li><a href="../LabWork4/biggest_num.php" class="block py-2 px-4 rounded hover:bg-blue-700">Biggest Number</a></li>
-                <li><a href="../LabWork1/integers.php" class="block py-2 px-4 rounded hover:bg-blue-700">Add 3 Integers</a></li>
-                <li><a href="../updateInventory/updateInventory.php" class="block py-2 px-4 rounded hover:bg-blue-700">Mawar Boutique Inventory</a></li>
-                <li><a href="../CinemaTicketing/admin_listMovie.php" class="block py-2 px-4 rounded hover:bg-blue-700">Movies I Watched</a></li>
-                <li><a href="../CarForSale/view_carList.php" class="block py-2 px-4 rounded hover:bg-blue-700">Cars Database</a></li>
-                <li><a href="../VehicleRentalProject/homepage.php" class="block py-2 px-4 rounded hover:bg-blue-700">Vehicle Rental Project</a></li>
-            </ul>
-        </nav>
+<body class="bg-gradient-to-br from-pink-50 to-purple-50 dark:from-gray-800 dark:to-gray-900 text-gray-900 dark:text-gray-100 min-h-screen transition-colors duration-200">
+    <div class="flex min-h-screen">
+        <?php include '../includes/navigation.php'; ?>
 
-        <!-- Main Content -->
-        <div class="flex-1 p-4">
-            <header class="bg-blue-600 text-white p-4 rounded mb-4">
-                <h1 class="text-4xl font-bold">Puteri Clothes Calculator</h1>
+        <div class="flex-1 p-6 sm:ml-64">
+            <header class="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-8 mb-8 transform hover:scale-[1.02] transition-transform duration-300">
+                <h1 class="text-5xl font-extrabold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">Puteri Clothes Calculator</h1>
+                <p class="mt-4 text-gray-600 dark:text-gray-300 text-xl">Calculate prices for traditional Malaysian clothing</p>
             </header>
-            <form action="puteriClothes.php" method="post" class="bg-white shadow-md rounded-lg p-6 mb-8">
-                <fieldset>
-                    <legend class="text-2xl font-semibold mb-4">Please enter the clothes' code and the quantity in the form below:</legend>
-                    <div class="mb-4">
-                        <label for="code" class="block text-lg font-medium text-gray-700">Clothes' code:</label>
-                        <input type="text" name="code" id="code" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" size="20" maxlength="40" />
-                    </div>
-                    <div class="mb-4">
-                        <label for="quantity" class="block text-lg font-medium text-gray-700">Quantity:</label>
-                        <input type="text" name="quantity" id="quantity" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" size="20" maxlength="40" />
-                    </div>
-                </fieldset>
-                <div class="mt-4">
-                    <input type="submit" name="submit" value="Calculate" class="px-4 py-2 bg-blue-600 text-white font-semibold rounded-md shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75" />
-                </div>
-            </form>
 
-            <?php
-            if(isset($_REQUEST['submit'])){
-                // Validate clothes' code
-                if (!empty($_POST['code'])) {
-                    if (is_numeric($_POST['code'])) {
-                        if ($_POST['code'] > 4 || $_POST['code'] < 1) {
-                            $code = NULL;
-                            echo "<p class='text-red-500'><b>The code is invalid!</b></p>";
+            <!-- Calculator Form Section -->
+            <section class="bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300 mb-8">
+                <form action="puteriClothes.php" method="post" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label for="code" class="text-lg font-medium text-gray-700 dark:text-gray-300">Clothes Code</label>
+                            <input type="text" name="code" id="code" 
+                                   class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 
+                                          focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white
+                                          transition duration-200" />
+                        </div>
+                        <div class="space-y-2">
+                            <label for="quantity" class="text-lg font-medium text-gray-700 dark:text-gray-300">Quantity</label>
+                            <input type="text" name="quantity" id="quantity" 
+                                   class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 
+                                          focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white
+                                          transition duration-200" />
+                        </div>
+                    </div>
+                    <button type="submit" name="submit" 
+                            class="w-full md:w-auto px-6 py-3 bg-gradient-to-r from-pink-600 to-purple-600 
+                                   text-white font-semibold rounded-lg shadow-md hover:from-pink-700 
+                                   hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 
+                                   focus:ring-opacity-75 transition duration-200">
+                        Calculate Price
+                    </button>
+                </form>
+            </section>
+
+            <!-- Results Section -->
+            <?php if(isset($_REQUEST['submit'])): ?>
+                <section class="bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300 mb-8">
+                    <?php
+                    if (!empty($_POST['code'])) {
+                        if (is_numeric($_POST['code'])) {
+                            if ($_POST['code'] > 4 || $_POST['code'] < 1) {
+                                $code = NULL;
+                                echo "<div class='p-4 bg-red-100 dark:bg-red-900 rounded-lg mb-4'>
+                                        <p class='text-red-700 dark:text-red-100 font-semibold'>The code is invalid!</p>
+                                    </div>";
+                            } else {
+                                $code = $_POST['code'];
+                            }
                         } else {
-                            $code = $_POST['code'];
+                            $code = NULL;
+                            echo "<div class='p-4 bg-red-100 dark:bg-red-900 rounded-lg mb-4'>
+                                    <p class='text-red-700 dark:text-red-100 font-semibold'>You must enter your clothes' code in numeric only!</p>
+                                </div>";
                         }
                     } else {
                         $code = NULL;
-                        echo "<p class='text-red-500'><b>You must enter your clothes' code in numeric only!</b></p>";
+                        echo "<div class='p-4 bg-red-100 dark:bg-red-900 rounded-lg mb-4'>
+                                <p class='text-red-700 dark:text-red-100 font-semibold'>You forgot to enter your clothes' code!</p>
+                            </div>";
                     }
-                } else {
-                    $code = NULL;
-                    echo "<p class='text-red-500'><b>You forgot to enter your clothes' code!</b></p>";
-                }
 
-                // Validate quantity
-                if (!empty($_POST['quantity'])) {
-                    if (is_numeric($_POST['quantity'])) {
-                        if ($_POST['quantity'] < 1) {
-                            $quantity = NULL;
-                            echo "<p class='text-red-500'><b>The quantity is invalid!</b></p>";
+                    // Quantity validation with styled messages
+                    if (!empty($_POST['quantity'])) {
+                        if (is_numeric($_POST['quantity'])) {
+                            if ($_POST['quantity'] < 1) {
+                                $quantity = NULL;
+                                echo "<div class='p-4 bg-red-100 dark:bg-red-900 rounded-lg mb-4'>
+                                        <p class='text-red-700 dark:text-red-100 font-semibold'>The quantity is invalid!</p>
+                                    </div>";
+                            } else {
+                                $quantity = $_POST['quantity'];
+                            }
                         } else {
-                            $quantity = $_POST['quantity'];
+                            $quantity = NULL;
+                            echo "<div class='p-4 bg-red-100 dark:bg-red-900 rounded-lg mb-4'>
+                                    <p class='text-red-700 dark:text-red-100 font-semibold'>You must enter your quantity in numeric only!</p>
+                                </div>";
                         }
                     } else {
                         $quantity = NULL;
-                        echo "<p class='text-red-500'><b>You must enter your quantity in numeric only!</b></p>";
+                        echo "<div class='p-4 bg-red-100 dark:bg-red-900 rounded-lg mb-4'>
+                                <p class='text-red-700 dark:text-red-100 font-semibold'>You forgot to enter your quantity!</p>
+                            </div>";
                     }
-                } else {
-                    $quantity = NULL;
-                    echo '<p class="text-red-500"><b>You forgot to enter your quantity!</b></p>';
-                }
 
-                $codeArr = array(1 => 210.9, 2 => 249.0, 3 => 310.9, 4 => 250.9);
+                    $codeArr = array(1 => 210.9, 2 => 249.0, 3 => 310.9, 4 => 250.9);
 
-                // If everything is okay, print the message.
-                if ($code && $quantity) {
-                    // Calculate the price.
-                    $price = $codeArr[$code] * $quantity;
-                    // Print the results.
-                    echo "<div class='bg-white shadow-md rounded-lg p-6 mb-8'>";
-                    echo "<p class='text-lg'>Hi! The price for the clothes is RM$price</p>";
+                    if ($code && $quantity) {
+                        $price = $codeArr[$code] * $quantity;
+                        echo "<div class='space-y-4'>";
+                        echo "<p class='text-xl text-gray-700 dark:text-gray-300'>Initial price calculation: <span class='font-semibold'>RM$price</span></p>";
 
-                    switch (true) {
-                        case $price > 500.0:
-                            $price = $price - (10 / 100 * $price);
-                            $price = number_format($price, 2);
-                            echo "<p class='text-green-500'>Since the purchase is more than RM500.00, a 10% discount is given.<br/>
-                            The price for the clothes is RM$price</p>";
-                            break;
-                        case $price < 500.0:
-                            $price = number_format($price, 2);
-                            echo "<p class='text-blue-500'>Since the purchase is not more than RM500.00, a 10% discount is not given.<br/>
-                            The final price for the clothes is RM$price</p>";
+                        switch (true) {
+                            case $price > 500.0:
+                                $price = $price - (10 / 100 * $price);
+                                $price = number_format($price, 2);
+                                echo "<div class='p-4 bg-green-100 dark:bg-green-900 rounded-lg'>
+                                        <p class='text-green-700 dark:text-green-100'>
+                                            <span class='font-bold'>10% Discount Applied!</span><br>
+                                            Purchase exceeds RM500.00<br>
+                                            Final price: <span class='font-bold'>RM$price</span>
+                                        </p>
+                                    </div>";
+                                break;
+                            case $price < 500.0:
+                                $price = number_format($price, 2);
+                                echo "<div class='p-4 bg-blue-100 dark:bg-blue-900 rounded-lg'>
+                                        <p class='text-blue-700 dark:text-blue-100'>
+                                            <span class='font-bold'>No Discount Applied</span><br>
+                                            Purchase below RM500.00<br>
+                                            Final price: <span class='font-bold'>RM$price</span>
+                                        </p>
+                                    </div>";
+                        }
+                        echo "</div>";
+                    } else {
+                        echo "<div class='p-4 bg-yellow-100 dark:bg-yellow-900 rounded-lg'>
+                                <p class='text-yellow-700 dark:text-yellow-100 font-semibold'>Please fill out all fields correctly and try again.</p>
+                            </div>";
                     }
-                    echo "</div>";
-                } else {
-                    // One form element was not filled out properly.
-                    echo '<p class="text-red-500"><b>Please go back and fill out the form again.</b></p>';
-                }
-            }
-            ?>
+                    ?>
+                </section>
+            <?php endif; ?>
 
-            <!-- Table with 3 columns -->
-            <div class="bg-white shadow-md rounded-lg p-6">
-                <h2 class="text-2xl font-semibold mb-4">Clothes Information</h2>
-                <table class="min-w-full bg-white">
-                    <thead>
-                        <tr>
-                            <th class="py-2 px-4 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Code</th>
-                            <th class="py-2 px-4 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Description</th>
-                            <th class="py-2 px-4 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Price (RM)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="py-2 px-4 border-b border-gray-200">1</td>
-                            <td class="py-2 px-4 border-b border-gray-200">Baju Kurung Tradisional</td>
-                            <td class="py-2 px-4 border-b border-gray-200">210.90</td>
-                        </tr>
-                        <tr>
-                            <td class="py-2 px-4 border-b border-gray-200">2</td>
-                            <td class="py-2 px-4 border-b border-gray-200">Baju Kurung Moden</td>
-                            <td class="py-2 px-4 border-b border-gray-200">249.00</td>
-                        </tr>
-                        <tr>
-                            <td class="py-2 px-4 border-b border-gray-200">3</td>
-                            <td class="py-2 px-4 border-b border-gray-200">Kebaya</td>
-                            <td class="py-2 px-4 border-b border-gray-200">310.90</td>
-                        </tr>
-                        <tr>
-                            <td class="py-2 px-4 border-b border-gray-200">4</td>
-                            <td class="py-2 px-4 border-b border-gray-200">Jubah</td>
-                            <td class="py-2 px-4 border-b border-gray-200">250.90</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+
+            <!-- Price Table Section -->
+            <section class="bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <h2 class="text-3xl font-bold mb-6 bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">Clothes Pricing Guide</h2>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                        <thead>
+                            <tr class="bg-gradient-to-r from-pink-50 to-purple-50 dark:from-gray-700 dark:to-gray-700">
+                                <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700 dark:text-gray-200 uppercase tracking-wider">Code</th>
+                                <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700 dark:text-gray-200 uppercase tracking-wider">Description</th>
+                                <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700 dark:text-gray-200 uppercase tracking-wider">Price (RM)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-700 dark:text-gray-300">1</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-700 dark:text-gray-300">Baju Kurung Tradisional</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-700 dark:text-gray-300">210.90</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-700 dark:text-gray-300">2</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-700 dark:text-gray-300">Baju Kurung Moden</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-700 dark:text-gray-300">249.00</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-700 dark:text-gray-300">3</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-700 dark:text-gray-300">Kebaya</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-700 dark:text-gray-300">310.90</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-700 dark:text-gray-300">4</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-700 dark:text-gray-300">Jubah</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-700 dark:text-gray-300">250.90</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
         </div>
     </div>
+    <script src="<?= $baseUrl ?>public/js/darkMode.js" defer></script>
+    <script src="<?= $baseUrl ?>public/js/mobileNav.js" defer></script>
+    <script src="<?= $baseUrl ?>public/js/all.min.js"></script>
 </body>
 </html>
