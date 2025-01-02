@@ -1,5 +1,4 @@
 <?php
-// Define navigation items with associated Font Awesome icons
 $navItems = [
     ['url' => 'index.php', 'text' => 'Home', 'icon' => 'fas fa-home'],
     ['url' => 'quiz1/puteriClothes.php', 'text' => 'Puteri Clothes Calculator', 'icon' => 'fas fa-tshirt'],
@@ -54,8 +53,8 @@ $navItems = [
                     id="darkModeToggle"
                     aria-label="Toggle dark mode" 
                     class="focus:outline-none focus:ring-2 rounded focus:ring-gray-300">
-                    <i id="darkIcon" class="inline dark:hidden fas fa-moon text-lg text-yellow-500"></i>
-                    <i id="lightIcon" class="hidden dark:inline fas fa-sun text-lg text-yellow-400"></i>
+                    <i id="darkIcon" class="inline dark:hidden fas fa-sun text-lg text-yellow-400"></i>
+                    <i id="lightIcon" class="hidden dark:inline fas fa-moon text-lg text-blue-600"></i>
                 </button>
             </li>
             <!-- Existing footer icons -->
@@ -118,19 +117,19 @@ $navItems = [
             <?php endforeach; ?>
         </ul>
     </div>
-    <div class="px-8 border-t border-gray-700">
+    <div class="px-8 border-t border-gray-700 fixed bottom-0 w-64 bg-gray-800">
         <ul class="w-full flex items-center justify-between bg-gray-800">
             <!-- Dark Mode Toggle -->
             <li class="cursor-pointer text-white pt-5 pb-3">
                 <button 
-                    id="darkModeToggle"
+                    id="mobileDarkModeToggle"
                     aria-label="Toggle dark mode" 
                     class="focus:outline-none focus:ring-2 rounded focus:ring-gray-300">
-                    <i id="darkIcon" class="inline dark:hidden fas fa-moon text-lg text-yellow-500"></i>
-                    <i id="lightIcon" class="hidden dark:inline fas fa-sun text-lg text-yellow-400"></i>
+                    <i id="mobileDarkIcon" class="inline dark:hidden fas fa-sun text-lg text-yellow-400"></i>
+                    <i id="mobileLightIcon" class="hidden dark:inline fas fa-moon text-lg text-blue-600"></i>
                 </button>
             </li>
-            <!-- Existing footer icons -->
+            <!-- Mobile footer icons -->
             <li class="cursor-pointer text-white pt-5 pb-3">
                 <button aria-label="show notifications" class="focus:outline-none focus:ring-2 rounded focus:ring-gray-300">
                     <i class="fas fa-bell text-lg"></i>

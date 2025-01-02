@@ -70,7 +70,7 @@ require_once __DIR__ . '/includes/db.php';
         </div>
     </div>
     <script src="public/js/darkMode.js" defer></script>
-    <script src="public/js/mobileNav.js"></script>
+    <script src="public/js/mobileNav.js" defer></script>
     <script src="public/js/all.min.js"></script>
 </body>
 </html>
