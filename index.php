@@ -23,7 +23,7 @@ require_once __DIR__ . '/includes/db.php';
     <div class="flex min-h-screen">
         <?php include 'includes/navigation.php'; ?>
 
-        <div class="flex-1 p-6">
+        <div class="flex-1 p-6 sm:ml-64">
             <header class="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-8 mb-8 transform hover:scale-[1.02] transition-transform duration-300">
                 <h1 class="text-5xl font-extrabold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Welcome to My PHP Docker Web App</h1>
                 <p class="mt-4 text-gray-600 dark:text-gray-300 text-xl">Your modern solution for web applications</p>
@@ -70,6 +70,7 @@ require_once __DIR__ . '/includes/db.php';
         </div>
     </div>
     <script src="public/js/darkMode.js" defer></script>
+    <script src="public/js/mobileNav.js"></script>
     <script src="public/js/all.min.js"></script>
 </body>
 </html>
