@@ -46,7 +46,7 @@ require_once __DIR__ . '/includes/db.php';
                             $posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                             foreach($posts as $post) {
-                                echo "<article class='p-6 bg-gray-50 dark:bg-gray-700 rounded-lg transform hover:scale-[1.01] transition-all duration-200'>";
+                                echo "<article class='p-6 bg-gray-100 dark:bg-gray-700 rounded-lg transform hover:scale-[1.01] transition-all duration-200'>";
                                 echo "<h3 class='text-2xl font-bold mb-2 text-blue-600 dark:text-blue-400'>" . htmlspecialchars($post['title']) . "</h3>";
                                 echo "<p class='text-gray-700 dark:text-gray-300 mb-4 leading-relaxed'>" . htmlspecialchars($post['body']) . "</p>";
                                 echo "<time class='text-sm text-gray-500 dark:text-gray-400 italic'>" . date('F j, Y', strtotime($post['date_created'])) . "</time>";

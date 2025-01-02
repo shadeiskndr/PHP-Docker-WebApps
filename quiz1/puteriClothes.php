@@ -135,11 +135,21 @@
                 </section>
             <?php endif; ?>
 
-
             <!-- Price Table Section -->
             <section class="bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300">
                 <h2 class="text-3xl font-bold mb-6 bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">Clothes Pricing Guide</h2>
-                <div class="overflow-x-auto">
+                
+                <?php
+                $items = [
+                    ['code' => 1, 'name' => 'Baju Kurung Tradisional', 'price' => 210.90],
+                    ['code' => 2, 'name' => 'Baju Kurung Moden', 'price' => 249.00],
+                    ['code' => 3, 'name' => 'Kebaya', 'price' => 310.90],
+                    ['code' => 4, 'name' => 'Jubah', 'price' => 250.90]
+                ];
+                ?>
+
+                <!-- Desktop Table View -->
+                <div class="hidden sm:block overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                         <thead>
                             <tr class="bg-gradient-to-r from-pink-50 to-purple-50 dark:from-gray-700 dark:to-gray-700">
@@ -149,28 +159,28 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                            <?php foreach ($items as $item): ?>
                             <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
-                                <td class="px-6 py-4 whitespace-nowrap text-gray-700 dark:text-gray-300">1</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-gray-700 dark:text-gray-300">Baju Kurung Tradisional</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-gray-700 dark:text-gray-300">210.90</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-700 dark:text-gray-300"><?= $item['code'] ?></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-700 dark:text-gray-300"><?= $item['name'] ?></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-700 dark:text-gray-300"><?= number_format($item['price'], 2) ?></td>
                             </tr>
-                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
-                                <td class="px-6 py-4 whitespace-nowrap text-gray-700 dark:text-gray-300">2</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-gray-700 dark:text-gray-300">Baju Kurung Moden</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-gray-700 dark:text-gray-300">249.00</td>
-                            </tr>
-                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
-                                <td class="px-6 py-4 whitespace-nowrap text-gray-700 dark:text-gray-300">3</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-gray-700 dark:text-gray-300">Kebaya</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-gray-700 dark:text-gray-300">310.90</td>
-                            </tr>
-                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
-                                <td class="px-6 py-4 whitespace-nowrap text-gray-700 dark:text-gray-300">4</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-gray-700 dark:text-gray-300">Jubah</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-gray-700 dark:text-gray-300">250.90</td>
-                            </tr>
+                            <?php endforeach; ?>
                         </tbody>
                     </table>
+                </div>
+
+                <!-- Mobile List View -->
+                <div class="block sm:hidden space-y-4">
+                    <?php foreach ($items as $item): ?>
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-gray-100 dark:bg-gray-700 p-4 rounded-lg shadow transform hover:scale-[1.01] transition-all duration-200">
+                            <div class="flex items-center gap-4 mb-2 sm:mb-0">
+                                <span class="w-8 h-8 flex items-center justify-center bg-pink-100 dark:bg-pink-900 text-pink-600 dark:text-pink-400 rounded-full font-bold"><?= $item['code'] ?></span>
+                                <h3 class="font-semibold text-gray-800 dark:text-gray-200"><?= $item['name'] ?></h3>
+                            </div>
+                            <div class="text-lg font-bold text-purple-600 dark:text-purple-400">RM <?= number_format($item['price'], 2) ?></div>
+                        </div>
+                    <?php endforeach; ?>
                 </div>
             </section>
         </div>
