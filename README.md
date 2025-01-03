@@ -52,16 +52,16 @@ This is a simple PHP, MySQL, Apache web application that has been dockerized int
 
 1. Install ngrok via Docker with the following command:
 
-   '''bash
+   ```bash
    docker pull ngrok/ngrok
-   '''
+   ```
 
 2. Sign up or log in to ngrok.com and get your auth token.
 
 3. Put your app online at an ephemeral domain forwarding to your upstream service. Start the project container and also run the ngrok container by:
 
-   '''bash
+   ```bash
    docker run --net=host -it -e NGROK_AUTHTOKEN=<YOUR_NGROK_AUTH_TOKEN> ngrok/ngrok:latest http 80
-   '''
+   ```
 
 4. Once done, you will get an ephemeral domain link to see your app in the terminal.
