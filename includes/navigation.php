@@ -20,14 +20,14 @@ $navItems = [
         ['url' => $baseUrl . 'index.php', 'text' => 'Home', 'icon' => 'fas fa-home']
     ],
     'calculators' => [
-        ['url' => $baseUrl . 'quiz1/puteriClothes.php', 'text' => 'Puteri Clothes Calculator', 'icon' => 'fas fa-tshirt'],
-        ['url' => $baseUrl . 'Assignment1/airform2.php', 'text' => 'Air Conditioner Calculator', 'icon' => 'fas fa-fan'],
-        ['url' => $baseUrl . 'LabWorkX8/Discount.php', 'text' => 'Discount Calculator', 'icon' => 'fas fa-tags'],
-        ['url' => $baseUrl . 'LabWork3/speed_converter.php', 'text' => 'Speed Converter', 'icon' => 'fas fa-tachometer-alt'],
-        ['url' => $baseUrl . 'LabWork3/tax_form.php', 'text' => 'Tax Calculator', 'icon' => 'fas fa-calculator'],
-        ['url' => $baseUrl . 'LabWork3/BMI_form_sticky.php', 'text' => 'BMI Calculator', 'icon' => 'fas fa-weight'],
-        ['url' => $baseUrl . 'LabWork4/biggest_num.php', 'text' => 'Biggest Number', 'icon' => 'fas fa-sort-numeric-up'],
-        ['url' => $baseUrl . 'LabWork1/integers.php', 'text' => 'Add 3 Integers', 'icon' => 'fas fa-plus']
+        ['url' => $baseUrl . 'calculator/puteri.php', 'text' => 'Puteri Clothes Calculator', 'icon' => 'fas fa-tshirt'],
+        ['url' => $baseUrl . 'calculator/aircond.php', 'text' => 'Air Conditioner Calculator', 'icon' => 'fas fa-fan'],
+        ['url' => $baseUrl . 'calculator/discount.php', 'text' => 'Discount Calculator', 'icon' => 'fas fa-tags'],
+        ['url' => $baseUrl . 'calculator/speed.php', 'text' => 'Speed Converter', 'icon' => 'fas fa-tachometer-alt'],
+        ['url' => $baseUrl . 'calculator/tax.php', 'text' => 'Tax Calculator', 'icon' => 'fas fa-calculator'],
+        ['url' => $baseUrl . 'calculator/bmi.php', 'text' => 'BMI Calculator', 'icon' => 'fas fa-weight'],
+        ['url' => $baseUrl . 'calculator/num.php', 'text' => 'Biggest Number', 'icon' => 'fas fa-sort-numeric-up'],
+        ['url' => $baseUrl . 'calculator/integers.php', 'text' => 'Add 3 Integers', 'icon' => 'fas fa-plus']
     ],
     'databases' => [
         ['url' => $baseUrl . 'updateInventory/updateInventory.php', 'text' => 'Boutique Inventory', 'icon' => 'fas fa-warehouse'],
