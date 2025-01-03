@@ -143,16 +143,16 @@ $navItems = [
 
 <!-- Mobile Navigation Button -->
 <div class="fixed sm:hidden bottom-4 right-4 z-50">
-    <button id="openSideBar" class="bg-gray-800 text-white p-3 rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-gray-300">
+    <button id="openSideBar" class="bg-gray-800 text-white p-3 rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-gray-300 border border-gray-700">
         <i class="fas fa-bars text-xl"></i>
     </button>
-    <button id="closeSideBar" class="hidden bg-gray-800 text-white p-3 rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-gray-300">
+    <button id="closeSideBar" class="hidden bg-gray-800 text-white p-3 rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-gray-300 border border-gray-700">
         <i class="fas fa-times text-xl"></i>
     </button>
 </div>
 
 <!-- Mobile Navigation Sidebar -->
-<div id="mobile-nav" class="fixed sm:hidden w-64 bg-gray-800 shadow h-screen flex-col justify-between transform transition-transform duration-300 ease-in-out z-40">
+<div id="mobile-nav" class="fixed sm:hidden w-64 bg-gray-800 shadow h-screen flex-col justify-between transform transition-transform duration-300 ease-in-out z-40 border-r border-gray-700">
     <div class="px-8 mb-32">
         <div class="h-16 w-full flex items-center">
             <!-- Logo or Title -->
@@ -221,7 +221,7 @@ $navItems = [
             </li>
         </ul>
     </div>
-    <div class="px-8 border-t border-gray-700 fixed bottom-0 w-64 bg-gray-800">
+    <div class="px-8 border-t border-r border-gray-700 fixed bottom-0 w-64 bg-gray-800">
         <ul class="w-full flex items-center justify-between bg-gray-800">
             <!-- Dark Mode Toggle -->
             <li class="cursor-pointer text-white pt-5 pb-3">

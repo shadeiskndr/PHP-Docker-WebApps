@@ -20,26 +20,25 @@ This is a simple PHP, MySQL, Apache web application that has been dockerized int
 
 ### Tailwind CSS Setup
 
-1. Install Node.js dependencies:
+1. Install Tailwind CSS dependency (Need Node.js installed):
 
    ```bash
    npm install
-
    ```
 
 2. Build Tailwind CSS:
 
 - Development watch mode:
 
-```bash
-npm run dev
-```
+  ```bash
+  npm run dev
+  ```
 
 - One-time build:
 
-```bash
-npm run build
-```
+  ```bash
+  npm run build
+  ```
 
 ### Rebuild and Restart Containers
 
@@ -49,49 +48,20 @@ npm run build
 
 - docker-compose up -d
 
-## Deploying on DigitalOcean VM
+## Simulate deployment (using Ngrok)
 
-1. Create a new droplet on DigitalOcean.
+1. Install ngrok via Docker with the following command:
 
-2. Install Docker and Docker Compose:
+   '''bash
+   docker pull ngrok/ngrok
+   '''
 
-   ```bash
-   sudo apt update
-   sudo apt install docker.io
-   sudo systemctl start docker
-   sudo systemctl enable docker
-   sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-   sudo chmod +x /usr/local/bin/docker-compose
-   ```
+2. Sign up or log in to ngrok.com and get your auth token.
 
-3. Configure firewall rules:
+3. Put your app online at an ephemeral domain forwarding to your upstream service. Start the project container and also run the ngrok container by:
 
-   ```bash
-   sudo ufw allow 22/tcp
-   sudo ufw allow 80/tcp
-   sudo ufw allow 443/tcp
-   sudo ufw enable
-   ```
+   '''bash
+   docker run --net=host -it -e NGROK_AUTHTOKEN=<YOUR_NGROK_AUTH_TOKEN> ngrok/ngrok:latest http 80
+   '''
 
-4. Git clone this repository into the droplet.
-
-5. Run the command docker-compose up from the terminal shell within the directory of this project.
-
-6. For domain and SSL setup:
-
-- Add DNS A record pointing to your droplet's IP
-- Install Certbot: sudo apt install certbot python3-certbot-apache
-- Get SSL certificate: sudo certbot --apache -d yourdomain.com -d www.yourdomain.com
-
-7. Access container shell:
-
-```bash
- docker ps # List containers
- docker exec -it CONTAINER_ID bash # Replace CONTAINER_ID with your container ID
-```
-
-#### OR
-
-```bash
-docker-compose exec www bash # Using service name
-```
+4. Once done, you will get an ephemeral domain link to see your app in the terminal.
