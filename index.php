@@ -8,17 +8,20 @@ define('BASE_PATH', __DIR__);
 // Define routes and their corresponding files
 $routes = [
     '/' => '/home.php',
-    '/calculator/aircond' => 'calculator/aircond.php',
-    '/calculator/bmi' => 'calculator/bmi.php',
-    '/calculator/discount' => 'calculator/discount.php',
-    '/calculator/num' => 'calculator/num.php',
-    '/calculator/puteri' => 'calculator/puteri.php',
-    '/calculator/speed' => 'calculator/speed.php',
-    '/calculator/tax' => 'calculator/tax.php'
+    '/aircond' => 'calculator/aircond.php',
+    '/bmi' => 'calculator/bmi.php',
+    '/discount' => 'calculator/discount.php',
+    '/num' => 'calculator/num.php',
+    '/puteri' => 'calculator/puteri.php',
+    '/speed' => 'calculator/speed.php',
+    '/tax' => 'calculator/tax.php'
 ];
 
 // Get the requested route
 $requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$requestUri = preg_replace('#/+#', '/', $requestUri);
+// Handle trailing slashes while preserving root path
+$requestUri = $requestUri === '/' ? '/' : rtrim($requestUri, '/');
 
 // Security headers
 header("Content-Security-Policy: default-src 'self'; style-src 'self' 'unsafe-inline';");

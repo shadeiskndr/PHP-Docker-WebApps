@@ -20,14 +20,14 @@ $navItems = [
         ['url' => $baseUrl, 'text' => 'Home', 'icon' => 'fas fa-home']
     ],
     'calculators' => [
-        ['url' => $baseUrl . 'calculator/puteri', 'text' => 'Puteri Clothes Calculator', 'icon' => 'fas fa-tshirt'],
-        ['url' => $baseUrl . 'calculator/aircond', 'text' => 'Air Conditioner Calculator', 'icon' => 'fas fa-fan'],
-        ['url' => $baseUrl . 'calculator/discount', 'text' => 'Discount Calculator', 'icon' => 'fas fa-tags'],
-        ['url' => $baseUrl . 'calculator/speed', 'text' => 'Speed Converter', 'icon' => 'fas fa-tachometer-alt'],
-        ['url' => $baseUrl . 'calculator/tax', 'text' => 'Tax Calculator', 'icon' => 'fas fa-calculator'],
-        ['url' => $baseUrl . 'calculator/bmi', 'text' => 'BMI Calculator', 'icon' => 'fas fa-weight'],
-        ['url' => $baseUrl . 'calculator/num', 'text' => 'Biggest Number', 'icon' => 'fas fa-sort-numeric-up'],
-        ['url' => $baseUrl . 'calculator/integers', 'text' => 'Add 3 Integers', 'icon' => 'fas fa-plus']
+        ['url' => $baseUrl . 'puteri', 'text' => 'Puteri Clothes Calculator', 'icon' => 'fas fa-tshirt'],
+        ['url' => $baseUrl . 'aircond', 'text' => 'Air Conditioner Calculator', 'icon' => 'fas fa-fan'],
+        ['url' => $baseUrl . 'discount', 'text' => 'Discount Calculator', 'icon' => 'fas fa-tags'],
+        ['url' => $baseUrl . 'speed', 'text' => 'Speed Converter', 'icon' => 'fas fa-tachometer-alt'],
+        ['url' => $baseUrl . 'tax', 'text' => 'Tax Calculator', 'icon' => 'fas fa-calculator'],
+        ['url' => $baseUrl . 'bmi', 'text' => 'BMI Calculator', 'icon' => 'fas fa-weight'],
+        ['url' => $baseUrl . 'num', 'text' => 'Biggest Number', 'icon' => 'fas fa-sort-numeric-up'],
+        ['url' => $baseUrl . 'integers', 'text' => 'Add 3 Integers', 'icon' => 'fas fa-plus']
     ],
     'databases' => [
         ['url' => $baseUrl . 'updateInventory/updateInventory.php', 'text' => 'Boutique Inventory', 'icon' => 'fas fa-warehouse'],
@@ -46,7 +46,7 @@ $navItems = [
             <h2 class="text-2xl font-bold text-white">Navigation</h2>
         </div>
         <!-- Search Bar -->
-        <div class="flex justify-center mt-6 w-full">
+        <div class="flex justify-center mt-4 w-full">
             <div class="relative">
                 <div class="text-gray-300 absolute ml-2.5 mt-2 inset-0 w-1 h-1">
                     <i class="fas fa-search text-lg"></i>
@@ -55,12 +55,12 @@ $navItems = [
             </div>
         </div>
         <!-- Navigation Menu -->
-        <ul class="mt-12">
+        <ul class="mt-8">
             <?php foreach($navItems['main'] as $item): ?>
                 <li class="flex w-full justify-between text-gray-300 hover:text-gray-500 cursor-pointer items-center mb-6">
                     <a href="<?= htmlspecialchars($item['url']) ?>" class="flex items-center focus:outline-none focus:ring-2 focus:ring-white">
                         <i class="<?= htmlspecialchars($item['icon']) ?> text-lg"></i>
-                        <span class="text-sm ml-2"><?= htmlspecialchars($item['text']) ?></span>
+                        <span class="text-sm ml-4"><?= htmlspecialchars($item['text']) ?></span>
                     </a>
                 </li>
             <?php endforeach; ?>
@@ -70,7 +70,7 @@ $navItems = [
                 <button class="accordion-btn flex w-full justify-between text-gray-300 hover:text-gray-500 cursor-pointer items-center">
                     <div class="flex items-center">
                         <i class="fas fa-calculator text-lg"></i>
-                        <span class="text-sm ml-2">Calculators</span>
+                        <span class="text-sm ml-4">Calculators</span>
                     </div>
                     <i class="fas fa-chevron-down transition-transform duration-300"></i>
                 </button>
@@ -91,7 +91,7 @@ $navItems = [
                 <button class="accordion-btn flex w-full justify-between text-gray-300 hover:text-gray-500 cursor-pointer items-center">
                     <div class="flex items-center">
                         <i class="fas fa-database text-lg"></i>
-                        <span class="text-sm ml-2">Databases</span>
+                        <span class="text-sm ml-4">Databases</span>
                     </div>
                     <i class="fas fa-chevron-down transition-transform duration-300"></i>
                 </button>
@@ -159,7 +159,7 @@ $navItems = [
             <h2 class="text-2xl font-bold text-white">Navigation</h2>
         </div>
         <!-- Search Bar -->
-        <div class="flex justify-center mt-6 w-full">
+        <div class="flex justify-center mt-4 w-full">
             <div class="relative">
                 <div class="text-gray-300 absolute ml-2.5 mt-2 inset-0 w-1 h-1">
                     <i class="fas fa-search text-lg"></i>
@@ -168,12 +168,12 @@ $navItems = [
             </div>
         </div>
         <!-- Navigation Menu -->
-        <ul class="mt-12">
+        <ul class="mt-8">
             <?php foreach($navItems['main'] as $item): ?>
                 <li class="flex w-full justify-between text-gray-300 hover:text-gray-500 cursor-pointer items-center mb-6">
                     <a href="<?= htmlspecialchars($item['url']) ?>" class="flex items-center focus:outline-none focus:ring-2 focus:ring-white">
                         <i class="<?= htmlspecialchars($item['icon']) ?> text-lg"></i>
-                        <span class="text-sm ml-2"><?= htmlspecialchars($item['text']) ?></span>
+                        <span class="text-sm ml-4"><?= htmlspecialchars($item['text']) ?></span>
                     </a>
                 </li>
             <?php endforeach; ?>
@@ -183,7 +183,7 @@ $navItems = [
                 <button class="accordion-btn flex w-full justify-between text-gray-300 hover:text-gray-500 cursor-pointer items-center">
                     <div class="flex items-center">
                         <i class="fas fa-calculator text-lg"></i>
-                        <span class="text-sm ml-2">Calculators</span>
+                        <span class="text-sm ml-4">Calculators</span>
                     </div>
                     <i class="fas fa-chevron-down transition-transform duration-300"></i>
                 </button>
@@ -204,7 +204,7 @@ $navItems = [
                 <button class="accordion-btn flex w-full justify-between text-gray-300 hover:text-gray-500 cursor-pointer items-center">
                     <div class="flex items-center">
                         <i class="fas fa-database text-lg"></i>
-                        <span class="text-sm ml-2">Databases</span>
+                        <span class="text-sm ml-4">Databases</span>
                     </div>
                     <i class="fas fa-chevron-down transition-transform duration-300"></i>
                 </button>

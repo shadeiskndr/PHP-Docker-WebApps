@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="../output.css" rel="stylesheet">
+    <link href="/output.css" rel="stylesheet">
     <title>Puteri Clothes Calculator</title>
 </head>
-<body class="bg-gradient-to-br from-pink-50 to-purple-50 dark:from-gray-800 dark:to-gray-900 text-gray-900 dark:text-gray-100 min-h-screen transition-colors duration-200">
+<body class="bg-gradient-to-br from-pink-200 to-purple-200 dark:from-gray-800 dark:to-gray-900 text-gray-900 dark:text-gray-100 min-h-screen transition-colors duration-200">
     <div class="flex min-h-screen">
         <?php include BASE_PATH . '/includes/navigation.php'; ?>
 
@@ -24,14 +24,14 @@
                             <label for="code" class="text-lg font-medium text-gray-700 dark:text-gray-300">Clothes Code</label>
                             <input type="text" name="code" id="code" 
                                     class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none
-                                          focus:ring-2 focus:ring-purple-500 hover:border-purple-500 focus:border-purple-500
+                                          focus:ring-2 focus:ring-pink-500 hover:border-pink-500 focus:border-pink-500
                                         dark:bg-gray-700 dark:text-white transition duration-200" />
                         </div>
                         <div class="space-y-2">
                             <label for="quantity" class="text-lg font-medium text-gray-700 dark:text-gray-300">Quantity</label>
                             <input type="text" name="quantity" id="quantity" 
                                    class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none
-                                          focus:ring-2 focus:ring-purple-500 hover:border-purple-500 focus:border-purple-500
+                                          focus:ring-2 focus:ring-pink-500 hover:border-pink-500 focus:border-pink-500
                                         dark:bg-gray-700 dark:text-white transition duration-200" />
                         </div>
                     </div>

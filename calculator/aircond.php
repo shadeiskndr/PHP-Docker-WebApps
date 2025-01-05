@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="../output.css" rel="stylesheet">
+    <link href="/output.css" rel="stylesheet">
     <title>Air Conditioner Calculator</title>
 </head>
 <body class="bg-gradient-to-br from-purple-200 to-indigo-200 dark:from-gray-800 dark:to-gray-900 text-gray-900 dark:text-gray-100 min-h-screen transition-colors duration-200">
@@ -23,35 +23,35 @@
 							<label for="length" class="text-lg font-medium text-gray-700 dark:text-gray-300">Room Length (ft)</label>
 							<input type="text" name="length" id="length" value="<?php if(isset($_POST['length'])) echo $_POST['length']; ?>"
 								class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none
-										focus:ring-2 focus:ring-blue-500 hover:border-blue-500 focus:border-blue-500
+										focus:ring-2 focus:ring-purple-500 hover:border-purple-500 focus:border-purple-500
 										dark:bg-gray-700 dark:text-white transition duration-200" />
 						</div>
 						<div class="space-y-2 w-full">
 							<label for="width" class="text-lg font-medium text-gray-700 dark:text-gray-300">Room Width (ft)</label>
 							<input type="text" name="width" id="width" value="<?php if(isset($_POST['width'])) echo $_POST['width']; ?>"
 								class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none
-										focus:ring-2 focus:ring-blue-500 hover:border-blue-500 focus:border-blue-500
+										focus:ring-2 focus:ring-purple-500 hover:border-purple-500 focus:border-purple-500
 										dark:bg-gray-700 dark:text-white transition duration-200" />
 						</div>
 						<div class="space-y-2 w-full">
 							<label for="height" class="text-lg font-medium text-gray-700 dark:text-gray-300">Room Height (ft)</label>
 							<input type="text" name="height" id="height" value="<?php if(isset($_POST['height'])) echo $_POST['height']; ?>"
 								class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none
-										focus:ring-2 focus:ring-blue-500 hover:border-blue-500 focus:border-blue-500
+										focus:ring-2 focus:ring-purple-500 hover:border-purple-500 focus:border-purple-500
 										dark:bg-gray-700 dark:text-white transition duration-200" />
 						</div>
 						<div class="space-y-2 w-full">
 							<label for="people" class="text-lg font-medium text-gray-700 dark:text-gray-300">Number of People</label>
 							<input type="text" name="people" id="people" value="<?php if(isset($_POST['people'])) echo $_POST['people']; ?>"
 								class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none
-										focus:ring-2 focus:ring-blue-500 hover:border-blue-500 focus:border-blue-500
+										focus:ring-2 focus:ring-purple-500 hover:border-purple-500 focus:border-purple-500
 										dark:bg-gray-700 dark:text-white transition duration-200" />
 						</div>
 						<div class="space-y-2 w-full">
 							<label for="room" class="text-lg font-medium text-gray-700 dark:text-gray-300">Room Type</label>
 							<select name="room" id="room" 
 									class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none
-										focus:ring-2 focus:ring-blue-500 hover:border-blue-500 focus:border-blue-500
+										focus:ring-2 focus:ring-purple-500 hover:border-purple-500 focus:border-purple-500
 										dark:bg-gray-700 dark:text-white transition duration-200">
 								<option value="">Choose a room type</option>
 								<option value="bedroom" <?php if(isset($_POST['room']) && $_POST['room'] == "bedroom") echo 'selected="selected"'; ?>>Bedroom</option>
@@ -63,7 +63,7 @@
 							<label for="location" class="text-lg font-medium text-gray-700 dark:text-gray-300">Room Location</label>
 							<select name="location" id="location"
 									class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none
-										focus:ring-2 focus:ring-blue-500 hover:border-blue-500 focus:border-blue-500
+										focus:ring-2 focus:ring-purple-500 hover:border-purple-500 focus:border-purple-500
 										dark:bg-gray-700 dark:text-white transition duration-200">
 								<option value="">Choose a location</option>
 								<option value="sunny" <?php if(isset($_POST['location']) && $_POST['location'] == "sunny") echo 'selected="selected"'; ?>>Facing the sun</option>

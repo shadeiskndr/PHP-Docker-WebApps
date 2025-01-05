@@ -14,7 +14,6 @@
         <div class="flex-1 p-6 sm:ml-64">
             <div class="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-8 mb-8 border border-gray-200 dark:border-gray-700 text-center">
                 <div class="inline-flex items-center justify-center">
-                    <i class="fas fa-exclamation-triangle text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 text-6xl"></i>
                     <span class="text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 ml-4">
                         404
                     </span>
@@ -23,7 +22,6 @@
                 <p class="text-md md:text-lg mt-2 text-gray-500 dark:text-gray-400">You might have the wrong address, or the page may have moved.</p>
                 <div class="mt-8 space-x-4">
                     <a href="/" class="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:opacity-90 transition duration-200">Return Home</a>
-                    <a href="contact.php" class="px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition duration-200">Contact Support</a>
                 </div>
             </div>
 

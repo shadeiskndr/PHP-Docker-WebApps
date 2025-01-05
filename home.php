@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="PHP Docker Web Application with various calculators and tools">
-    <link href="output.css" rel="stylesheet">
+    <link href="/output.css" rel="stylesheet">
     <title>My PHP Docker Web App</title>
 </head>
 <body class="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 text-gray-900 dark:text-gray-100 min-h-screen transition-colors duration-200">
