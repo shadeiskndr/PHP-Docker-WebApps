@@ -76,7 +76,7 @@ $connect = mysqli_connect(
                     </div>
                     <div class="mb-4">
                         <label for="model" class="block text-lg font-medium text-gray-700">Model Name:</label>
-                        <input type="text" name="model" id="model" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" size="15" maxlength="30" value="<?php if (isset($_POST['model'])) echo $_POST['model']; ?>" />
+                        <input type="text" name="model" id="model" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" size="15" maxlength="60" value="<?php if (isset($_POST['model'])) echo $_POST['model']; ?>" />
                     </div>
                     <div class="mb-4">
                         <label for="acquisition_price" class="block text-lg font-medium text-gray-700">Acquisition Price:</label>

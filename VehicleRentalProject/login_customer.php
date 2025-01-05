@@ -90,10 +90,23 @@ if (isset($_POST['submit'])) {
 
         /* Retrieve the customerID and name for 
         that email/password combination. */
-        $query = "SELECT customerID, name FROM customer WHERE email='$email' AND password=SHA('$password')";        
-        $result = @mysqli_query ($connect,$query); // Run the query.
-        $row = mysqli_fetch_array ($result, MYSQLI_NUM); // Return a record, if applicable.
-        
+        // Prepare the statement
+        $stmt = $connect->prepare("SELECT customerID, name FROM customer WHERE email=? AND password=SHA(?)");
+
+        // Bind the parameters
+        $stmt->bind_param("ss", $email, $password);
+
+        // Execute the query
+        $stmt->execute();
+
+        // Get the result
+        $result = $stmt->get_result();
+        $row = $result->fetch_array(MYSQLI_NUM);
+
+        // Free the result and close the statement
+        $stmt->free_result();
+        $stmt->close();
+
         if ($row) { // A record was pulled from the database.
             // Set the session data & redirect.
             session_start();

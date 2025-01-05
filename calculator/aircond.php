@@ -1,399 +1,280 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="../output.css" rel="stylesheet">
     <title>Air Conditioner Calculator</title>
 </head>
-<body class="bg-gray-100 text-gray-900">
-    <div class="flex">
-        <!-- Vertical Navigation Bar -->
-        <nav class="w-64 bg-gray-800 text-white min-h-screen p-4">
-            <h2 class="text-2xl font-bold mb-6">Navigation</h2>
-            <ul class="space-y-4">
-				<li><a href="../index.php" class="block py-2 px-4 rounded hover:bg-blue-700">Home</a></li>
-                <li><a href="../quiz1/puteriClothes.php" class="block py-2 px-4 rounded hover:bg-blue-700">Puteri Clothes Calculator</a></li>
-                <li><a href="airform2.php" class="block py-2 px-4 rounded hover:bg-blue-700">Air Conditioner Calculator</a></li>
-                <li><a href="../LabWorkX8/Discount.php" class="block py-2 px-4 rounded hover:bg-blue-700">Discount Calculator</a></li>
-                <li><a href="../LabWork3/speed_converter.php" class="block py-2 px-4 rounded hover:bg-blue-700">Speed Converter</a></li>
-                <li><a href="../LabWork3/tax_form.php" class="block py-2 px-4 rounded hover:bg-blue-700">Tax Calculator</a></li>
-                <li><a href="../LabWork3/BMI_form_sticky.php" class="block py-2 px-4 rounded hover:bg-blue-700">BMI Calculator</a></li>
-                <li><a href="../LabWork4/biggest_num.php" class="block py-2 px-4 rounded hover:bg-blue-700">Biggest Number</a></li>
-                <li><a href="../LabWork1/integers.php" class="block py-2 px-4 rounded hover:bg-blue-700">Add 3 Integers</a></li>
-                <li><a href="../updateInventory/updateInventory.php" class="block py-2 px-4 rounded hover:bg-blue-700">Mawar Boutique Inventory</a></li>
-                <li><a href="../CinemaTicketing/admin_listMovie.php" class="block py-2 px-4 rounded hover:bg-blue-700">Movies I Watched</a></li>
-                <li><a href="../CarForSale/view_carList.php" class="block py-2 px-4 rounded hover:bg-blue-700">Cars Database</a></li>
-                <li><a href="../VehicleRentalProject/homepage.php" class="block py-2 px-4 rounded hover:bg-blue-700">Vehicle Rental Project</a></li>
-            </ul>
-        </nav>
+<body class="bg-gradient-to-br from-purple-200 to-indigo-200 dark:from-gray-800 dark:to-gray-900 text-gray-900 dark:text-gray-100 min-h-screen transition-colors duration-200">
+    <div class="flex min-h-screen">
+		<?php include BASE_PATH . '/includes/navigation.php'; ?>
 
-        <!-- Main Content -->
-        <div class="flex-1 p-4">
-            <header class="bg-blue-600 text-white p-4 rounded mb-4">
-                <h1 class="text-4xl font-bold">Air Conditioner Calculator</h1>
+        <div class="flex-1 p-6 sm:ml-64">
+            <header class="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-8 mb-8 border border-gray-200 dark:border-gray-700">
+                <h1 class="text-5xl font-extrabold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">Air Conditioner Calculator</h1>
+                <p class="mt-4 text-gray-600 dark:text-gray-300 text-xl">Calculate the recommended AC capacity for your room</p>
             </header>
 
-            <form action="airform2.php" method="post" class="bg-white p-6 rounded shadow-md">
-                <fieldset>
-                    <legend class="text-xl font-semibold mb-4">Please fill in the forms below:</legend>
-                    <div class="mb-4">
-                        <label for="length" class="block text-sm font-medium text-gray-700">Room length (ft):</label>
-                        <input type="text" name="length" size="20" maxlength="40" value="<?php if(isset($_POST['length'])) echo $_POST['length']; ?>" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"/>
-                    </div>
-                    <div class="mb-4">
-                        <label for="width" class="block text-sm font-medium text-gray-700">Room width (ft):</label>
-                        <input type="text" name="width" size="20" maxlength="40" value="<?php if(isset($_POST['width'])) echo $_POST['width']; ?>" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"/>
-                    </div>
-                    <div class="mb-4">
-                        <label for="height" class="block text-sm font-medium text-gray-700">Room height (ft):</label>
-                        <input type="text" name="height" size="20" maxlength="40" value="<?php if(isset($_POST['height'])) echo $_POST['height']; ?>" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"/>
-                    </div>
-                    <div class="mb-4">
-                        <label for="people" class="block text-sm font-medium text-gray-700">Number of people in the room:</label>
-                        <input type="text" name="people" size="20" maxlength="40" value="<?php if(isset($_POST['people'])) echo $_POST['people']; ?>" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"/>
-                    </div>
-                    <div class="mb-4">
-                        <label for="room" class="block text-sm font-medium text-gray-700">Room type:</label>
-                        <select id="room" name="room" class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                            <option value="">Choose a room type</option>
-                            <option value="bedroom" <?php if(isset($_POST['room']) && $_POST['room'] == "bedroom") echo 'selected="selected"'; ?>>Bedroom</option>
-                            <option value="kitchen" <?php if(isset($_POST['room']) && $_POST['room'] == "kitchen") echo 'selected="selected"'; ?>>Kitchen</option>
-                            <option value="living room" <?php if(isset($_POST['room']) && $_POST['room']=="living room") echo 'selected="selected"'; ?>>Living room</option>
-                        </select>
-                    </div>
-                    <div class="mb-4">
-                        <label for="location" class="block text-sm font-medium text-gray-700">Location of the room:</label>
-                        <select id="location" name="location" class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                            <option value="">Choose a location</option>
-                            <option value="sunny" <?php if(isset($_POST['location']) && $_POST['location']=="sunny") echo 'selected="selected"'; ?>>Facing the sun</option>
-                            <option value="shaded" <?php if(isset($_POST['location']) && $_POST['location']=="shaded") echo 'selected="selected"'; ?>>Is shaded</option>
-                        </select>
-                    </div>
-                </fieldset>
-                <div class="mt-6">
-                    <button type="submit" name="submit" class="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Submit</button>
-                </div>
-            </form>
+			<section class="bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300 mb-8 border border-gray-200 dark:border-gray-700">
+				<form action="aircond" method="post">
+    				<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+						<div class="space-y-2 w-full">
+							<label for="length" class="text-lg font-medium text-gray-700 dark:text-gray-300">Room Length (ft)</label>
+							<input type="text" name="length" id="length" value="<?php if(isset($_POST['length'])) echo $_POST['length']; ?>"
+								class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none
+										focus:ring-2 focus:ring-blue-500 hover:border-blue-500 focus:border-blue-500
+										dark:bg-gray-700 dark:text-white transition duration-200" />
+						</div>
+						<div class="space-y-2 w-full">
+							<label for="width" class="text-lg font-medium text-gray-700 dark:text-gray-300">Room Width (ft)</label>
+							<input type="text" name="width" id="width" value="<?php if(isset($_POST['width'])) echo $_POST['width']; ?>"
+								class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none
+										focus:ring-2 focus:ring-blue-500 hover:border-blue-500 focus:border-blue-500
+										dark:bg-gray-700 dark:text-white transition duration-200" />
+						</div>
+						<div class="space-y-2 w-full">
+							<label for="height" class="text-lg font-medium text-gray-700 dark:text-gray-300">Room Height (ft)</label>
+							<input type="text" name="height" id="height" value="<?php if(isset($_POST['height'])) echo $_POST['height']; ?>"
+								class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none
+										focus:ring-2 focus:ring-blue-500 hover:border-blue-500 focus:border-blue-500
+										dark:bg-gray-700 dark:text-white transition duration-200" />
+						</div>
+						<div class="space-y-2 w-full">
+							<label for="people" class="text-lg font-medium text-gray-700 dark:text-gray-300">Number of People</label>
+							<input type="text" name="people" id="people" value="<?php if(isset($_POST['people'])) echo $_POST['people']; ?>"
+								class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none
+										focus:ring-2 focus:ring-blue-500 hover:border-blue-500 focus:border-blue-500
+										dark:bg-gray-700 dark:text-white transition duration-200" />
+						</div>
+						<div class="space-y-2 w-full">
+							<label for="room" class="text-lg font-medium text-gray-700 dark:text-gray-300">Room Type</label>
+							<select name="room" id="room" 
+									class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none
+										focus:ring-2 focus:ring-blue-500 hover:border-blue-500 focus:border-blue-500
+										dark:bg-gray-700 dark:text-white transition duration-200">
+								<option value="">Choose a room type</option>
+								<option value="bedroom" <?php if(isset($_POST['room']) && $_POST['room'] == "bedroom") echo 'selected="selected"'; ?>>Bedroom</option>
+								<option value="kitchen" <?php if(isset($_POST['room']) && $_POST['room'] == "kitchen") echo 'selected="selected"'; ?>>Kitchen</option>
+								<option value="living room" <?php if(isset($_POST['room']) && $_POST['room'] == "living room") echo 'selected="selected"'; ?>>Living Room</option>
+							</select>
+						</div>
+						<div class="space-y-2 w-full">
+							<label for="location" class="text-lg font-medium text-gray-700 dark:text-gray-300">Room Location</label>
+							<select name="location" id="location"
+									class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none
+										focus:ring-2 focus:ring-blue-500 hover:border-blue-500 focus:border-blue-500
+										dark:bg-gray-700 dark:text-white transition duration-200">
+								<option value="">Choose a location</option>
+								<option value="sunny" <?php if(isset($_POST['location']) && $_POST['location'] == "sunny") echo 'selected="selected"'; ?>>Facing the sun</option>
+								<option value="shaded" <?php if(isset($_POST['location']) && $_POST['location'] == "shaded") echo 'selected="selected"'; ?>>Is shaded</option>
+							</select>
+						</div>
+					</div>
+					<button type="submit" name="submit" 
+						class="px-6 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 
+							text-white font-semibold rounded-lg shadow-md hover:from-purple-700 
+							hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 
+							focus:ring-opacity-75 hover:scale-[1.02] transition-transform duration-300">
+						<i class="fas fa-calculator mr-2"></i> Calculate Capacity
+					</button>
+				</form>
+			</section>
 
-            <fieldset class="mt-6">
 			<?php
-
-$errorMessage = array(
-					array(
-					'<p><font color="red">You forgot to enter the room length!</font></p>',
-					'<p><font color="red">You must enter the room length in numeric only!</font></p>',
-					'<p><font color="red">The room length is too big! (10-50 ft)</font></p>',
-					'<p><font color="red">The room length is too small! (10-50 ft)</font></p>'
+				// Error messages array
+				$errorMessages = array(
+					'length' => array(
+						'empty' => 'You forgot to enter the room length!',
+						'not_numeric' => 'You must enter the room length in numeric only!',
+						'too_big' => 'The room length is too big! (%d-%d ft)',
+						'too_small' => 'The room length is too small! (%d-%d ft)',
 					),
-					array(
-					'<p><font color="red">You forgot to enter the room width!</font></p>',
-					'<p><font color="red">You must enter the room width in numeric only!</font></p>',
-					'<p><font color="red">The room width is too big! (10-50 ft)</font></p>',
-					'<p><font color="red">The room width is too small! (10-50 ft)</font></p>'
+					'width' => array(
+						'empty' => 'You forgot to enter the room width!',
+						'not_numeric' => 'You must enter the room width in numeric only!',
+						'too_big' => 'The room width is too big! (%d-%d ft)',
+						'too_small' => 'The room width is too small! (%d-%d ft)',
 					),
-					array(
-					'<p><font color="red">You forgot to enter the room height!</font></p>',
-					'<p><font color="red">You must enter the room height in numeric only!</font></p>',
-					'<p><font color="red">The room height is too big! (8-50 ft)</font></p>',
-					'<p><font color="red">The room height is too small! (8-50 ft)</font></p>'
+					'height' => array(
+						'empty' => 'You forgot to enter the room height!',
+						'not_numeric' => 'You must enter the room height in numeric only!',
+						'too_big' => 'The room height is too big! (%d-%d ft)',
+						'too_small' => 'The room height is too small! (%d-%d ft)',
 					),
-					array(
-					'<p><font color="red">You forgot to enter the number of people in the room!</font></p>',
-					'<p><font color="red">You must enter the room height in numeric only!</font></p>',
-					'<p><font color="red">The number of people in the room is too many! (1-200 people)</font></p>',
-					'<p><font color="red">This number of people is invalid!</font></p>'
+					'people' => array(
+						'empty' => 'You forgot to enter the number of people in the room!',
+						'not_numeric' => 'You must enter the number of people in numeric only!',
+						'too_big' => 'The number of people in the room is too many! (%d-%d people)',
+						'too_small' => 'This number of people is invalid!',
 					),
-					array(
-					'<p><font color="red">You forgot to choose the room type!</font></p>',
-					'<p><font color="red">You forgot to choose the location of the room!</font></p>',
-					)
+					'room' => array(
+						'empty' => 'You forgot to choose the room type!',
+					),
+					'location' => array(
+						'empty' => 'You forgot to choose the location of the room!',
+					),
 				);
 
-if(isset($_REQUEST['submit'])){
-	//Validate room length
-	if (!empty($_POST['length'])) {
-		if (is_numeric($_POST['length'])) {
-			if ($_POST['length'] > 50){
-			$length = NULL;
-			echo $errorMessage[0][2];
-			} else if ($_POST['length'] < 10){
-			$length = NULL;
-			echo $errorMessage[0][3];
-			} else {
-			$length = $_POST['length'];
-			}
-		} else {
-			$length = NULL;
-			echo $errorMessage[0][1];
-			}
-	} else {
-		$length = NULL;
-		echo $errorMessage[0][0];
-		}
+				// Constants for validation ranges
+				define('LENGTH_MIN', 10);
+				define('LENGTH_MAX', 50);
+				define('WIDTH_MIN', 10);
+				define('WIDTH_MAX', 50);
+				define('HEIGHT_MIN', 8);
+				define('HEIGHT_MAX', 50);
+				define('PEOPLE_MIN', 1);
+				define('PEOPLE_MAX', 200);
 
-	//Validate room width
-	if (!empty($_POST['width'])) {
-		if (is_numeric($_POST['width'])) {
-			if ($_POST['width'] > 50){
-			$width = NULL;
-			echo errorMessage[1][2];
-			} else if ($_POST['width'] < 10){
-			$width = NULL;
-			echo $errorMessage[1][3];
-			} else {
-			$width = $_POST['width'];
-			}
-		} else {
-			$width = NULL;
-			echo $errorMessage[1][1];
-			}
-	} else {
-		$width = NULL;
-		echo $errorMessage[1][0];
-		}
+				// Helper functions
+				function wrapErrorMessage($message) {
+					return '<div class="p-4 bg-red-100 dark:bg-red-900 rounded-lg"><p class="text-red-700 dark:text-red-100 font-bold">'. htmlspecialchars($message) . '</p></div>';
+				}
 
-	//Validate room height
-	if (!empty($_POST['height'])) {
-		if (is_numeric($_POST['height'])) {
-			if ($_POST['height'] > 50){
-			$height = NULL;
-			echo $errorMessage[2][2];
-			} else if ($_POST['height'] < 8){
-			$height = NULL;
-			echo $errorMessage[2][3];
-			} else {
-			$height = $_POST['height'];
-			}
-		} else {
-			$height = NULL;
-			echo $errorMessage[2][1];
-			}
-	} else {
-		$height = NULL;
-		echo $errorMessage[2][0];
-		}
+				function getErrorMessage($fieldName, $errorType, $min = null, $max = null) {
+					global $errorMessages;
+					$message = $errorMessages[$fieldName][$errorType];
+					if ($min !== null && $max !== null) {
+						$message = sprintf($message, $min, $max);
+					}
+					return wrapErrorMessage($message);
+				}
 
-	//Validate number of people
-	if (!empty($_POST['people'])) {
-		if (is_numeric($_POST['people'])) {
-			if ($_POST['people'] > 200){
-			$people = NULL;
-			echo $errorMessage[3][2];
-			} else if ($_POST['people'] < 1){
-			$people = NULL;
-			echo $errorMessage[3][3];
-			} else {
-			$people = $_POST['people'];
-			}
-		} else {
-			$people = NULL;
-			echo $errorMessage[3][1];
-			}
-	} else {
-		$people = NULL;
-		echo $errorMessage[3][0];
-		}
+				function validateNumericInput($value, $fieldName, $min, $max, &$errors) {
+					if (!empty($value)) {
+						if (is_numeric($value)) {
+							$value = floatval($value);
+							if ($value > $max) {
+								$errors[] = getErrorMessage($fieldName, 'too_big', $min, $max);
+								return null;
+							} elseif ($value < $min) {
+								$errors[] = getErrorMessage($fieldName, 'too_small', $min, $max);
+								return null;
+							} else {
+								return $value;
+							}
+						} else {
+							$errors[] = getErrorMessage($fieldName, 'not_numeric');
+							return null;
+						}
+					} else {
+						$errors[] = getErrorMessage($fieldName, 'empty');
+						return null;
+					}
+				}
 
-	if(isset($_POST['room'])&&$_POST['room'] == ""){
-		$room = NULL;
-		echo $errorMessage[4][0];
-	}else{
-		$room = $_POST['room'];
-	}
-	
-	if(isset($_POST['location'])&&$_POST['location'] == ""){
-		$location = NULL;
-		echo $errorMessage[4][1];
-	}else {
-		$location = $_POST['location'];
-	}
+				function validateSelectInput($value, $fieldName, &$errors) {
+					if (isset($value) && $value !== "") {
+						return $value;
+					} else {
+						$errors[] = getErrorMessage($fieldName, 'empty');
+						return null;
+					}
+				}
 
-	if ($length && $width && $height && $people && $room && $location){
-		
-		//Calculate room area
-		$area = $length * $width;
-		$heightcapacity = 1000 * $height;
-		$peoplecapacity = 600 * $people;
-		$roomArr = array("bedroom" => 0, "kitchen" => 4000, "living room" => 0);
-		$roomcapacity = $roomArr[$room];
+				function conversionHorsepower($areacapacity) {
+					$hp = $areacapacity / 2509.6259059886;
+					return number_format($hp, 3);
+				}
 
-		function conversionHorsepower($areacapacity){
-		$hp = $areacapacity / 2509.6259059886;
-		$hp = number_format($hp, 3);
-		return $hp;
-		}
+				function locationAdjustCapacity($cap, $heightcapacity, $peoplecapacity, $roomcapacity, $location) {
+					$areaCap = $cap + $heightcapacity + $peoplecapacity + $roomcapacity;
+					if ($location == "sunny") {
+						return $areaCap + ($areaCap * 0.10);
+					} elseif ($location == "shaded") {
+						return $areaCap - ($areaCap * 0.10);
+					} else {
+						return $areaCap; // No adjustment if location is not specified
+					}
+				}
 
-		function resultMessage($areacapacity, $horsepower){
-		echo'
-		<p><b>The recommended air conditioner capacity for your room is:</br></b></p>
-		<b><font color="green">' . $areacapacity . '</font></b> BTU/hr, or</br>
-		<b><font color="green">' . $horsepower . '</font></b> horsepower (metric).
-		';
-		return;
-		}
+				function resultMessage($areacapacity, $horsepower) {
+					echo '
+					<div class="p-4 bg-green-100 dark:bg-green-900 rounded-lg">
+						<p class="text-green-700 dark:text-green-100">
+							<span class="font-bold">Recommended AC Capacity:</span><br>
+							<span class="font-bold">' . htmlspecialchars(number_format($areacapacity, 2)) . '</span> BTU/hr<br>
+							<span class="font-bold">' . htmlspecialchars($horsepower) . '</span> horsepower (metric)
+						</p>
+					</div>';
+				}
 
-		function locationIncreaseCapacity($cap, $heightcapacity, $peoplecapacity, $roomcapacity){
-			$areaCap = $cap + $heightcapacity + $peoplecapacity + $roomcapacity;
-			$areaCap = $areaCap + ($areaCap * 10/100);
-			return $areaCap;
-		}
+				// Main code
+				if(isset($_REQUEST['submit'])) {
+					$errors = array();
+					$length = validateNumericInput($_POST['length'], 'length', LENGTH_MIN, LENGTH_MAX, $errors);
+					$width = validateNumericInput($_POST['width'], 'width', WIDTH_MIN, WIDTH_MAX, $errors);
+					$height = validateNumericInput($_POST['height'], 'height', HEIGHT_MIN, HEIGHT_MAX, $errors);
+					$people = validateNumericInput($_POST['people'], 'people', PEOPLE_MIN, PEOPLE_MAX, $errors);
+					$room = validateSelectInput($_POST['room'], 'room', $errors);
+					$location = validateSelectInput($_POST['location'], 'location', $errors);
 
-		function locationDecreaseCapacity($cap, $heightcapacity, $peoplecapacity, $roomcapacity){
-			$areaCap = $cap + $heightcapacity + $peoplecapacity + $roomcapacity;
-			$areaCap = $areaCap - ($areaCap * 10/100);
-			return $areaCap;
-		}
+					// All inputs are valid
+					$area = $length * $width;
+					$heightcapacity = 1000 * $height;
+					$peoplecapacity = 600 * $people;
+					$roomArr = array("bedroom" => 0, "kitchen" => 4000, "living room" => 0);
+					$roomcapacity = isset($roomArr[$room]) ? $roomArr[$room] : 0;
 
-		switch (true){
-			case $area <= 150:
-			if ($location == "sunny"){
-				$areacapacity = locationIncreaseCapacity(5000, $heightcapacity, $peoplecapacity, $roomcapacity);
-			}else if ($location == "shaded"){
-				$areacapacity = locationDecreaseCapacity(5000, $heightcapacity, $peoplecapacity, $roomcapacity);
-			}
-			$horsepower = conversionHorsepower($areacapacity);
-			resultMessage($areacapacity, $horsepower);
-			break;
+					// Define area capacity mapping
+					$areaCapacities = array(
+						array('max_area' => 150, 'capacity' => 5000),
+						array('max_area' => 250, 'capacity' => 6000),
+						array('max_area' => 300, 'capacity' => 7000),
+						array('max_area' => 350, 'capacity' => 8000),
+						array('max_area' => 400, 'capacity' => 9000),
+						array('max_area' => 450, 'capacity' => 10000),
+						array('max_area' => 550, 'capacity' => 12000),
+						array('max_area' => 700, 'capacity' => 14000),
+						array('max_area' => 1000, 'capacity' => 18000),
+						array('max_area' => 1200, 'capacity' => 21000),
+						array('max_area' => 1400, 'capacity' => 23000),
+						array('max_area' => 1500, 'capacity' => 24000),
+						array('max_area' => 2000, 'capacity' => 30000),
+						array('max_area' => 2500, 'capacity' => 34000),
+					);
 
-			case $area <= 250:
-			if ($location == "sunny"){
-				$areacapacity = locationIncreaseCapacity(6000, $heightcapacity, $peoplecapacity, $roomcapacity);
-			}else if ($location == "shaded"){
-				$areacapacity = locationDecreaseCapacity(6000, $heightcapacity, $peoplecapacity, $roomcapacity);
-			}
-			$horsepower = conversionHorsepower($areacapacity);
-			resultMessage($areacapacity, $horsepower);
-			break;
+					// Find capacity based on area
+					$baseCapacity = null;
+					foreach ($areaCapacities as $areaCapacity) {
+						if ($area <= $areaCapacity['max_area']) {
+							$baseCapacity = $areaCapacity['capacity'];
+							break;
+						}
+					}
 
-			case $area <= 300:
-			if ($location == "sunny"){
-				$areacapacity = locationIncreaseCapacity(7000, $heightcapacity, $peoplecapacity, $roomcapacity);
-			}else if ($location == "shaded"){
-				$areacapacity = locationDecreaseCapacity(7000, $heightcapacity, $peoplecapacity, $roomcapacity);
-			}
-			$horsepower = conversionHorsepower($areacapacity);
-			resultMessage($areacapacity, $horsepower);
-			break;
+					if ($baseCapacity === null) {
+						// Area is too large, could output an error or set to maximum capacity
+						$baseCapacity = end($areaCapacities)['capacity'];
+					}
 
-			case $area <= 350:
-			if ($location == "sunny"){
-				$areacapacity = locationIncreaseCapacity(8000, $heightcapacity, $peoplecapacity, $roomcapacity);
-			}else if ($location == "shaded"){
-				$areacapacity = locationDecreaseCapacity(8000, $heightcapacity, $peoplecapacity, $roomcapacity);
-			}
-			$horsepower = conversionHorsepower($areacapacity);
-			resultMessage($areacapacity, $horsepower);
-			break;
-
-			case $area <= 400:
-			if ($location == "sunny"){
-				$areacapacity = locationIncreaseCapacity(9000, $heightcapacity, $peoplecapacity, $roomcapacity);
-			}else if ($location == "shaded"){
-				$areacapacity = locationDecreaseCapacity(9000, $heightcapacity, $peoplecapacity, $roomcapacity);
-			}
-			$horsepower = conversionHorsepower($areacapacity);
-			resultMessage($areacapacity, $horsepower);
-			break;
-
-			case $area <= 450:
-			if ($location == "sunny"){
-				$areacapacity = locationIncreaseCapacity(10000, $heightcapacity, $peoplecapacity, $roomcapacity);
-			}else if ($location == "shaded"){
-				$areacapacity = locationDecreaseCapacity(10000, $heightcapacity, $peoplecapacity, $roomcapacity);
-			}
-			$horsepower = conversionHorsepower($areacapacity);
-			resultMessage($areacapacity, $horsepower);
-			break;
-
-			case $area <= 550:
-			if ($location == "sunny"){
-				$areacapacity = locationIncreaseCapacity(12000, $heightcapacity, $peoplecapacity, $roomcapacity);
-			}else if ($location == "shaded"){
-				$areacapacity = locationDecreaseCapacity(12000, $heightcapacity, $peoplecapacity, $roomcapacity);
-			}
-			$horsepower = conversionHorsepower($areacapacity);
-			resultMessage($areacapacity, $horsepower);
-			break;
-
-			case $area <= 700:
-			if ($location == "sunny"){
-				$areacapacity = locationIncreaseCapacity(14000, $heightcapacity, $peoplecapacity, $roomcapacity);
-			}else if ($location == "shaded"){
-				$areacapacity = locationDecreaseCapacity(14000, $heightcapacity, $peoplecapacity, $roomcapacity);
-			}
-			$horsepower = conversionHorsepower($areacapacity);
-			resultMessage($areacapacity, $horsepower);
-			break;
-
-			case $area <= 1000:
-			if ($location == "sunny"){
-				$areacapacity = locationIncreaseCapacity(18000, $heightcapacity, $peoplecapacity, $roomcapacity);
-			}else if ($location == "shaded"){
-				$areacapacity = locationDecreaseCapacity(18000, $heightcapacity, $peoplecapacity, $roomcapacity);
-			}
-			$horsepower = conversionHorsepower($areacapacity);
-			resultMessage($areacapacity, $horsepower);
-			break;
-
-			case $area <= 1200:
-			if ($location == "sunny"){
-				$areacapacity = locationIncreaseCapacity(21000, $heightcapacity, $peoplecapacity, $roomcapacity);
-			}else if ($location == "shaded"){
-				$areacapacity = locationDecreaseCapacity(21000, $heightcapacity, $peoplecapacity, $roomcapacity);
-			}
-			$horsepower = conversionHorsepower($areacapacity);
-			resultMessage($areacapacity, $horsepower);
-			break;
-
-			case $area <= 1400:
-			if ($location == "sunny"){
-				$areacapacity = locationIncreaseCapacity(23000, $heightcapacity, $peoplecapacity, $roomcapacity);
-			}else if ($location == "shaded"){
-				$areacapacity = locationDecreaseCapacity(23000, $heightcapacity, $peoplecapacity, $roomcapacity);
-			}
-			$horsepower = conversionHorsepower($areacapacity);
-			resultMessage($areacapacity, $horsepower);
-			break;
-
-			case $area <= 1500:
-			if ($location == "sunny"){
-				$areacapacity = locationIncreaseCapacity(24000, $heightcapacity, $peoplecapacity, $roomcapacity);
-			}else if ($location == "shaded"){
-				$areacapacity = locationDecreaseCapacity(24000, $heightcapacity, $peoplecapacity, $roomcapacity);
-			}
-			$horsepower = conversionHorsepower($areacapacity);
-			resultMessage($areacapacity, $horsepower);
-			break;
-
-			case $area <= 2000:
-			if ($location == "sunny"){
-				$areacapacity = locationIncreaseCapacity(30000, $heightcapacity, $peoplecapacity, $roomcapacity);
-			}else if ($location == "shaded"){
-				$areacapacity = locationDecreaseCapacity(30000, $heightcapacity, $peoplecapacity, $roomcapacity);
-			}
-			$horsepower = conversionHorsepower($areacapacity);
-			resultMessage($areacapacity, $horsepower);
-			break;
-
-			case $area <= 2500:
-			if ($location == "sunny"){
-				$areacapacity = locationIncreaseCapacity(34000, $heightcapacity, $peoplecapacity, $roomcapacity);
-			}else if ($location == "shaded"){
-				$areacapacity = locationDecreaseCapacity(34000, $heightcapacity, $peoplecapacity, $roomcapacity);
-			}
-			$horsepower = conversionHorsepower($areacapacity);
-			resultMessage($areacapacity, $horsepower);
-			break;
-		}
-		
-	}else { // One form element was not filled out properly.
-		echo '<p><font color="red">Please go back and fill out the form again.</font></p>';
-		}
-}
-?>
-            </fieldset>
+					$areacapacity = locationAdjustCapacity($baseCapacity, $heightcapacity, $peoplecapacity, $roomcapacity, $location);
+					$horsepower = conversionHorsepower($areacapacity);					
+				}
+			?>
+			<!-- Results section -->
+			<?php if(isset($_REQUEST['submit'])): ?>
+				<section class="bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300 mb-8 border border-gray-200 dark:border-gray-700">
+				<div class="space-y-4">
+					<?php
+					if (!empty($errors)) {
+						// Output errors
+						foreach ($errors as $error) {
+							echo $error;
+						}
+					} else {
+						// Output the recommended AC capacity
+						resultMessage($areacapacity, $horsepower);
+					}
+					?>
+				</div>
+				</section>
+			<?php endif; ?>
         </div>
     </div>
+    <script src="<?= $baseUrl ?>public/js/darkMode.js" defer></script>
+    <script src="<?= $baseUrl ?>public/js/mobileNav.js" defer></script>
+	<script src="<?= $baseUrl ?>public/js/all.min.js"></script>
+	<script src="<?= $baseUrl ?>public/js/accordion.js" defer></script>
 </body>
 </html>

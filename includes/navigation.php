@@ -17,17 +17,17 @@ $baseUrl = '/'; // This will always point to web root
 
 $navItems = [
     'main' => [
-        ['url' => $baseUrl . 'index.php', 'text' => 'Home', 'icon' => 'fas fa-home']
+        ['url' => $baseUrl, 'text' => 'Home', 'icon' => 'fas fa-home']
     ],
     'calculators' => [
-        ['url' => $baseUrl . 'calculator/puteri.php', 'text' => 'Puteri Clothes Calculator', 'icon' => 'fas fa-tshirt'],
-        ['url' => $baseUrl . 'calculator/aircond.php', 'text' => 'Air Conditioner Calculator', 'icon' => 'fas fa-fan'],
-        ['url' => $baseUrl . 'calculator/discount.php', 'text' => 'Discount Calculator', 'icon' => 'fas fa-tags'],
-        ['url' => $baseUrl . 'calculator/speed.php', 'text' => 'Speed Converter', 'icon' => 'fas fa-tachometer-alt'],
-        ['url' => $baseUrl . 'calculator/tax.php', 'text' => 'Tax Calculator', 'icon' => 'fas fa-calculator'],
-        ['url' => $baseUrl . 'calculator/bmi.php', 'text' => 'BMI Calculator', 'icon' => 'fas fa-weight'],
-        ['url' => $baseUrl . 'calculator/num.php', 'text' => 'Biggest Number', 'icon' => 'fas fa-sort-numeric-up'],
-        ['url' => $baseUrl . 'calculator/integers.php', 'text' => 'Add 3 Integers', 'icon' => 'fas fa-plus']
+        ['url' => $baseUrl . 'calculator/puteri', 'text' => 'Puteri Clothes Calculator', 'icon' => 'fas fa-tshirt'],
+        ['url' => $baseUrl . 'calculator/aircond', 'text' => 'Air Conditioner Calculator', 'icon' => 'fas fa-fan'],
+        ['url' => $baseUrl . 'calculator/discount', 'text' => 'Discount Calculator', 'icon' => 'fas fa-tags'],
+        ['url' => $baseUrl . 'calculator/speed', 'text' => 'Speed Converter', 'icon' => 'fas fa-tachometer-alt'],
+        ['url' => $baseUrl . 'calculator/tax', 'text' => 'Tax Calculator', 'icon' => 'fas fa-calculator'],
+        ['url' => $baseUrl . 'calculator/bmi', 'text' => 'BMI Calculator', 'icon' => 'fas fa-weight'],
+        ['url' => $baseUrl . 'calculator/num', 'text' => 'Biggest Number', 'icon' => 'fas fa-sort-numeric-up'],
+        ['url' => $baseUrl . 'calculator/integers', 'text' => 'Add 3 Integers', 'icon' => 'fas fa-plus']
     ],
     'databases' => [
         ['url' => $baseUrl . 'updateInventory/updateInventory.php', 'text' => 'Boutique Inventory', 'icon' => 'fas fa-warehouse'],

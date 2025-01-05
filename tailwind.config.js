@@ -2,7 +2,7 @@
 module.exports = {
   darkMode: 'selector',
   // content: ["./*.{html,js,php}", "./**/*.{html,js,php}"],
-  content: ["./index.php", "./includes/*.php", "./calculator/*.php"],
+  content: ["./*.php", "./**/*.php", "./**/**/*.php", "./includes/*.php", "./calculator/*.php"],
    theme: {
      extend: {},
 },

@@ -8,7 +8,7 @@
 </head>
 <body class="bg-gradient-to-br from-pink-50 to-purple-50 dark:from-gray-800 dark:to-gray-900 text-gray-900 dark:text-gray-100 min-h-screen transition-colors duration-200">
     <div class="flex min-h-screen">
-        <?php include '../includes/navigation.php'; ?>
+        <?php include BASE_PATH . '/includes/navigation.php'; ?>
 
         <div class="flex-1 p-6 sm:ml-64">
             <header class="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-8 mb-8 border border-gray-200 dark:border-gray-700">
@@ -18,7 +18,7 @@
 
             <!-- Calculator Form Section -->
             <section class="bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300 mb-8 border border-gray-200 dark:border-gray-700">
-                <form action="puteriClothes.php" method="post" class="space-y-6">
+                <form action="puteri" method="post" class="space-y-6">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="space-y-2">
                             <label for="code" class="text-lg font-medium text-gray-700 dark:text-gray-300">Clothes Code</label>
@@ -49,87 +49,73 @@
             <?php if(isset($_REQUEST['submit'])): ?>
                 <section class="bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300 mb-8 border border-gray-200 dark:border-gray-700">
                     <?php
-                    if (!empty($_POST['code'])) {
-                        if (is_numeric($_POST['code'])) {
-                            if ($_POST['code'] > 4 || $_POST['code'] < 1) {
-                                $code = NULL;
-                                echo "<div class='p-4 bg-red-100 dark:bg-red-900 rounded-lg mb-4'>
-                                        <p class='text-red-700 dark:text-red-100 font-semibold'>The code is invalid!</p>
-                                    </div>";
-                            } else {
-                                $code = $_POST['code'];
-                            }
-                        } else {
-                            $code = NULL;
-                            echo "<div class='p-4 bg-red-100 dark:bg-red-900 rounded-lg mb-4'>
-                                    <p class='text-red-700 dark:text-red-100 font-semibold'>You must enter your clothes' code in numeric only!</p>
-                                </div>";
-                        }
+                    // Initialize variables and error array
+                    $code = null;
+                    $quantity = null;
+                    $errors = [];
+
+                    // Validate code input
+                    if (empty($_POST['code'])) {
+                        $errors[] = "You forgot to enter your clothes' code!";
+                    } elseif (!is_numeric($_POST['code'])) {
+                        $errors[] = "You must enter your clothes' code in numeric only!";
+                    } elseif ($_POST['code'] < 1 || $_POST['code'] > 4) {
+                        $errors[] = "The code is invalid!";
                     } else {
-                        $code = NULL;
-                        echo "<div class='p-4 bg-red-100 dark:bg-red-900 rounded-lg mb-4'>
-                                <p class='text-red-700 dark:text-red-100 font-semibold'>You forgot to enter your clothes' code!</p>
-                            </div>";
+                        $code = $_POST['code'];
                     }
 
-                    // Quantity validation with styled messages
-                    if (!empty($_POST['quantity'])) {
-                        if (is_numeric($_POST['quantity'])) {
-                            if ($_POST['quantity'] < 1) {
-                                $quantity = NULL;
-                                echo "<div class='p-4 bg-red-100 dark:bg-red-900 rounded-lg mb-4'>
-                                        <p class='text-red-700 dark:text-red-100 font-semibold'>The quantity is invalid!</p>
-                                    </div>";
-                            } else {
-                                $quantity = $_POST['quantity'];
-                            }
-                        } else {
-                            $quantity = NULL;
-                            echo "<div class='p-4 bg-red-100 dark:bg-red-900 rounded-lg mb-4'>
-                                    <p class='text-red-700 dark:text-red-100 font-semibold'>You must enter your quantity in numeric only!</p>
-                                </div>";
-                        }
+                    // Validate quantity input
+                    if (empty($_POST['quantity'])) {
+                        $errors[] = "You forgot to enter your quantity!";
+                    } elseif (!is_numeric($_POST['quantity'])) {
+                        $errors[] = "You must enter your quantity in numeric only!";
+                    } elseif ($_POST['quantity'] < 1) {
+                        $errors[] = "The quantity is invalid!";
                     } else {
-                        $quantity = NULL;
-                        echo "<div class='p-4 bg-red-100 dark:bg-red-900 rounded-lg mb-4'>
-                                <p class='text-red-700 dark:text-red-100 font-semibold'>You forgot to enter your quantity!</p>
-                            </div>";
+                        $quantity = $_POST['quantity'];
                     }
 
-                    $codeArr = array(1 => 210.9, 2 => 249.0, 3 => 310.9, 4 => 250.9);
-
-                    if ($code && $quantity) {
-                        $price = $codeArr[$code] * $quantity;
-                        echo "<div class='space-y-4'>";
-                        echo "<p class='text-xl text-gray-700 dark:text-gray-300'>Initial price calculation: <span class='font-semibold'>RM$price</span></p>";
-
-                        switch (true) {
-                            case $price > 500.0:
-                                $price = $price - (10 / 100 * $price);
-                                $price = number_format($price, 2);
-                                echo "<div class='p-4 bg-green-100 dark:bg-green-900 rounded-lg'>
-                                        <p class='text-green-700 dark:text-green-100'>
-                                            <span class='font-bold'>10% Discount Applied!</span><br>
-                                            Purchase exceeds RM500.00<br>
-                                            Final price: <span class='font-bold'>RM$price</span>
-                                        </p>
-                                    </div>";
-                                break;
-                            case $price < 500.0:
-                                $price = number_format($price, 2);
-                                echo "<div class='p-4 bg-blue-100 dark:bg-blue-900 rounded-lg'>
-                                        <p class='text-blue-700 dark:text-blue-100'>
-                                            <span class='font-bold'>No Discount Applied</span><br>
-                                            Purchase below RM500.00<br>
-                                            Final price: <span class='font-bold'>RM$price</span>
-                                        </p>
-                                    </div>";
+                    // Display errors if any
+                    if (!empty($errors)) {
+                        foreach ($errors as $error) {
+                            echo "<div class='p-4 bg-red-100 dark:bg-red-900 rounded-lg mb-4'>
+                                    <p class='text-red-700 dark:text-red-100 font-semibold'>{$error}</p>
+                                </div>";
                         }
-                        echo "</div>";
-                    } else {
                         echo "<div class='p-4 bg-yellow-100 dark:bg-yellow-900 rounded-lg'>
                                 <p class='text-yellow-700 dark:text-yellow-100 font-semibold'>Please fill out all fields correctly and try again.</p>
                             </div>";
+                    } else {
+                        // Array of prices corresponding to codes
+                        $codeArr = [1 => 210.9, 2 => 249.0, 3 => 310.9, 4 => 250.9];
+                        $initialPrice = $codeArr[$code] * $quantity;
+                        $formattedInitialPrice = number_format($initialPrice, 2);
+
+                        echo "<div class='space-y-4'>";
+                        echo "<p class='text-xl text-gray-700 dark:text-gray-300'>Initial price calculation: <span class='font-semibold'>RM{$formattedInitialPrice}</span></p>";
+
+                        // Discount calculation
+                        if ($initialPrice > 500.0) {
+                            $discountedPrice = $initialPrice * 0.9;
+                            $formattedDiscountedPrice = number_format($discountedPrice, 2);
+                            echo "<div class='p-4 bg-green-100 dark:bg-green-900 rounded-lg'>
+                                    <p class='text-green-700 dark:text-green-100'>
+                                        <span class='font-bold'>10% Discount Applied!</span><br>
+                                        Purchase exceeds RM500.00<br>
+                                        Final price: <span class='font-bold'>RM{$formattedDiscountedPrice}</span>
+                                    </p>
+                                </div>";
+                        } else {
+                            echo "<div class='p-4 bg-blue-100 dark:bg-blue-900 rounded-lg'>
+                                    <p class='text-blue-700 dark:text-blue-100'>
+                                        <span class='font-bold'>No Discount Applied</span><br>
+                                        Purchase below RM500.00<br>
+                                        Final price: <span class='font-bold'>RM{$formattedInitialPrice}</span>
+                                    </p>
+                                </div>";
+                        }
+                        echo "</div>";
                     }
                     ?>
                 </section>
