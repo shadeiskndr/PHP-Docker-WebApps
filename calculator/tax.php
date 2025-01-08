@@ -1,108 +1,90 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="../output.css" rel="stylesheet">
-    <title>Tax Form</title>
+    <link href="/output.css" rel="stylesheet">
+    <title>Tax Calculator</title>
 </head>
-<body class="bg-gray-100 text-gray-900">
-    <div class="flex">
-        <!-- Vertical Navigation Bar -->
-        <nav class="w-64 bg-gray-800 text-white min-h-screen p-4">
-            <h2 class="text-2xl font-bold mb-6">Navigation</h2>
-            <ul class="space-y-4">
-				<li><a href="../index.php" class="block py-2 px-4 rounded hover:bg-blue-700">Home</a></li>
-                <li><a href="../quiz1/puteriClothes.php" class="block py-2 px-4 rounded hover:bg-blue-700">Puteri Clothes Calculator</a></li>
-                <li><a href="../Assignment1/airform2.php" class="block py-2 px-4 rounded hover:bg-blue-700">Air Conditioner Calculator</a></li>
-                <li><a href="../LabWorkX8/Discount.php" class="block py-2 px-4 rounded hover:bg-blue-700">Discount Calculator</a></li>
-                <li><a href="speed_converter.php" class="block py-2 px-4 rounded hover:bg-blue-700">Speed Converter</a></li>
-                <li><a href="tax_form.php" class="block py-2 px-4 rounded hover:bg-blue-700">Tax Calculator</a></li>
-                <li><a href="BMI_form_sticky.php" class="block py-2 px-4 rounded hover:bg-blue-700">BMI Calculator</a></li>
-                <li><a href="../LabWork4/biggest_num.php" class="block py-2 px-4 rounded hover:bg-blue-700">Biggest Number</a></li>
-                <li><a href="../LabWork1/integers.php" class="block py-2 px-4 rounded hover:bg-blue-700">Add 3 Integers</a></li>
-                <li><a href="../updateInventory/updateInventory.php" class="block py-2 px-4 rounded hover:bg-blue-700">Mawar Boutique Inventory</a></li>
-                <li><a href="../CinemaTicketing/admin_listMovie.php" class="block py-2 px-4 rounded hover:bg-blue-700">Movies I Watched</a></li>
-                <li><a href="../CarForSale/view_carList.php" class="block py-2 px-4 rounded hover:bg-blue-700">Cars Database</a></li>
-                <li><a href="../VehicleRentalProject/homepage.php" class="block py-2 px-4 rounded hover:bg-blue-700">Vehicle Rental Project</a></li>
-            </ul>
-        </nav>
+<body class="bg-gradient-to-br from-yellow-200 to-amber-200 dark:from-gray-800 dark:to-gray-900 text-gray-900 dark:text-gray-100 min-h-screen transition-colors duration-200">
+    <div class="flex min-h-screen">
+        <?php include BASE_PATH . '/includes/navigation.php'; ?>
 
-        <!-- Main Content -->
-        <div class="flex-1 p-4">
-            <header class="bg-blue-600 text-white p-4 rounded mb-4">
-                <h1 class="text-4xl font-bold">Tax Form</h1>
+        <div class="flex-1 p-6 sm:ml-64">
+            <header class="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-8 mb-8 border border-gray-200 dark:border-gray-700">
+                <h1 class="text-5xl font-extrabold bg-gradient-to-r from-yellow-600 to-amber-600 bg-clip-text text-transparent">Tax Calculator</h1>
+                <p class="mt-4 text-gray-600 dark:text-gray-300 text-xl">Calculate the total price including tax</p>
             </header>
-            <form action="tax_form.php" method="post" class="bg-white shadow-md rounded-lg p-6 mb-8">
-                <fieldset>
-                    <legend class="text-2xl font-semibold mb-4">Calculate tax:</legend>
-                    <div class="mb-4">
-                        <label for="quantity" class="block text-lg font-medium text-gray-700">Quantity:</label>
-                        <input type="text" name="quantity" id="quantity" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" size="20" maxlength="40"/>
+
+            <section class="bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300 mb-8 border border-gray-200 dark:border-gray-700">
+                <form action="tax" method="post">
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                        <div class="space-y-2 w-full">
+                            <label for="quantity" class="text-lg font-medium text-gray-700 dark:text-gray-300">Quantity</label>
+                            <input type="text" name="quantity" id="quantity" value="<?php if(isset($_POST['quantity'])) echo $_POST['quantity']; ?>"
+                                class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none
+                                    focus:ring-2 focus:ring-yellow-500 hover:border-yellow-500 focus:border-yellow-500
+                                    dark:bg-gray-700 dark:text-white transition duration-200" />
+                        </div>
+                        <div class="space-y-2 w-full">
+                            <label for="price" class="text-lg font-medium text-gray-700 dark:text-gray-300">Price (RM)</label>
+                            <input type="text" name="price" id="price" value="<?php if(isset($_POST['price'])) echo $_POST['price']; ?>"
+                                class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none
+                                    focus:ring-2 focus:ring-yellow-500 hover:border-yellow-500 focus:border-yellow-500
+                                    dark:bg-gray-700 dark:text-white transition duration-200" />
+                        </div>
+                        <div class="space-y-2 w-full">
+                            <label for="tax" class="text-lg font-medium text-gray-700 dark:text-gray-300">Tax Rate (%)</label>
+                            <input type="text" name="tax" id="tax" value="<?php if(isset($_POST['tax'])) echo $_POST['tax']; ?>"
+                                class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none
+                                    focus:ring-2 focus:ring-yellow-500 hover:border-yellow-500 focus:border-yellow-500
+                                    dark:bg-gray-700 dark:text-white transition duration-200" />
+                        </div>
                     </div>
-                    <div class="mb-4">
-                        <label for="price" class="block text-lg font-medium text-gray-700">Price (RM):</label>
-                        <input type="text" name="price" id="price" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" size="20" maxlength="40"/>
-                    </div>
-                    <div class="mb-4">
-                        <label for="tax" class="block text-lg font-medium text-gray-700">Tax rate (%):</label>
-                        <input type="text" name="tax" id="tax" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" size="20" maxlength="40"/>
-                    </div>
-                </fieldset>
-                <div class="mt-4">
-                    <input type="submit" name="submit" value="Calculate" class="px-4 py-2 bg-blue-600 text-white font-semibold rounded-md shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75" />
-                </div>
-            </form>
+                    <button type="submit" name="submit" 
+                        class="px-6 py-3 bg-gradient-to-r from-yellow-600 to-amber-600 
+                            text-white font-semibold rounded-lg shadow-md hover:from-yellow-700 
+                            hover:to-amber-700 focus:outline-none focus:ring-2 focus:ring-yellow-500 
+                            focus:ring-opacity-75 hover:scale-[1.02] transition-transform duration-300">
+                        <i class="fas fa-calculator mr-2"></i> Calculate Tax
+                    </button>
+                </form>
+            </section>
 
-            <?php
-            if(isset($_POST['submit'])){
-                // Validate quantity
-                if (!empty($_POST['quantity'])) {
-                    $quantity = $_POST['quantity'];
-                } else {
-                    $quantity = NULL;
-                    echo '<p><b>You forgot to enter your quantity!</b></p>';
-                }
-
-                // Validate price
-                if (!empty($_POST['price'])) {
-                    $price = $_POST['price'];
-                } else {
-                    $price = NULL;
-                    echo '<p><b>You forgot to enter your price!</b></p>';
-                }
-
-                // Validate tax
-                if (!empty($_POST['tax'])) {
-                    $tax = $_POST['tax'];
-                } else {
-                    $tax = NULL;
-                    echo '<p><b>You forgot to enter your tax!</b></p>';
-                }
-
-                // If everything is okay, print the message.
-                if ($quantity && $price && $tax) {
-                    // Calculate the total.
-                    $total = $quantity * $price;
-                    $total = $total + ($total * ($tax/100)); // Calculate and add the tax.
-                    $total = number_format($total, 2);
-                    // Print the results.
-                    echo '
-                    <div class="bg-white shadow-md rounded-lg p-6">
-                        <h1 class="text-2xl font-semibold mb-4"><b>Tax Calculation Result</b></h1>
-                        <p>You are purchasing <b>' . $quantity . '</b> widget(s) at a cost of <b>RM' . $price . '</b> each. With tax, the total comes to <b>RM' . $total . '</b>.</p>
-                    </div>';
-                } else {
-                    // One form element was not filled out properly.
-                    echo '
-                    <div class="bg-white shadow-md rounded-lg p-6">
-                        <h1 class="text-2xl font-semibold mb-4"><b>Tax Calculation Result</b></h1>
-                        <p><b><font color="red">Please go back and fill out the form again.</font></b></p>
-                    </div>';
-                }
-            }
-            ?>
+            <?php if(isset($_POST['submit'])): ?>
+                <section class="bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300 mb-8 border border-gray-200 dark:border-gray-700">
+                    <?php
+                    // Your existing PHP logic here, but with updated styling for messages
+                    if (!empty($_POST['quantity']) && !empty($_POST['price']) && !empty($_POST['tax'])) {
+                        $quantity = $_POST['quantity'];
+                        $price = $_POST['price'];
+                        $tax = $_POST['tax'];
+                        $total = $quantity * $price;
+                        $total = $total + ($total * ($tax/100));
+                        $total = number_format($total, 2);
+                        
+                        echo '<div class="p-4 bg-green-100 dark:bg-green-900 rounded-lg">
+                            <p class="text-green-700 dark:text-green-100">
+                                <span class="text-xl font-bold block mb-2">Calculation Results</span>
+                                <span class="block">Quantity: ' . htmlspecialchars($quantity) . '</span>
+                                <span class="block">Price per Unit: RM ' . htmlspecialchars($price) . '</span>
+                                <span class="block">Tax Rate: ' . htmlspecialchars($tax) . '%</span>
+                                <span class="block font-bold mt-2">Final Price: RM ' . htmlspecialchars($total) . '</span>
+                            </p>
+                        </div>';
+                    } else {
+                        echo '<div class="p-4 bg-red-100 dark:bg-red-900 rounded-lg">
+                            <p class="text-red-700 dark:text-red-100 font-bold">Please fill out all fields in the form.</p>
+                        </div>';
+                    }
+                    ?>
+                </section>
+            <?php endif; ?>
         </div>
     </div>
+    <script src="<?= $baseUrl ?>public/js/darkMode.js" defer></script>
+    <script src="<?= $baseUrl ?>public/js/mobileNav.js" defer></script>
+    <script src="<?= $baseUrl ?>public/js/all.min.js"></script>
+    <script src="<?= $baseUrl ?>public/js/accordion.js" defer></script>
 </body>
 </html>
