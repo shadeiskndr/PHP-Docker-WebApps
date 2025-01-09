@@ -14,7 +14,7 @@ This is a simple PHP, MySQL, Apache web application that has been dockerized int
 
 3. To run this code, run the command: `docker-compose up` from the terminal shell within the directory of this project after cloning it.
 
-4. Open localhost/index.php on your browser to view the web-app on your machine.
+4. Open localhost/ on your browser to view the web-app on your machine.
 
 ## Development Setup
 
@@ -39,6 +39,10 @@ This is a simple PHP, MySQL, Apache web application that has been dockerized int
   ```bash
   npm run build
   ```
+
+3. Do use the `tailwind.config.js` file to configure your project's Tailwind CSS settings, and make sure it is able to scan your project's files to generate the corresponding CSS.
+
+4. If you're doing development, do use incognito mode in your browser to avoid any caching issues. Simply refresh the page to see the changes, or close and reopen the window in incognito mode.
 
 ### Rebuild and Restart Containers
 
