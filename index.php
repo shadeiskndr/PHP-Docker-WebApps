@@ -14,7 +14,8 @@ $routes = [
     '/num' => 'calculator/num.php',
     '/puteri' => 'calculator/puteri.php',
     '/speed' => 'calculator/speed.php',
-    '/tax' => 'calculator/tax.php'
+    '/tax' => 'calculator/tax.php',
+    '/integers' => 'calculator/integers.php'
 ];
 
 // Get the requested route

@@ -1,136 +1,197 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="../output.css" rel="stylesheet">
+    <link href="/output.css" rel="stylesheet">
     <title>BMI Calculator</title>
 </head>
-<body class="bg-gray-100 text-gray-900">
-    <div class="flex">
-        <!-- Vertical Navigation Bar -->
-        <nav class="w-64 bg-gray-800 text-white min-h-screen p-4">
-            <h2 class="text-2xl font-bold mb-6">Navigation</h2>
-            <ul class="space-y-4">
-				<li><a href="../index.php" class="block py-2 px-4 rounded hover:bg-blue-700">Home</a></li>
-                <li><a href="../quiz1/puteriClothes.php" class="block py-2 px-4 rounded hover:bg-blue-700">Puteri Clothes Calculator</a></li>
-                <li><a href="../Assignment1/airform2.php" class="block py-2 px-4 rounded hover:bg-blue-700">Air Conditioner Calculator</a></li>
-                <li><a href="../LabWorkX8/Discount.php" class="block py-2 px-4 rounded hover:bg-blue-700">Discount Calculator</a></li>
-                <li><a href="speed_converter.php" class="block py-2 px-4 rounded hover:bg-blue-700">Speed Converter</a></li>
-                <li><a href="tax_form.php" class="block py-2 px-4 rounded hover:bg-blue-700">Tax Calculator</a></li>
-                <li><a href="BMI_form_sticky.php" class="block py-2 px-4 rounded hover:bg-blue-700">BMI Calculator</a></li>
-                <li><a href="../LabWork4/biggest_num.php" class="block py-2 px-4 rounded hover:bg-blue-700">Biggest Number</a></li>
-                <li><a href="../LabWork1/integers.php" class="block py-2 px-4 rounded hover:bg-blue-700">Add 3 Integers</a></li>
-                <li><a href="../updateInventory/updateInventory.php" class="block py-2 px-4 rounded hover:bg-blue-700">Mawar Boutique Inventory</a></li>
-                <li><a href="../CinemaTicketing/admin_listMovie.php" class="block py-2 px-4 rounded hover:bg-blue-700">Movies I Watched</a></li>
-                <li><a href="../CarForSale/view_carList.php" class="block py-2 px-4 rounded hover:bg-blue-700">Cars Database</a></li>
-                <li><a href="../VehicleRentalProject/homepage.php" class="block py-2 px-4 rounded hover:bg-blue-700">Vehicle Rental Project</a></li>
-            </ul>
-        </nav>
+<body class="bg-gradient-to-br from-yellow-200 to-lime-200 dark:from-gray-800 dark:to-gray-900 text-gray-900 dark:text-gray-100 min-h-screen transition-colors duration-200">
+    <div class="flex min-h-screen">
+        <?php include BASE_PATH . '/includes/navigation.php'; ?>
 
-        <!-- Main Content -->
-        <div class="flex-1 p-4">
-            <header class="bg-blue-600 text-white p-4 rounded mb-4">
-                <h1 class="text-4xl font-bold">BMI Calculator</h1>
+        <div class="flex-1 p-6 sm:ml-64">
+            <header class="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-8 mb-8 border border-gray-200 dark:border-gray-700">
+                <h1 class="text-5xl font-extrabold bg-gradient-to-r from-yellow-600 to-lime-600 bg-clip-text text-transparent">BMI Calculator</h1>
+                <p class="mt-4 text-gray-600 dark:text-gray-300 text-xl">Calculate your Body Mass Index (BMI)</p>
             </header>
-            <form action="BMI_form_sticky.php" method="post" class="bg-white shadow-md rounded-lg p-6 mb-8">
-                <fieldset>
-                    <legend class="text-2xl font-semibold mb-4">Enter your information in the form below:</legend>
-                    <div class="mb-4">
-                        <label for="name" class="block text-lg font-medium text-gray-700">Name:</label>
-                        <input type="text" name="name" id="name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" size="20" maxlength="40" value="<?php if(isset($_POST['name'])) echo $_POST['name']; ?>"/>
-                    </div>
-                    <div class="mb-4">
-                        <label for="height" class="block text-lg font-medium text-gray-700">Height (m):</label>
-                        <input type="text" name="height" id="height" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" size="20" maxlength="40" value="<?php if(isset($_POST['height'])) echo $_POST['height']; ?>" />
-                    </div>
-                    <div class="mb-4">
-                        <label for="weight" class="block text-lg font-medium text-gray-700">Weight (kg):</label>
-                        <input type="text" name="weight" id="weight" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" size="20" maxlength="40" value="<?php if(isset($_POST['weight'])) echo $_POST['weight']; ?>" />
-                    </div>
-                </fieldset>
-                <div class="mt-4">
-                    <input type="submit" name="submit" value="Calculate" class="px-4 py-2 bg-blue-600 text-white font-semibold rounded-md shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75" />
-                </div>
-            </form>
-            <?php
-            if(isset($_REQUEST['submit'])){
-                // Validate name
-                if (!empty($_POST['name'])) {
-                    if (!is_numeric($_POST['name'])) {
-                        $name = $_POST['name'];
-                    } else {
-                        $name = NULL;
-                        echo '<p><b>You must enter your name in text only!</b></p>';
-                    }
-                } else {
-                    $name = NULL;
-                    echo '<p><b>You forgot to enter your name!</b></p>';
-                }
 
-                // Validate height
-                if (!empty($_POST['height'])) {
-                    if (is_numeric($_POST['height'])) {
-                        $height = $_POST['height'];
-                        // Convert height from cm to m if it seems to be in cm
-                        if ($height > 3) {
-                            $height = NULL;
-                        	echo '<p><b>You must enter your height in meters only!</b></p>';
+            <section class="bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300 mb-8 border border-gray-200 dark:border-gray-700">
+                <form action="bmi" method="post">
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                        <div class="space-y-2 w-full">
+                            <label for="name" class="text-lg font-medium text-gray-700 dark:text-gray-300">Name</label>
+                            <input type="text" name="name" id="name" value="<?php if(isset($_POST['name'])) echo $_POST['name']; ?>"
+                                class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none
+                                    focus:ring-2 focus:ring-lime-500 hover:border-lime-500 focus:border-lime-500
+                                    dark:bg-gray-700 dark:text-white transition duration-200" />
+                        </div>
+                        <div class="space-y-2 w-full">
+                            <label for="height" class="text-lg font-medium text-gray-700 dark:text-gray-300">Height (m)</label>
+                            <input type="text" name="height" id="height" value="<?php if(isset($_POST['height'])) echo $_POST['height']; ?>"
+                                class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none
+                                    focus:ring-2 focus:ring-lime-500 hover:border-lime-500 focus:border-lime-500
+                                    dark:bg-gray-700 dark:text-white transition duration-200" />
+                        </div>
+                        <div class="space-y-2 w-full">
+                            <label for="weight" class="text-lg font-medium text-gray-700 dark:text-gray-300">Weight (kg)</label>
+                            <input type="text" name="weight" id="weight" value="<?php if(isset($_POST['weight'])) echo $_POST['weight']; ?>"
+                                class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none
+                                    focus:ring-2 focus:ring-lime-500 hover:border-lime-500 focus:border-lime-500
+                                    dark:bg-gray-700 dark:text-white transition duration-200" />
+                        </div>
+                    </div>
+                    <button type="submit" name="submit" 
+                        class="px-6 py-3 bg-gradient-to-r from-yellow-600 to-lime-600 
+                            text-white font-semibold rounded-lg shadow-md hover:from-yellow-700 
+                            hover:to-lime-700 focus:outline-none focus:ring-2 focus:ring-lime-500 
+                            focus:ring-opacity-75 hover:scale-[1.02] transition-transform duration-300">
+                        <i class="fas fa-calculator mr-2"></i> Calculate BMI
+                    </button>
+                </form>
+            </section>
+
+            <?php if(isset($_REQUEST['submit'])): ?>
+                <section class="bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300 mb-8 border border-gray-200 dark:border-gray-700">
+                    <?php
+                        if(isset($_REQUEST['submit'])){
+                            $errors = array();
+
+                            // Validate name
+                            if (!empty($_POST['name'])) {
+                                if (!is_numeric($_POST['name'])) {
+                                    $name = $_POST['name'];
+                                } else {
+                                    $name = NULL;
+                                    $errors[] = '<div class="p-4 bg-red-100 dark:bg-red-900 rounded-lg mb-4">
+                                                    <p class="text-red-700 dark:text-red-100 font-bold">
+                                                        <i class="fas fa-exclamation-circle mr-2"></i>Name must be text only
+                                                    </p>
+                                                </div>';
+                                }
+                            } else {
+                                $name = NULL;
+                                $errors[] = '<div class="p-4 bg-red-100 dark:bg-red-900 rounded-lg mb-4">
+                                                <p class="text-red-700 dark:text-red-100 font-bold">
+                                                    <i class="fas fa-exclamation-circle mr-2"></i>Please enter your name
+                                                </p>
+                                            </div>';
+                            }
+
+                            // Validate height
+                            if (!empty($_POST['height'])) {
+                                if (is_numeric($_POST['height'])) {
+                                    $height = $_POST['height'];
+                                    if ($height > 3) {
+                                        $height = NULL;
+                                        $errors[] = '<div class="p-4 bg-red-100 dark:bg-red-900 rounded-lg mb-4">
+                                                        <p class="text-red-700 dark:text-red-100 font-bold">
+                                                            <i class="fas fa-exclamation-circle mr-2"></i>Height must be in meters (e.g., 1.75)
+                                                        </p>
+                                                    </div>';
+                                    }
+                                } else {
+                                    $height = NULL;
+                                    $errors[] = '<div class="p-4 bg-red-100 dark:bg-red-900 rounded-lg mb-4">
+                                                    <p class="text-red-700 dark:text-red-100 font-bold">
+                                                        <i class="fas fa-exclamation-circle mr-2"></i>Height must be numeric
+                                                    </p>
+                                                </div>';
+                                }
+                            } else {
+                                $height = NULL;
+                                $errors[] = '<div class="p-4 bg-red-100 dark:bg-red-900 rounded-lg mb-4">
+                                                <p class="text-red-700 dark:text-red-100 font-bold">
+                                                    <i class="fas fa-exclamation-circle mr-2"></i>Please enter your height
+                                                </p>
+                                            </div>';
+                            }
+
+                            // Validate weight
+                            if (!empty($_POST['weight'])) {
+                                if (is_numeric($_POST['weight'])) {
+                                    $weight = $_POST['weight'];
+                                } else {
+                                    $weight = NULL;
+                                    $errors[] = '<div class="p-4 bg-red-100 dark:bg-red-900 rounded-lg mb-4">
+                                                    <p class="text-red-700 dark:text-red-100 font-bold">
+                                                        <i class="fas fa-exclamation-circle mr-2"></i>Weight must be numeric
+                                                    </p>
+                                                </div>';
+                                }
+                            } else {
+                                $weight = NULL;
+                                $errors[] = '<div class="p-4 bg-red-100 dark:bg-red-900 rounded-lg mb-4">
+                                                <p class="text-red-700 dark:text-red-100 font-bold">
+                                                    <i class="fas fa-exclamation-circle mr-2"></i>Please enter your weight
+                                                </p>
+                                            </div>';
+                            }
+
+                            // If everything is valid, calculate and display BMI
+                            if ($name && $height && $weight) {
+                                $bmi = $weight / ($height * $height);
+                                $bmi = number_format($bmi, 2);
+                                
+                                // Determine BMI category and corresponding color
+                                $categoryClass = '';
+                                $categoryIcon = '';
+                                switch(true) {
+                                    case $bmi < 18.5:
+                                        $category = "UNDERWEIGHT";
+                                        $categoryClass = "text-blue-600 dark:text-blue-400";
+                                        $categoryIcon = "fa-arrow-down";
+                                        break;
+                                    case $bmi <= 24.9:
+                                        $category = "NORMAL";
+                                        $categoryClass = "text-green-600 dark:text-green-400";
+                                        $categoryIcon = "fa-check";
+                                        break;
+                                    case $bmi <= 29.9:
+                                        $category = "OVERWEIGHT";
+                                        $categoryClass = "text-yellow-600 dark:text-yellow-400";
+                                        $categoryIcon = "fa-arrow-up";
+                                        break;
+                                    default:
+                                        $category = "OBESE";
+                                        $categoryClass = "text-red-600 dark:text-red-400";
+                                        $categoryIcon = "fa-exclamation-triangle";
+                                }
+
+                                echo "<div class='p-6 bg-lime-50 dark:bg-lime-900/30 rounded-xl shadow-md'>
+                                        <div class='mb-4'>
+                                            <h3 class='text-2xl font-bold text-lime-700 dark:text-lime-300 mb-2'>Hello, $name!</h3>
+                                            <p class='text-gray-600 dark:text-gray-300 text-lg'>Your BMI Results:</p>
+                                        </div>
+                                        <div class='grid grid-cols-1 md:grid-cols-2 gap-4 mb-4'>
+                                            <div class='p-4 bg-white dark:bg-gray-800 rounded-lg shadow'>
+                                                <p class='text-3xl font-bold text-lime-600 dark:text-lime-400'>$bmi</p>
+                                                <p class='text-gray-500 dark:text-gray-400'>BMI Value</p>
+                                            </div>
+                                            <div class='p-4 bg-white dark:bg-gray-800 rounded-lg shadow'>
+                                                <p class='text-3xl font-bold $categoryClass'>
+                                                    <i class='fas $categoryIcon mr-2'></i>$category
+                                                </p>
+                                                <p class='text-gray-500 dark:text-gray-400'>Category</p>
+                                            </div>
+                                        </div>
+                                    </div>";
+                            } else {
+                                echo '<div class="space-y-4">';
+                                foreach ($errors as $error) {
+                                    echo $error;
+                                }
+                                echo '</div>';
+                            }
                         }
-                    } else {
-                        $height = NULL;
-                        echo '<p><b>You must enter your height in numeric only!</b></p>';
-                    }
-                } else {
-                    $height = NULL;
-                    echo '<p><b>You forgot to enter your height!</b></p>';
-                }
-
-                // Validate weight
-                if (!empty($_POST['weight'])) {
-                    if (is_numeric($_POST['weight'])) {
-                        $weight = $_POST['weight'];
-                    } else {
-                        $weight = NULL;
-                        echo '<p><b>You must enter your weight in numeric only!</b></p>';
-                    }
-                } else {
-                    $weight = NULL;
-                    echo '<p><b>You forgot to enter your weight!</b></p>';
-                }
-
-                // If everything is okay, print the message.
-                if ($name && $height && $weight) {
-                    // Calculate the BMI.
-                    $bmi = $weight / ($height * $height);
-                    $bmi = number_format($bmi, 2);
-                    // Print the results.
-                    echo "
-                        <div class='bg-white shadow-md rounded-lg p-6'>
-                            <p>Hi $name!</p>
-                            <p>Your Body Mass Index (BMI) is $bmi</p>
-                            <p>";
-                    switch(true){
-                        case $bmi < 18.5:
-                            echo "Your BMI is UNDERWEIGHT";
-                            break;
-                        case $bmi <= 24.9:
-                            echo "Your BMI is NORMAL";
-                            break;
-                        case $bmi <= 29.9:
-                            echo "Your BMI is OVERWEIGHT";
-                            break;
-                        case $bmi >= 30.0:
-                            echo "Your BMI is OBESE";
-                            break;
-                    }
-                    echo "</p></div>";
-                } else { // One form element was not filled out properly.
-                    echo '<p><font color="red">Please go back and fill out the form again.</font></p>';
-                }
-            }
-            ?>
+                        ?>
+                </section>
+            <?php endif; ?>
         </div>
     </div>
+    <script src="<?= $baseUrl ?>public/js/darkMode.js" defer></script>
+    <script src="<?= $baseUrl ?>public/js/mobileNav.js" defer></script>
+    <script src="<?= $baseUrl ?>public/js/all.min.js"></script>
+    <script src="<?= $baseUrl ?>public/js/accordion.js" defer></script>
 </body>
 </html>
