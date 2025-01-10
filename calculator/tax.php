@@ -54,29 +54,43 @@
             <?php if(isset($_POST['submit'])): ?>
                 <section class="bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300 mb-8 border border-gray-200 dark:border-gray-700">
                     <?php
-                    // Your existing PHP logic here, but with updated styling for messages
-                    if (!empty($_POST['quantity']) && !empty($_POST['price']) && !empty($_POST['tax'])) {
-                        $quantity = $_POST['quantity'];
-                        $price = $_POST['price'];
-                        $tax = $_POST['tax'];
-                        $total = $quantity * $price;
-                        $total = $total + ($total * ($tax/100));
-                        $total = number_format($total, 2);
-                        
-                        echo '<div class="p-4 bg-green-100 dark:bg-green-900 rounded-lg">
-                            <p class="text-green-700 dark:text-green-100">
-                                <span class="text-xl font-bold block mb-2">Calculation Results</span>
-                                <span class="block">Quantity: ' . htmlspecialchars($quantity) . '</span>
-                                <span class="block">Price per Unit: RM ' . htmlspecialchars($price) . '</span>
-                                <span class="block">Tax Rate: ' . htmlspecialchars($tax) . '%</span>
-                                <span class="block font-bold mt-2">Final Price: RM ' . htmlspecialchars($total) . '</span>
-                            </p>
-                        </div>';
-                    } else {
-                        echo '<div class="p-4 bg-red-100 dark:bg-red-900 rounded-lg">
-                            <p class="text-red-700 dark:text-red-100 font-bold">Please fill out all fields in the form.</p>
-                        </div>';
-                    }
+                        if (!empty($_POST['quantity']) && !empty($_POST['price']) && !empty($_POST['tax'])) {
+                            // Validate that all inputs are numeric
+                            if (is_numeric($_POST['quantity']) && is_numeric($_POST['price']) && is_numeric($_POST['tax'])) {
+                                $quantity = floatval($_POST['quantity']);
+                                $price = floatval($_POST['price']);
+                                $tax = floatval($_POST['tax']);
+                                
+                                // Additional validation for positive numbers
+                                if ($quantity > 0 && $price > 0 && $tax >= 0) {
+                                    $total = $quantity * $price;
+                                    $total = $total + ($total * ($tax/100));
+                                    $total = number_format($total, 2);
+                                    
+                                    echo '<div class="p-4 bg-green-100 dark:bg-green-900 rounded-lg">
+                                        <p class="text-green-700 dark:text-green-100">
+                                            <span class="text-xl font-bold block mb-2">Calculation Results</span>
+                                            <span class="block">Quantity: ' . htmlspecialchars($quantity) . '</span>
+                                            <span class="block">Price per Unit: RM ' . htmlspecialchars($price) . '</span>
+                                            <span class="block">Tax Rate: ' . htmlspecialchars($tax) . '%</span>
+                                            <span class="block font-bold mt-2">Final Price: RM ' . htmlspecialchars($total) . '</span>
+                                        </p>
+                                    </div>';
+                                } else {
+                                    echo '<div class="p-4 bg-red-100 dark:bg-red-900 rounded-lg">
+                                        <p class="text-red-700 dark:text-red-100 font-bold">Please enter valid positive numbers.</p>
+                                    </div>';
+                                }
+                            } else {
+                                echo '<div class="p-4 bg-red-100 dark:bg-red-900 rounded-lg">
+                                    <p class="text-red-700 dark:text-red-100 font-bold">Please enter numeric values only.</p>
+                                </div>';
+                            }
+                        } else {
+                            echo '<div class="p-4 bg-red-100 dark:bg-red-900 rounded-lg">
+                                <p class="text-red-700 dark:text-red-100 font-bold">Please fill out all fields in the form.</p>
+                            </div>';
+                        }
                     ?>
                 </section>
             <?php endif; ?>

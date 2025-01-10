@@ -30,7 +30,7 @@ $navItems = [
         ['url' => $baseUrl . 'integers', 'text' => 'Add 3 Integers', 'icon' => 'fas fa-plus']
     ],
     'databases' => [
-        ['url' => $baseUrl . 'updateInventory/updateInventory.php', 'text' => 'Boutique Inventory', 'icon' => 'fas fa-warehouse'],
+        ['url' => $baseUrl . 'boutique', 'text' => 'Boutique Inventory', 'icon' => 'fas fa-warehouse'],
         ['url' => $baseUrl . 'CinemaTicketing/admin_listMovie.php', 'text' => 'Movies I Watched', 'icon' => 'fas fa-film'],
         ['url' => $baseUrl . 'CarForSale/view_carList.php', 'text' => 'Cars Database', 'icon' => 'fas fa-car'],
         ['url' => $baseUrl . 'VehicleRentalProject/homepage.php', 'text' => 'Vehicle Rental Project', 'icon' => 'fas fa-car-side']
