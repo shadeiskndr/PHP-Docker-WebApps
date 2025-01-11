@@ -12,7 +12,11 @@
 
         <div class="flex-1 p-6 sm:ml-64">
             <header class="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-8 mb-8 border border-gray-200 dark:border-gray-700">
-                <h1 class="text-5xl font-extrabold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">Puteri Clothes Calculator</h1>
+                <div class="text-5xl font-extrabold ...">
+                    <span class="bg-clip-text text-transparent bg-gradient-to-r from-pink-600 to-purple-600">
+                        Puteri Clothes Calculator
+                    </span>
+                </div>
                 <p class="mt-4 text-gray-600 dark:text-gray-300 text-xl">Calculate prices for traditional Malaysian clothing</p>
             </header>
 

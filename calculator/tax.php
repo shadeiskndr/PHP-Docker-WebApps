@@ -12,7 +12,11 @@
 
         <div class="flex-1 p-6 sm:ml-64">
             <header class="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-8 mb-8 border border-gray-200 dark:border-gray-700">
-                <h1 class="text-5xl font-extrabold bg-gradient-to-r from-yellow-600 to-amber-600 bg-clip-text text-transparent">Tax Calculator</h1>
+                <div class="text-5xl font-extrabold ...">
+                    <span class="bg-clip-text text-transparent bg-gradient-to-r from-yellow-600 to-amber-600">
+                        Tax Calculator
+                    </span>
+                </div>
                 <p class="mt-4 text-gray-600 dark:text-gray-300 text-xl">Calculate the total price including tax</p>
             </header>
 
@@ -78,17 +82,17 @@
                                     </div>';
                                 } else {
                                     echo '<div class="p-4 bg-red-100 dark:bg-red-900 rounded-lg">
-                                        <p class="text-red-700 dark:text-red-100 font-bold">Please enter valid positive numbers.</p>
+                                        <p class="text-red-700 dark:text-red-100 font-bold"><i class="fas fa-exclamation-circle mr-2"></i>Please enter valid positive numbers.</p>
                                     </div>';
                                 }
                             } else {
                                 echo '<div class="p-4 bg-red-100 dark:bg-red-900 rounded-lg">
-                                    <p class="text-red-700 dark:text-red-100 font-bold">Please enter numeric values only.</p>
+                                    <p class="text-red-700 dark:text-red-100 font-bold"><i class="fas fa-exclamation-circle mr-2"></i>Please enter numeric values only.</p>
                                 </div>';
                             }
                         } else {
                             echo '<div class="p-4 bg-red-100 dark:bg-red-900 rounded-lg">
-                                <p class="text-red-700 dark:text-red-100 font-bold">Please fill out all fields in the form.</p>
+                                <p class="text-red-700 dark:text-red-100 font-bold"><i class="fas fa-exclamation-circle mr-2"></i>Please fill out all fields in the form.</p>
                             </div>';
                         }
                     ?>

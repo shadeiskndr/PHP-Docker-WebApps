@@ -12,7 +12,11 @@
 
         <div class="flex-1 p-6 sm:ml-64">
             <header class="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-8 mb-8 border border-gray-200 dark:border-gray-700">
-                <h1 class="text-5xl font-extrabold bg-gradient-to-r from-red-600 to-rose-600 bg-clip-text text-transparent">Discount Calculator</h1>
+                <div class="text-5xl font-extrabold ...">
+                    <span class="bg-clip-text text-transparent bg-gradient-to-r from-red-600 to-rose-900">
+                        Discount Calculator
+                    </span>
+                </div>
                 <p class="mt-4 text-gray-600 dark:text-gray-300 text-xl">Calculate the final price after discount</p>
             </header>
 
@@ -42,9 +46,9 @@
                         </div>
                     </div>
                     <button type="submit" name="submit" 
-                        class="px-6 py-3 bg-gradient-to-r from-red-600 to-rose-600 
+                        class="px-6 py-3 bg-gradient-to-r from-red-600 to-rose-900 
                             text-white font-semibold rounded-lg shadow-md hover:from-red-700 
-                            hover:to-rose-700 focus:outline-none focus:ring-2 focus:ring-red-500 
+                            hover:to-rose-900 focus:outline-none focus:ring-2 focus:ring-red-500 
                             focus:ring-opacity-75 hover:scale-[1.02] transition-transform duration-300">
                         <i class="fas fa-calculator mr-2"></i> Calculate Discount
                     </button>
