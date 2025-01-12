@@ -132,7 +132,7 @@
 
 				// Helper functions
 				function wrapErrorMessage($message) {
-					return '<div class="p-4 bg-red-100 dark:bg-red-900 rounded-lg"><p class="text-red-700 dark:text-red-100 font-bold">'. htmlspecialchars($message) . '</p></div>';
+					return '<div class="p-4 bg-red-100 dark:bg-red-900 rounded-lg"><p class="text-red-700 dark:text-red-100 font-bold"><i class="fas fa-exclamation-circle mr-2"></i>'. htmlspecialchars($message) . '</p></div>';
 				}
 
 				function getErrorMessage($fieldName, $errorType, $min = null, $max = null) {

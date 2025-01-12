@@ -53,7 +53,7 @@
                     <?php
                     if (empty($_POST['speed'])) {
                         echo '<div class="p-4 bg-red-100 dark:bg-red-900 rounded-lg">
-                                <p class="text-red-700 dark:text-red-100 font-bold">Please enter a valid speed value!</p>
+                                <p class="text-red-700 dark:text-red-100 font-bold"><i class="fas fa-exclamation-circle mr-2"></i>Please enter a valid speed value!</p>
                             </div>';
                     } else {
                         $speed = $_POST['speed'];
@@ -68,7 +68,7 @@
                                 </div>';
                         } else {
                             echo '<div class="p-4 bg-red-100 dark:bg-red-900 rounded-lg">
-                                    <p class="text-red-700 dark:text-red-100 font-bold">Please enter a numeric value only!</p>
+                                    <p class="text-red-700 dark:text-red-100 font-bold"><i class="fas fa-exclamation-circle mr-2"></i>Please enter a numeric value only!</p>
                                 </div>';
                         }
                     }

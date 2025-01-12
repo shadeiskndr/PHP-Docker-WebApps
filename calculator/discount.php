@@ -67,11 +67,11 @@
                                 $articlePrice = $_POST['articlePrice'];
                             } else {
                                 $articlePrice = NULL;
-                                $errors[] = '<div class="p-4 bg-red-100 dark:bg-red-900 rounded-lg"><p class="text-red-700 dark:text-red-100 font-bold">You must enter your article price in numeric only!</p></div>';
+                                $errors[] = '<div class="p-4 bg-red-100 dark:bg-red-900 rounded-lg"><p class="text-red-700 dark:text-red-100 font-bold"><i class="fas fa-exclamation-circle mr-2"></i>You must enter your article price in numeric only!</p></div>';
                             }
                         } else {
                             $articlePrice = NULL;
-                            $errors[] = '<div class="p-4 bg-red-100 dark:bg-red-900 rounded-lg"><p class="text-red-700 dark:text-red-100 font-bold">You forgot to enter your article price!</p></div>';
+                            $errors[] = '<div class="p-4 bg-red-100 dark:bg-red-900 rounded-lg"><p class="text-red-700 dark:text-red-100 font-bold"><i class="fas fa-exclamation-circle mr-2"></i>You forgot to enter your article price!</p></div>';
                         }
 
                         // Validate pricing code
@@ -81,15 +81,15 @@
                                     $priceCode = strtolower($_POST['priceCode']);
                                 } else {
                                     $priceCode = NULL;
-                                    $errors[] = '<div class="p-4 bg-red-100 dark:bg-red-900 rounded-lg"><p class="text-red-700 dark:text-red-100 font-bold">Invalid discount code</p></div>';
+                                    $errors[] = '<div class="p-4 bg-red-100 dark:bg-red-900 rounded-lg"><p class="text-red-700 dark:text-red-100 font-bold"><i class="fas fa-exclamation-circle mr-2"></i>Invalid discount code</p></div>';
                                 }
                             } else {
                                 $priceCode = NULL;
-                                $errors[] = '<div class="p-4 bg-red-100 dark:bg-red-900 rounded-lg"><p class="text-red-700 dark:text-red-100 font-bold">You must enter your pricing code in letters only!</p></div>';
+                                $errors[] = '<div class="p-4 bg-red-100 dark:bg-red-900 rounded-lg"><p class="text-red-700 dark:text-red-100 font-bold"><i class="fas fa-exclamation-circle mr-2"></i>You must enter your pricing code in letters only!</p></div>';
                             }
                         } else {
                             $priceCode = NULL;
-                            $errors[] = '<div class="p-4 bg-red-100 dark:bg-red-900 rounded-lg"><p class="text-red-700 dark:text-red-100 font-bold">You forgot to enter your pricing code!</p></div>';
+                            $errors[] = '<div class="p-4 bg-red-100 dark:bg-red-900 rounded-lg"><p class="text-red-700 dark:text-red-100 font-bold"><i class="fas fa-exclamation-circle mr-2"></i>You forgot to enter your pricing code!</p></div>';
                         }
 
                         // If there are no errors perform calculation

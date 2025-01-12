@@ -84,11 +84,11 @@
                     if (!empty($errors)) {
                         foreach ($errors as $error) {
                             echo "<div class='p-4 bg-red-100 dark:bg-red-900 rounded-lg mb-4'>
-                                    <p class='text-red-700 dark:text-red-100 font-semibold'>{$error}</p>
+                                    <p class='text-red-700 dark:text-red-100 font-semibold'><i class='fas fa-exclamation-circle mr-2'></i>{$error}</p>
                                 </div>";
                         }
                         echo "<div class='p-4 bg-yellow-100 dark:bg-yellow-900 rounded-lg'>
-                                <p class='text-yellow-700 dark:text-yellow-100 font-semibold'>Please fill out all fields correctly and try again.</p>
+                                <p class='text-yellow-700 dark:text-yellow-100 font-semibold'><i class='fas fa-exclamation-circle mr-2'></i>Please fill out all fields correctly and try again.</p>
                             </div>";
                     } else {
                         // Array of prices corresponding to codes
