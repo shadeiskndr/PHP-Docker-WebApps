@@ -16,7 +16,11 @@ $routes = [
     '/speed' => 'calculator/speed.php',
     '/tax' => 'calculator/tax.php',
     '/integers' => 'calculator/integers.php',
-    '/boutique' => 'crud/boutiqueInventory.php'
+    '/boutique' => 'crud/boutiqueInventory.php',
+    '/movies/list' => 'crud/admin_listMovie.php',
+    '/movies/add' => 'crud/admin_addMovie.php',
+    '/cars/list' => 'crud/view_carList.php',
+    '/cars/add' => 'crud/add_carManager.php',
 ];
 
 // Get the requested route
