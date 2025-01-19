@@ -31,8 +31,8 @@ $navItems = [
     ],
     'databases' => [
         ['url' => $baseUrl . 'boutique', 'text' => 'Boutique Inventory', 'icon' => 'fas fa-warehouse'],
-        ['url' => $baseUrl . 'CinemaTicketing/admin_listMovie.php', 'text' => 'Movies I Watched', 'icon' => 'fas fa-film'],
-        ['url' => $baseUrl . 'CarForSale/view_carList.php', 'text' => 'Cars Database', 'icon' => 'fas fa-car'],
+        ['url' => $baseUrl . 'movies/list', 'text' => 'Movies I Watched', 'icon' => 'fas fa-film'],
+        ['url' => $baseUrl . 'cars/list', 'text' => 'Cars Database', 'icon' => 'fas fa-car'],
         ['url' => $baseUrl . 'VehicleRentalProject/homepage.php', 'text' => 'Vehicle Rental Project', 'icon' => 'fas fa-car-side']
     ]
 ];

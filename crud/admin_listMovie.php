@@ -50,13 +50,13 @@ $page_title = 'List of Movies';
             <!-- Navigation Links -->
             <nav class="bg-white shadow-md rounded-lg p-4 mb-4">
                 <ul class="flex space-x-4">
-                    <li><a href="admin_addMovie.php" class="px-4 py-2 bg-blue-600 text-white font-semibold rounded-md shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75">Add Movie</a></li>
+                    <li><a href="add" class="px-4 py-2 bg-blue-600 text-white font-semibold rounded-md shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75">Add Movie</a></li>
 					<li><a class="px-3 py-2 bg-transparent text-white font-semibold"></a></li>
-                    <li><a href="admin_listMovie.php" class="px-4 py-2 bg-blue-600 text-white font-semibold rounded-md shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75">View Movie List</a></li>
+                    <li><a href="list" class="px-4 py-2 bg-blue-600 text-white font-semibold rounded-md shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75">View Movie List</a></li>
                 </ul>
             </nav>
 
-            <form action="admin_listMovie.php" method="post" class="bg-white shadow-md rounded-lg p-6 mb-8">
+            <form action="list" method="post" class="bg-white shadow-md rounded-lg p-6 mb-8">
                 <fieldset>
                     <legend class="text-2xl font-semibold mb-4">List all or search movies by genre:</legend>
                     <div class="mb-4">
