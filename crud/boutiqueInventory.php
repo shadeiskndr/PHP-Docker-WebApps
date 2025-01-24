@@ -13,7 +13,6 @@ $querySize = $pdo->query("SELECT DISTINCT size FROM $table_name");
 $errors = [];
 $successMessage = "";
 
-// Handle form submission
 if (isset($_POST['update'])) {
     if (empty($_POST['Category'])) {
         $errors[] = "Category is required";
@@ -28,7 +27,6 @@ if (isset($_POST['update'])) {
         $errors[] = "Quantity must be a positive number";
     }
 
-    // If no errors, attempt update
     if (empty($errors)) {
         try {
             $stmt = $pdo->prepare("UPDATE $table_name SET quantity = ? WHERE category = ? AND product = ? AND size = ?");
@@ -50,8 +48,28 @@ if (isset($_POST['update'])) {
     }
 }
 
-// After form submission logic, fetch all inventory records (updated or initial)
-$stmt = $pdo->query("SELECT * FROM $table_name ORDER BY category, product, size");
+// Build a base SELECT for displaying inventory
+$sql = "SELECT * FROM $table_name WHERE 1=1";
+$params = [];
+
+if (isset($_POST['search'])) {
+    if (!empty($_POST['Category'])) {
+        $sql .= " AND category = ?";
+        $params[] = $_POST['Category'];
+    }
+    if (!empty($_POST['Product'])) {
+        $sql .= " AND product = ?";
+        $params[] = $_POST['Product'];
+    }
+    if (!empty($_POST['Size'])) {
+        $sql .= " AND size = ?";
+        $params[] = $_POST['Size'];
+    }
+}
+
+$sql .= " ORDER BY category, product, size";
+$stmt = $pdo->prepare($sql);
+$stmt->execute($params);
 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
@@ -61,7 +79,7 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/output.css" rel="stylesheet">
-    <title>Mawar Boutique Inventory Update</title>
+    <title>Boutique Inventory Update</title>
 </head>
 <body class="bg-gradient-to-br from-pink-200 to-purple-200 dark:from-gray-800 dark:to-gray-900 text-gray-900 dark:text-gray-100 min-h-screen transition-colors duration-200">
     <div class="flex min-h-screen">
@@ -143,14 +161,30 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         </div>
                     </div>
 
-                    <button 
-                        type="submit" 
-                        name="update" 
-                        class="w-full md:w-auto px-6 py-3 bg-gradient-to-r from-pink-600 to-purple-600 text-white font-semibold rounded-lg shadow-md hover:from-pink-700 hover:to-purple-700 focus:outline-none 
-                               focus:ring-2 focus:ring-purple-500 focus:ring-opacity-75 hover:scale-[1.02] transition-transform duration-300"
-                    >
-                        Update Inventory
-                    </button>
+                    <div class="flex flex-wrap gap-4 mt-6">
+                        <!-- Update Inventory Button -->
+                        <button 
+                            type="submit" 
+                            name="update" 
+                            class="flex items-center px-6 py-3 bg-gradient-to-r from-pink-600 to-purple-600 text-white font-semibold rounded-lg shadow-md 
+                                hover:from-pink-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-75 
+                                hover:scale-[1.02] transition-transform duration-300"
+                        >
+                            <i class="fas fa-save mr-2"></i>
+                            Update
+                        </button>
+                        <!-- Search Button -->
+                        <button 
+                            type="submit" 
+                            name="search" 
+                            class="flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-lg shadow-md 
+                                hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-75 
+                                hover:scale-[1.02] transition-transform duration-300"
+                        >
+                            <i class="fas fa-search mr-2"></i> 
+                            Search
+                        </button>
+                    </div>
                 </form>
             </section>
 
