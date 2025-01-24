@@ -184,6 +184,16 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <i class="fas fa-search mr-2"></i> 
                             Search
                         </button>
+                        <button 
+                            type="submit" 
+                            name="add" 
+                            class="flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-lg shadow-md 
+                                hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-75 
+                                hover:scale-[1.02] transition-transform duration-300"
+                        >
+                            <i class="fas fa-plus mr-2"></i> 
+                            Add Category
+                        </button>
                     </div>
                 </form>
             </section>
