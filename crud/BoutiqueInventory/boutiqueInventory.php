@@ -13,6 +13,18 @@ $querySize = $pdo->query("SELECT DISTINCT size FROM $table_name");
 $errors = [];
 $successMessage = "";
 
+// Determine if search is active
+$isSearchActive = isset($_POST['search']) && (
+    !empty($_POST['Category']) || 
+    !empty($_POST['Product']) || 
+    !empty($_POST['Size'])
+);
+
+// Pagination settings - only applied when search is not active
+$recordsPerPage = 5;
+$page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
+$offset = ($page - 1) * $recordsPerPage;
+
 if (isset($_POST['update'])) {
     if (empty($_POST['Category'])) {
         $errors[] = "Category is required";
@@ -48,6 +60,10 @@ if (isset($_POST['update'])) {
     }
 }
 
+// Build a base SQL for counting total records
+$countSql = "SELECT COUNT(*) FROM $table_name WHERE 1=1";
+$countParams = [];
+
 // Build a base SELECT for displaying inventory
 $sql = "SELECT * FROM $table_name WHERE 1=1";
 $params = [];
@@ -55,19 +71,41 @@ $params = [];
 if (isset($_POST['search'])) {
     if (!empty($_POST['Category'])) {
         $sql .= " AND category = ?";
+        $countSql .= " AND category = ?";
         $params[] = $_POST['Category'];
+        $countParams[] = $_POST['Category'];
     }
     if (!empty($_POST['Product'])) {
         $sql .= " AND product = ?";
+        $countSql .= " AND product = ?";
         $params[] = $_POST['Product'];
+        $countParams[] = $_POST['Product'];
     }
     if (!empty($_POST['Size'])) {
         $sql .= " AND size = ?";
+        $countSql .= " AND size = ?";
         $params[] = $_POST['Size'];
+        $countParams[] = $_POST['Size'];
     }
 }
 
+// Count total records for pagination or info display
+$countStmt = $pdo->prepare($countSql);
+$countStmt->execute($countParams);
+$totalRecords = $countStmt->fetchColumn();
+
+// Apply sorting and pagination only if search is not active
 $sql .= " ORDER BY category, product, size";
+
+if (!$isSearchActive) {
+    $totalPages = ceil($totalRecords / $recordsPerPage);
+    $sql .= " LIMIT $recordsPerPage OFFSET $offset";
+} else {
+    // When search is active, no pagination, show all results
+    $totalPages = 1;
+    $page = 1;
+}
+
 $stmt = $pdo->prepare($sql);
 $stmt->execute($params);
 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -161,12 +199,13 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         </div>
                     </div>
 
-                    <div class="flex flex-wrap gap-4 mt-6">
+                    <!-- Keep buttons grouped at the left side with some space between them -->
+                    <div class="grid grid-cols-1 md:flex md:flex-row md:justify-start md:items-center gap-y-6 md:gap-x-4 mt-6">
                         <!-- Update Inventory Button -->
                         <button 
                             type="submit" 
                             name="update" 
-                            class="flex items-center px-6 py-3 bg-gradient-to-r from-pink-600 to-purple-600 text-white font-semibold rounded-lg shadow-md 
+                            class="w-full md:w-auto flex items-center justify-center px-6 py-3 bg-gradient-to-r from-pink-600 to-purple-600 text-white font-semibold rounded-lg shadow-md 
                                 hover:from-pink-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-75 
                                 hover:scale-[1.02] transition-transform duration-300"
                         >
@@ -176,8 +215,8 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <!-- Search Button -->
                         <button 
                             type="submit" 
-                            name="search" 
-                            class="flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-lg shadow-md 
+                            name="search"
+                            class="w-full md:w-auto flex items-center justify-center px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-lg shadow-md 
                                 hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-75 
                                 hover:scale-[1.02] transition-transform duration-300"
                         >
@@ -187,7 +226,7 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <button
                             type="button"
                             name="add" 
-                            class="flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-lg shadow-md 
+                            class="w-full md:w-auto flex items-center justify-center px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-lg shadow-md 
                                 hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-75 
                                 hover:scale-[1.02] transition-transform duration-300"
                         >
@@ -231,7 +270,7 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <tr class="bg-gray-50 dark:bg-gray-700">
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"><i class="fas fa-tags mr-1"></i>Category</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"><i class="fas fa-tshirt mr-1"></i>Product</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                 <i class="fas fa-ruler-combined mr-1"></i>Size
                             </th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
@@ -260,7 +299,93 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <?php endforeach; ?>
                     </tbody>
                 </table>
+                
+                <!-- Pagination Component -->
+                <div class="flex items-center justify-between border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-3 sm:px-6">
+                    <?php if (!$isSearchActive): ?>
+                        <div class="flex flex-1 justify-between sm:hidden">
+                            <a href="?page=<?= max(1, $page - 1) ?>" class="relative inline-flex items-center rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <i class="fas fa-chevron-left mr-2"></i> Previous
+                            </a>
+                            <a href="?page=<?= min($totalPages, $page + 1) ?>" class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                Next <i class="fas fa-chevron-right ml-2"></i>
+                            </a>
+                        </div>
+                        
+                        <div class="hidden sm:flex sm:flex-1 sm:items-center">
+                            <div>
+                                <p class="text-sm text-gray-700 dark:text-gray-300">
+                                    Showing
+                                    <span class="font-medium"><?= ($offset + 1) ?></span>
+                                    to
+                                    <span class="font-medium"><?= min($offset + $recordsPerPage, $totalRecords) ?></span>
+                                    of
+                                    <span class="font-medium"><?= $totalRecords ?></span>
+                                    results
+                                </p>
+                            </div>
+                            
+                            <?php if ($totalPages > 1): ?>
+                            <div class="ml-auto">
+                                <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
+                                    <!-- Previous Page Button -->
+                                    <a href="?page=<?= max(1, $page - 1) ?>" class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 dark:text-gray-400 ring-1 ring-inset ring-gray-300 dark:ring-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 focus:z-20 focus:outline-offset-0">
+                                        <span class="sr-only">Previous</span>
+                                        <i class="fas fa-chevron-left size-5"></i>
+                                    </a>
+                                    
+                                    <!-- Page Links -->
+                                    <?php 
+                                    // Determine which page numbers to show
+                                    $startPage = max(1, min($page - 2, $totalPages - 4));
+                                    $endPage = min($totalPages, max($page + 2, 5));
+                                    
+                                    // Show first page if not in range
+                                    if ($startPage > 1): ?>
+                                        <a href="?page=1" class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 dark:text-gray-200 ring-1 ring-inset ring-gray-300 dark:ring-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 focus:z-20 focus:outline-offset-0">1</a>
+                                        <?php if ($startPage > 2): ?>
+                                            <span class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 dark:text-gray-400 ring-1 ring-inset ring-gray-300 dark:ring-gray-600 focus:outline-offset-0">...</span>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
+                                    
+                                    <!-- Loop through the page range -->
+                                    <?php for ($i = $startPage; $i <= $endPage; $i++): ?>
+                                        <?php if ($i == $page): ?>
+                                            <a href="?page=<?= $i ?>" aria-current="page" class="relative z-10 inline-flex items-center bg-gradient-to-r from-pink-600 to-purple-600 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600"><?= $i ?></a>
+                                        <?php else: ?>
+                                            <a href="?page=<?= $i ?>" class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 dark:text-gray-200 ring-1 ring-inset ring-gray-300 dark:ring-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 focus:z-20 focus:outline-offset-0"><?= $i ?></a>
+                                        <?php endif; ?>
+                                    <?php endfor; ?>
+                                    
+                                    <!-- Show last page if not in range -->
+                                    <?php if ($endPage < $totalPages): ?>
+                                        <?php if ($endPage < $totalPages - 1): ?>
+                                            <span class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 dark:text-gray-400 ring-1 ring-inset ring-gray-300 dark:ring-gray-600 focus:outline-offset-0">...</span>
+                                        <?php endif; ?>
+                                        <a href="?page=<?= $totalPages ?>" class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 dark:text-gray-200 ring-1 ring-inset ring-gray-300 dark:ring-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 focus:z-20 focus:outline-offset-0"><?= $totalPages ?></a>
+                                    <?php endif; ?>
+                                    
+                                    <!-- Next Page Button -->
+                                    <a href="?page=<?= min($totalPages, $page + 1) ?>" class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 dark:text-gray-400 ring-1 ring-inset ring-gray-300 dark:ring-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 focus:z-20 focus:outline-offset-0">
+                                        <span class="sr-only">Next</span>
+                                        <i class="fas fa-chevron-right size-5"></i>
+                                    </a>
+                                </nav>
+                            </div>
+                            <?php endif; ?>
+                        </div>
+                    <?php else: ?>
+                    <!-- When search is active, show a message instead of pagination -->
+                    <div class="w-full text-sm text-gray-700 dark:text-gray-300 py-3">
+                        <p>Showing all <?= $totalRecords ?> results matching your search criteria.</p>
+                        <a href="/boutique" class="text-blue-600 dark:text-blue-400 hover:underline mt-2 inline-block">
+                            <i class="fas fa-undo mr-1"></i> Clear search and return to paginated view
+                        </a>
+                    </div>
+                    <?php endif; ?>
+                </div>
             </div>
+
             <div class="block sm:hidden space-y-4">
                 <?php foreach ($rows as $row): ?>
                     <div class="flex flex-col bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 p-6 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-300">
@@ -308,7 +433,33 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         </div>
                     </div>
                 <?php endforeach; ?>
+                
+                <!-- Mobile Pagination -->
+                <?php if (!$isSearchActive): ?>
+                <div class="flex items-center justify-between border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-3 rounded-lg mt-4">
+                    <div class="flex flex-1 justify-between">
+                        <a href="?page=<?= max(1, $page - 1) ?>" class="relative inline-flex items-center rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
+                            <i class="fas fa-chevron-left mr-2"></i> Previous
+                        </a>
+                        <span class="mx-4 flex items-center text-gray-700 dark:text-gray-300">
+                            Page <?= $page ?> of <?= $totalPages ?>
+                        </span>
+                        <a href="?page=<?= min($totalPages, $page + 1) ?>" class="relative inline-flex items-center rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
+                            Next <i class="fas fa-chevron-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
             </div>
+            <?php else: ?>
+                <div class="block sm:hidden mt-4">
+                    <div class="bg-white dark:bg-gray-800 rounded-lg p-4 text-sm text-gray-700 dark:text-gray-300">
+                        <p>Showing all <?= $totalRecords ?> results matching your search criteria.</p>
+                        <a href="/boutique" class="text-blue-600 dark:text-blue-400 hover:underline mt-2 inline-block">
+                            <i class="fas fa-undo mr-1"></i> Clear search
+                        </a>
+                    </div>
+                </div>
+            <?php endif; ?>
         </section>
         <script src="<?= $baseUrl ?>public/js/darkMode.js" defer></script>
         <script src="<?= $baseUrl ?>public/js/mobileNav.js" defer></script>
@@ -317,7 +468,7 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <script src="<?= $baseUrl ?>crud/BoutiqueInventory/js/modal.js" defer></script>
         <script src="<?= $baseUrl ?>crud/BoutiqueInventory/js/deleteInventory.js" defer></script>
     </div>
-</div>
+
     <!-- Modal -->
     <div id="addCategoryModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
         <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white dark:bg-gray-800">
@@ -352,3 +503,4 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
 </body>
 </html>
+
