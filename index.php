@@ -21,8 +21,8 @@ $routes = [
     '/movies/add' => 'crud/admin_addMovie.php',
     '/cars/list' => 'crud/view_carList.php',
     '/cars/add' => 'crud/add_carManager.php',
-    '/media/upload' => 'calculator/upload.php',
-    '/media/gallery' => 'calculator/gallery.php',
+    '/media/upload' => 'crud/MediaGallery/upload.php',
+    '/media/gallery' => 'crud/MediaGallery/gallery.php',
 ];
 
 // Get the requested route

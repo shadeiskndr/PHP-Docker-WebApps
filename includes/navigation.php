@@ -33,6 +33,7 @@ $navItems = [
         ['url' => $baseUrl . 'boutique', 'text' => 'Boutique Inventory', 'icon' => 'fas fa-warehouse'],
         ['url' => $baseUrl . 'movies/list', 'text' => 'Movies I Watched', 'icon' => 'fas fa-film'],
         ['url' => $baseUrl . 'cars/list', 'text' => 'Cars Database', 'icon' => 'fas fa-car'],
+        ['url' => $baseUrl . 'media/gallery', 'text' => 'Media Gallery', 'icon' => 'fas fa-image'],
         ['url' => $baseUrl . 'VehicleRentalProject/homepage.php', 'text' => 'Vehicle Rental Project', 'icon' => 'fas fa-car-side']
     ]
 ];

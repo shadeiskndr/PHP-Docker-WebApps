@@ -36,17 +36,23 @@ class MinioService {
         return self::$instance;
     }
 
-    public function uploadFile($fileData, $fileName, $contentType = null) {
+    public function uploadFile($filePath, $fileName, $contentType = null) {
         try {
+            // Use file stream instead of loading entire file into memory
+            $fileStream = fopen($filePath, 'r');
+            
             $result = $this->s3Client->putObject([
                 'Bucket' => $this->bucket,
                 'Key'    => $fileName,
-                'Body'   => $fileData,
+                'Body'   => $fileStream,
                 'ContentType' => $contentType,
                 'ACL'    => 'public-read',
             ]);
             
-            // Instead of returning the direct MinIO URL, return a URL to our proxy
+            // Close the file stream
+            fclose($fileStream);
+            
+            // Return proxy URL
             return '/minio-proxy.php?file=' . $fileName;
         } catch (S3Exception $e) {
             error_log("Error uploading file to MinIO: " . $e->getMessage());

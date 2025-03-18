@@ -1,6 +1,7 @@
 <?php
 // Include necessary files
 require_once BASE_PATH . '/includes/minioService.php';
+require_once BASE_PATH . '/includes/mediaCard.php';
 
 $message = '';
 $error = '';
@@ -18,11 +19,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file'])) {
             $fileName = uniqid() . '.' . $extension;
             
             // Get file data
-            $fileData = file_get_contents($file['tmp_name']);
+            $filePath = $file['tmp_name'];
             
             // Upload to MinIO
             $minioService = MinioService::getInstance();
-            $fileUrl = $minioService->uploadFile($fileData, $fileName, $file['type']);
+            $fileUrl = $minioService->uploadFile($filePath, $fileName, $file['type']);
             
             if ($fileUrl) {
                 // Store file metadata in database
@@ -100,56 +101,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file'])) {
                     </div>
                     
                     <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition-colors duration-200 transform hover:scale-105">
+                        <i class="fas fa-upload mr-2"></i> 
                         Upload File
                     </button>
                 </form>
             </section>
 
             <section class="bg-white dark:bg-gray-800 rounded-xl p-8 mb-8 shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-200 dark:border-gray-700">
-                <h2 class="text-3xl font-bold mb-6 border-b pb-4 border-gray-200 dark:border-gray-700">Recently Uploaded Files</h2>
-                
+                <div class="flex justify-between items-center mb-6 border-b pb-4 border-gray-200 dark:border-gray-700">
+                    <h2 class="text-3xl font-bold">Recent Files</h2>
+                    <a href="/media/gallery" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition-colors duration-200 flex items-center">
+                        <i class="fas fa-images mr-2"></i> 
+                        View All
+                    </a>
+                </div>
+    
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <?php
                     try {
                         $db = Database::getInstance()->getConnection();
-                        $stmt = $db->prepare("SELECT * FROM media_files ORDER BY upload_date DESC LIMIT 6");
+                        $stmt = $db->prepare("SELECT * FROM media_files ORDER BY upload_date DESC LIMIT 3");
                         $stmt->execute();
                         $files = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                         foreach($files as $file) {
-                            echo '<div class="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow transform hover:scale-[1.01] transition-all duration-200">';
-                            
-                            if (strpos($file['file_type'], 'image/') === 0) {
-                                echo '<div class="relative aspect-video bg-gray-200 dark:bg-gray-700">';
-                                echo '<img src="' . htmlspecialchars($file['url']) . '" alt="' . htmlspecialchars($file['original_filename']) . '" class="absolute inset-0 w-full h-full object-cover">';
-                                echo '</div>';
-                            } else if (strpos($file['file_type'], 'video/') === 0) {
-                                echo '<div class="relative aspect-video bg-gray-200 dark:bg-gray-700">';
-                                echo '<video controls class="absolute inset-0 w-full h-full object-cover">
-                                        <source src="' . htmlspecialchars($file['url']) . '" type="' . htmlspecialchars($file['file_type']) . '">
-                                        Your browser does not support the video tag.
-                                      </video>';
-                                echo '</div>';
-                            }
-                            
-                            echo '<div class="p-4">';
-                            echo '<p class="font-medium text-gray-800 dark:text-gray-200 truncate">' . htmlspecialchars($file['original_filename']) . '</p>';
-                            echo '<div class="mt-2 flex justify-between items-center">';
-                            echo '<span class="text-sm text-gray-500 dark:text-gray-400">' . date('F j, Y', strtotime($file['upload_date'])) . '</span>';
-                            echo '<span class="text-sm text-gray-500 dark:text-gray-400">' . round($file['file_size'] / 1024, 2) . ' KB</span>';
-                            echo '</div>';
-                            echo '<a href="' . htmlspecialchars($file['url']) . '" target="_blank" class="mt-3 inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded-md text-sm transition-colors duration-200">View</a>';
-                            echo '</div>';
-                            echo '</div>';
+                            renderMediaCard($file, false, 'small');
                         }
                         
                         if (count($files) === 0) {
                             echo '<div class="col-span-full text-center p-12">';
                             echo '<p class="text-gray-500 dark:text-gray-400 text-xl">No files uploaded yet.</p>';
-                            echo '</div>';
-                        } else {
-                            echo '<div class="col-span-full text-center mt-4">';
-                            echo '<a href="/media/gallery" class="inline-block bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-2 px-6 rounded-md transition-colors duration-200">View All Files</a>';
                             echo '</div>';
                         }
                     } catch(PDOException $e) {
@@ -164,5 +145,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file'])) {
     <script src="<?= $baseUrl ?>public/js/mobileNav.js" defer></script>
     <script src="<?= $baseUrl ?>public/js/all.min.js"></script>
     <script src="<?= $baseUrl ?>public/js/accordion.js" defer></script>
-</body>
+    </body>
 </html>
