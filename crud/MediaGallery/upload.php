@@ -1,57 +1,287 @@
 <?php
+error_reporting(E_ALL & ~E_WARNING);
+
+// Check for oversized POST before doing anything else
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && 
+    empty($_POST) && 
+    empty($_FILES) && 
+    $_SERVER['CONTENT_LENGTH'] > 0) {
+    
+    $postMaxSize = ini_get('post_max_size');
+    $contentLength = $_SERVER['CONTENT_LENGTH'];
+    
+    // Convert post_max_size to bytes for comparison
+    function parseSize($size) {
+        $unit = preg_replace('/[^bkmgtpezy]/i', '', $size);
+        $size = preg_replace('/[^0-9\.]/', '', $size);
+        if ($unit) {
+            return round($size * pow(1024, stripos('bkmgtpezy', $unit[0])));
+        }
+        return round($size);
+    }
+    
+    function formatFileSize($bytes) {
+        $units = ['B', 'KB', 'MB', 'GB'];
+        $bytes = max($bytes, 0);
+        $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
+        $pow = min($pow, count($units) - 1);
+        $bytes /= pow(1024, $pow);
+        return round($bytes, 2) . ' ' . $units[$pow];
+    }
+    
+    $error = 'File size (' . formatFileSize($contentLength) . ') exceeds the maximum allowed size (' . $postMaxSize . '). Please upload a smaller file.';
+}
+
 // Include necessary files
 require_once BASE_PATH . '/includes/minioService.php';
 require_once BASE_PATH . '/includes/mediaCard.php';
 
-$message = '';
-$error = '';
+class MediaUploadHandler {
+    private $minioService;
+    private $config;
+    private $db;
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file'])) {
-    // Handle file upload
-    $file = $_FILES['file'];
-    
-    if ($file['error'] === 0) {
-        $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'video/mp4', 'video/quicktime'];
+    public function __construct() {
+        $this->minioService = MinioService::getInstance();
         
-        if (in_array($file['type'], $allowedTypes)) {
-            // Generate a unique file name
-            $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
-            $fileName = uniqid() . '.' . $extension;
-            
-            // Get file data
-            $filePath = $file['tmp_name'];
-            
-            // Upload to MinIO
-            $minioService = MinioService::getInstance();
-            $fileUrl = $minioService->uploadFile($filePath, $fileName, $file['type']);
-            
-            if ($fileUrl) {
-                // Store file metadata in database
-                try {
-                    $db = Database::getInstance()->getConnection();
-                    $stmt = $db->prepare("INSERT INTO media_files (filename, original_filename, file_type, file_size, url) VALUES (?, ?, ?, ?, ?)");
-                    $stmt->execute([
-                        $fileName,
-                        $file['name'],
-                        $file['type'],
-                        $file['size'],
-                        $fileUrl
-                    ]);
-                    
-                    $message = "File uploaded successfully!";
-                } catch(PDOException $e) {
-                    $error = "Database error: " . $e->getMessage();
-                    // Delete from MinIO if DB insert fails
-                    $minioService->deleteFile($fileName);
-                }
-            } else {
-                $error = "Failed to upload to storage service";
-            }
-        } else {
-            $error = "Invalid file type. Allowed types: JPEG, PNG, GIF, MP4, MOV";
+        // Fix config loading
+        $configPath = BASE_PATH . '/config/minio.php';
+        if (!file_exists($configPath)) {
+            throw new Exception('MinIO configuration file not found');
         }
-    } else {
-        $error = "Error uploading file: " . $file['error'];
+        
+        $this->config = require $configPath;
+        if (!is_array($this->config)) {
+            throw new Exception('Invalid MinIO configuration');
+        }
+        
+        $this->db = Database::getInstance()->getConnection();
+    }
+
+    public function handleUpload($file) {
+        $transactionStarted = false;
+        $fileName = null;
+        
+        try {
+            // Check for PHP upload errors first
+            $this->checkPhpUploadLimits();
+            
+            $this->validateFile($file);
+            
+            // Generate secure filename
+            $fileName = $this->generateSecureFilename($file['name']);
+            
+            // Upload to MinIO first
+            $fileUrl = $this->minioService->uploadFile($file['tmp_name'], $fileName, $file['type']);
+            
+            if (!$fileUrl) {
+                throw new Exception('Failed to upload file to storage service');
+            }
+            
+            // Start transaction only after successful MinIO upload
+            $this->db->beginTransaction();
+            $transactionStarted = true;
+            
+            $stmt = $this->db->prepare("
+                INSERT INTO media_files (filename, original_filename, file_type, file_size, url, upload_date) 
+                VALUES (?, ?, ?, ?, ?, NOW())
+            ");
+            
+            $result = $stmt->execute([
+                $fileName,
+                $file['name'],
+                $file['type'],
+                $file['size'],
+                $fileUrl
+            ]);
+            
+            if (!$result) {
+                throw new Exception('Failed to save file information to database');
+            }
+            
+            $this->db->commit();
+            
+            return [
+                'success' => true,
+                'message' => 'File uploaded successfully!',
+                'file_id' => $this->db->lastInsertId(),
+                'url' => $fileUrl
+            ];
+            
+        } catch (Exception $e) {
+            // Only rollback if transaction was started
+            if ($transactionStarted) {
+                try {
+                    $this->db->rollBack();
+                } catch (PDOException $rollbackError) {
+                    error_log("Rollback failed: " . $rollbackError->getMessage());
+                }
+            }
+            
+            // Clean up MinIO if file was uploaded but DB failed
+            if ($fileName && $this->minioService) {
+                try {
+                    $this->minioService->deleteFile($fileName);
+                } catch (Exception $deleteError) {
+                    error_log("Failed to delete file from MinIO during cleanup: " . $deleteError->getMessage());
+                }
+            }
+            
+            return [
+                'success' => false,
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+
+    private function checkPhpUploadLimits() {
+        // Check if POST data was truncated due to size limits
+        if (empty($_POST) && empty($_FILES) && $_SERVER['CONTENT_LENGTH'] > 0) {
+            $postMaxSize = $this->parseSize(ini_get('post_max_size'));
+            $contentLength = (int)$_SERVER['CONTENT_LENGTH'];
+            
+            throw new Exception(
+                'File size (' . $this->formatFileSize($contentLength) . ') exceeds PHP post_max_size limit (' . 
+                $this->formatFileSize($postMaxSize) . '). Please upload a smaller file.'
+            );
+        }
+        
+        // Check if file upload failed due to size
+        if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_INI_SIZE) {
+            $uploadMaxSize = $this->parseSize(ini_get('upload_max_filesize'));
+            throw new Exception(
+                'File size exceeds PHP upload_max_filesize limit (' . 
+                $this->formatFileSize($uploadMaxSize) . '). Please upload a smaller file.'
+            );
+        }
+        
+        if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_FORM_SIZE) {
+            throw new Exception(
+                'File size exceeds the maximum allowed size. Please upload a smaller file.'
+            );
+        }
+    }
+
+    private function parseSize($size) {
+        $unit = preg_replace('/[^bkmgtpezy]/i', '', $size);
+        $size = preg_replace('/[^0-9\.]/', '', $size);
+        if ($unit) {
+            return round($size * pow(1024, stripos('bkmgtpezy', $unit[0])));
+        }
+        return round($size);
+    }
+
+    private function validateFile($file) {
+        if (!is_array($file)) {
+            throw new Exception('Invalid file data');
+        }
+        
+        if (!isset($file['error']) || $file['error'] !== UPLOAD_ERR_OK) {
+            $errorMessage = isset($file['error']) ? $this->getUploadErrorMessage($file['error']) : 'Unknown upload error';
+            throw new Exception('File upload error: ' . $errorMessage);
+        }
+
+        if (!isset($file['size']) || $file['size'] <= 0) {
+            throw new Exception('Invalid file size');
+        }
+
+        if (!isset($file['type']) || empty($file['type'])) {
+            throw new Exception('Invalid file type');
+        }
+
+        if (!isset($file['tmp_name']) || !file_exists($file['tmp_name'])) {
+            throw new Exception('Uploaded file not found');
+        }
+
+        // Check file size limit
+        $maxSize = isset($this->config['max_file_size']) ? $this->config['max_file_size'] : (100 * 1024 * 1024); // 100MB default
+        if ($file['size'] > $maxSize) {
+            throw new Exception('File size exceeds maximum allowed size of ' . $this->formatFileSize($maxSize));
+        }
+
+        // Check allowed file types
+        $allowedTypes = isset($this->config['allowed_types']) ? $this->config['allowed_types'] : [
+            'image/jpeg', 'image/png', 'image/gif', 'image/webp',
+            'video/mp4', 'video/quicktime', 'video/webm'
+        ];
+        
+        if (!in_array($file['type'], $allowedTypes)) {
+            throw new Exception('File type not allowed. Allowed types: ' . implode(', ', $allowedTypes));
+        }
+
+        // Additional security: check actual file content
+        if (function_exists('finfo_open')) {
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $actualMimeType = finfo_file($finfo, $file['tmp_name']);
+            finfo_close($finfo);
+
+            if ($actualMimeType && $actualMimeType !== $file['type']) {
+                throw new Exception('File type mismatch detected. Expected: ' . $file['type'] . ', Got: ' . $actualMimeType);
+            }
+        }
+    }
+
+    private function generateSecureFilename($originalName) {
+        if (empty($originalName)) {
+            throw new Exception('Original filename is required');
+        }
+        
+        $extension = pathinfo($originalName, PATHINFO_EXTENSION);
+        if (empty($extension)) {
+            throw new Exception('File must have an extension');
+        }
+        
+        return bin2hex(random_bytes(16)) . '.' . strtolower($extension);
+    }
+
+    private function getUploadErrorMessage($errorCode) {
+        $errors = [
+            UPLOAD_ERR_INI_SIZE => 'File exceeds upload_max_filesize',
+            UPLOAD_ERR_FORM_SIZE => 'File exceeds MAX_FILE_SIZE',
+            UPLOAD_ERR_PARTIAL => 'File was only partially uploaded',
+            UPLOAD_ERR_NO_FILE => 'No file was uploaded',
+            UPLOAD_ERR_NO_TMP_DIR => 'Missing temporary folder',
+            UPLOAD_ERR_CANT_WRITE => 'Failed to write file to disk',
+            UPLOAD_ERR_EXTENSION => 'File upload stopped by extension'
+        ];
+        
+        return $errors[$errorCode] ?? 'Unknown upload error (code: ' . $errorCode . ')';
+    }
+    
+    private function formatFileSize($bytes) {
+        $units = ['B', 'KB', 'MB', 'GB'];
+        $bytes = max($bytes, 0);
+        $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
+        $pow = min($pow, count($units) - 1);
+        $bytes /= pow(1024, $pow);
+        return round($bytes, 2) . ' ' . $units[$pow];
+    }
+}
+
+$message = '';
+if (!isset($error)) {
+    $error = '';
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$error) {
+    try {
+        $uploadHandler = new MediaUploadHandler();
+        
+        // Check if file was uploaded
+        if (!isset($_FILES['file']) || empty($_FILES['file']['name'])) {
+            throw new Exception('No file was selected for upload');
+        }
+        
+        $result = $uploadHandler->handleUpload($_FILES['file']);
+        
+        if ($result['success']) {
+            $message = $result['message'];
+        } else {
+            $error = $result['message'];
+        }
+    } catch (Exception $e) {
+        $error = 'Upload failed: ' . $e->getMessage();
+        error_log("Upload error: " . $e->getMessage());
     }
 }
 ?>
@@ -94,10 +324,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file'])) {
 
                 <form method="POST" enctype="multipart/form-data" class="space-y-6">
                     <div class="border-b pb-4 border-gray-200 dark:border-gray-700">
+                        <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo 100 * 1024 * 1024; ?>" />
                         <h2 class="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-4">Upload New Media</h2>
                         <label for="file" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Select File</label>
                         <input type="file" name="file" id="file" class="mt-1 block w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
-                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Supported formats: JPG, PNG, GIF, MP4, MOV</p>
+                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Supported formats: JPG, PNG, GIF, MP4, MOV, WEBM (Max: 100MB)</p>
                     </div>
                     
                     <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition-colors duration-200 transform hover:scale-105">
@@ -145,5 +376,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file'])) {
     <script src="<?= $baseUrl ?>public/js/mobileNav.js" defer></script>
     <script src="<?= $baseUrl ?>public/js/all.min.js"></script>
     <script src="<?= $baseUrl ?>public/js/accordion.js" defer></script>
+    <script src="<?= $baseUrl ?>public/js/mediaGallery.js" defer></script>
     </body>
 </html>

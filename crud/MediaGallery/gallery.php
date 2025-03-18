@@ -116,20 +116,10 @@ $offset = ($currentPage - 1) * $itemsPerPage;
             </section>
         </div>
     </div>
-
-    <script>
-        function copyToClipboard(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                alert('URL copied to clipboard!');
-            }).catch(err => {
-                console.error('Failed to copy URL: ', err);
-            });
-        }
-    </script>
-    
     <script src="<?= $baseUrl ?>public/js/darkMode.js" defer></script>
     <script src="<?= $baseUrl ?>public/js/mobileNav.js" defer></script>
     <script src="<?= $baseUrl ?>public/js/all.min.js"></script>
     <script src="<?= $baseUrl ?>public/js/accordion.js" defer></script>
+    <script src="<?= $baseUrl ?>public/js/mediaGallery.js" defer></script>
 </body>
 </html>

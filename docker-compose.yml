@@ -1,6 +1,6 @@
 services:
   db:
-    image: mysql:latest
+    image: mysql:8.0
     environment:
       - MYSQL_DATABASE=mydatabase
       - MYSQL_USER=admindb
@@ -10,25 +10,34 @@ services:
       - "3306:3306"
     volumes:
       - "./db:/docker-entrypoint-initdb.d"
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
   www:
     build:
       context: .
       dockerfile: Dockerfile
     volumes:
       - "./:/var/www/html"
-      - "/var/www/html/vendor"
+      - vendor_data:/var/www/html/vendor
     ports:
       - 80:80
       - 443:443
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    ports:
-      - 8001:80
     environment:
-      - PMA_HOST=db
-      - PMA_PORT=3306
+      - MINIO_ENDPOINT=http://minio:9000
+      - MINIO_PUBLIC_ENDPOINT=http://localhost:9000
+      - MAX_FILE_SIZE=104857600 # 100MB
+    depends_on:
+      db:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+
   minio:
-    image: minio/minio
+    image: minio/minio:latest
     ports:
       - "9000:9000"
       - "9001:9001"
@@ -38,18 +47,13 @@ services:
       MINIO_ROOT_USER: minioadmin
       MINIO_ROOT_PASSWORD: minioadmin
     command: server /data --console-address ":9001"
-  createbuckets:
-    image: minio/mc
-    depends_on:
-      - minio
-    entrypoint: >
-      /bin/sh -c "
-      sleep 5;
-      /usr/bin/mc config host add myminio http://minio:9000 minioadmin minioadmin;
-      /usr/bin/mc mb --ignore-existing myminio/media;
-      /usr/bin/mc anonymous set download myminio/media;
-      exit 0;
-      "
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
 
 volumes:
   minio_data:
+  vendor_data:
+  mysql_data:
