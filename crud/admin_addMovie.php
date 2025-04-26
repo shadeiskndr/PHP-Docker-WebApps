@@ -1,11 +1,17 @@
 <?php
-$connect = mysqli_connect(
-    'db', # hostname
-    'admindb', # username
-    'password', # password
-    'mydatabase' # db
-);
+require_once __DIR__ . '/../includes/db.php';
+
+$db = Database::getInstance();
+$pdo = $db->getConnection();
+
 $page_title = 'Add a Movie';
+
+// Get genres for dropdown
+$genreQuery = $pdo->query("SELECT * FROM genres ORDER BY name");
+$genres = $genreQuery->fetchAll(PDO::FETCH_ASSOC);
+
+$errors = [];
+$successMessage = "";
 ?>
 
 <!doctype html>
@@ -16,213 +22,216 @@ $page_title = 'Add a Movie';
     <link href="../output.css" rel="stylesheet">
     <title><?php echo $page_title; ?></title>
 </head>
-<body class="bg-gray-100 text-gray-900">
-    <div class="flex">
-        <!-- Vertical Navigation Bar -->
-        <nav class="w-64 bg-gray-800 text-white min-h-screen p-4">
-            <h2 class="text-2xl font-bold mb-6">Navigation</h2>
-            <ul class="space-y-4">
-				<li><a href="../index.php" class="block py-2 px-4 rounded hover:bg-blue-700">Home</a></li>
-                <li><a href="../quiz1/puteriClothes.php" class="block py-2 px-4 rounded hover:bg-blue-700">Puteri Clothes Calculator</a></li>
-                <li><a href="../Assignment1/airform2.php" class="block py-2 px-4 rounded hover:bg-blue-700">Air Conditioner Calculator</a></li>
-                <li><a href="../LabWorkX8/Discount.php" class="block py-2 px-4 rounded hover:bg-blue-700">Discount Calculator</a></li>
-                <li><a href="../LabWork3/speed_converter.php" class="block py-2 px-4 rounded hover:bg-blue-700">Speed Converter</a></li>
-                <li><a href="../LabWork3/tax_form.php" class="block py-2 px-4 rounded hover:bg-blue-700">Tax Calculator</a></li>
-                <li><a href="../LabWork3/BMI_form_sticky.php" class="block py-2 px-4 rounded hover:bg-blue-700">BMI Calculator</a></li>
-                <li><a href="../LabWork4/biggest_num.php" class="block py-2 px-4 rounded hover:bg-blue-700">Biggest Number</a></li>
-                <li><a href="../LabWork1/integers.php" class="block py-2 px-4 rounded hover:bg-blue-700">Add 3 Integers</a></li>
-                <li><a href="../updateInventory/updateInventory.php" class="block py-2 px-4 rounded hover:bg-blue-700">Mawar Boutique Inventory</a></li>
-                <li><a href="admin_listMovie.php" class="block py-2 px-4 rounded hover:bg-blue-700">Movies I Watched</a></li>
-                <li><a href="../CarForSale/view_carList.php" class="block py-2 px-4 rounded hover:bg-blue-700">Cars Database</a></li>
-                <li><a href="../VehicleRentalProject/homepage.php" class="block py-2 px-4 rounded hover:bg-blue-700">Vehicle Rental Project</a></li>
-            </ul>
-        </nav>
+<body class="bg-gradient-to-br from-pink-200 to-purple-200 dark:from-gray-800 dark:to-gray-900 text-gray-900 dark:text-gray-100 min-h-screen transition-colors duration-200">
+    <div class="flex min-h-screen">
+        <?php include BASE_PATH . '/includes/navigation.php'; ?>
 
         <!-- Main Content -->
-        <div class="flex-1 p-4">
-            <header class="bg-blue-600 text-white p-4 rounded mb-4">
-                <h1 class="text-4xl font-bold"><?php echo $page_title; ?></h1>
+        <div class="flex-1 p-6 sm:ml-64">
+            <header class="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-8 mb-8 border border-gray-200 dark:border-gray-700">
+                <div class="text-5xl font-extrabold">
+                    <span class="bg-clip-text text-transparent bg-gradient-to-r from-pink-600 to-purple-600">
+                        <?php echo $page_title; ?>
+                    </span>
+                </div>
+                <p class="mt-4 text-gray-600 dark:text-gray-300 text-xl">Add a new movie to the database</p>
             </header>
-            
+
             <!-- Navigation Links -->
-            <nav class="bg-white shadow-md rounded-lg p-4 mb-4">
+            <nav class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-4 mb-4 border border-gray-200 dark:border-gray-700">
                 <ul class="flex space-x-4">
-                    <li><a href="add" class="px-4 py-2 bg-blue-600 text-white font-semibold rounded-md shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75">Add Movie</a></li>
+                    <li><a href="/movies/add" class="px-4 py-2 bg-gradient-to-r from-pink-600 to-purple-600 text-white font-semibold rounded-md shadow-md hover:scale-[1.02] transition-transform duration-300">Add Movie</a></li>
                     <li><a class="px-3 py-2 bg-transparent text-white font-semibold"></a></li>
-					<li><a href="list" class="px-4 py-2 bg-blue-600 text-white font-semibold rounded-md shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75">View Movie List</a></li>
+                    <li><a href="/movies/list" class="px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-md shadow-md hover:scale-[1.02] transition-transform duration-300">View Movie List</a></li>
                 </ul>
             </nav>
 
-            <form action="add" method="post" class="bg-white shadow-md rounded-lg p-6 mb-8">
-                <fieldset>
-                    <legend class="text-2xl font-semibold mb-4">Please enter the movie information:</legend>
-                    <div class="mb-4">
-                        <label for="name" class="block text-lg font-medium text-gray-700">Movie Name:</label>
-                        <input type="text" name="name" id="name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" size="15" maxlength="30" value="<?php if (isset($_POST['name'])) echo $_POST['name']; ?>" />
+            <section class="bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300 mb-8 border border-gray-200 dark:border-gray-700">
+                <form action="/movies/add" method="post" class="space-y-6">
+                    <fieldset>
+                        <legend class="text-2xl font-semibold mb-4">Please enter the movie information:</legend>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label for="name" class="text-lg font-medium text-gray-700 dark:text-gray-300">Movie Name:</label>
+                                <input type="text" name="name" id="name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" size="15" maxlength="30" value="<?php if (isset($_POST['name'])) echo $_POST['name']; ?>" />
+                            </div>
+                            <div class="space-y-2">
+                                <label for="year" class="text-lg font-medium text-gray-700 dark:text-gray-300">Movie Year Release:</label>
+                                <input type="text" name="year" id="year" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" size="15" maxlength="30" value="<?php if (isset($_POST['year'])) echo $_POST['year']; ?>" />
+                            </div>
+                            <div class="space-y-2">
+                                <label for="genre" class="text-lg font-medium text-gray-700 dark:text-gray-300">Movie Genre:</label>
+                                <select id="genre" name="genre" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                    <option value="">Choose a movie genre</option>
+                                    <?php foreach ($genres as $genre): ?>
+                                        <option value="<?= $genre['id'] ?>" <?php if(isset($_POST['genre']) && $_POST['genre'] == $genre['id']) echo 'selected="selected"'; ?>>
+                                            <?= htmlspecialchars($genre['name']) ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="space-y-2">
+                                <label for="rating" class="text-lg font-medium text-gray-700 dark:text-gray-300">Movie Rating:</label>
+                                <select id="rating" name="rating" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                    <option value="">Choose a movie rating</option>
+                                    <?php for ($i = 1; $i <= 5; $i++): ?>
+                                        <option value="<?= $i ?>" <?php if(isset($_POST['rating']) && $_POST['rating'] == $i) echo 'selected="selected"'; ?>>
+                                            <?= $i ?> Star<?= $i > 1 ? 's' : '' ?>
+                                        </option>
+                                    <?php endfor; ?>
+                                </select>
+                            </div>
+                            <div class="space-y-2">
+                                <label for="ticket_price" class="text-lg font-medium text-gray-700 dark:text-gray-300">Movie Ticket Price:</label>
+                                <input type="text" name="ticket_price" id="ticket_price" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" size="10" maxlength="10" value="<?php if(isset($_POST['ticket_price'])) echo $_POST['ticket_price']; ?>" />
+                            </div>
+                            <div class="space-y-2">
+                                <label for="mdate" class="text-lg font-medium text-gray-700 dark:text-gray-300">Movie Date:</label>
+                                <input type="date" name="mdate" id="mdate" value="<?php if(isset($_POST['mdate'])) echo $_POST['mdate']; ?>" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" required />
+                            </div>
+                            <div class="space-y-2">
+                                <label for="mtime" class="text-lg font-medium text-gray-700 dark:text-gray-300">Movie Time:</label>
+                                <input type="time" name="mtime" id="mtime" value="<?php if(isset($_POST['mtime'])) echo $_POST['mtime']; ?>" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" required />
+                            </div>
+                        </div>
+                    </fieldset>
+                    <div class="grid grid-cols-1 md:flex md:flex-row md:justify-start md:items-center gap-y-6 md:gap-x-4 mt-6">
+                        <button type="submit" name="submit" class="w-full md:w-auto flex items-center justify-center px-6 py-3 bg-gradient-to-r from-pink-600 to-purple-600 text-white font-semibold rounded-lg shadow-md hover:scale-[1.02] transition-transform duration-300">
+                            <i class="fas fa-save mr-2"></i> Add Movie
+                        </button>
                     </div>
-                    <div class="mb-4">
-                        <label for="year" class="block text-lg font-medium text-gray-700">Movie Year Release:</label>
-                        <input type="text" name="year" id="year" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" size="15" maxlength="30" value="<?php if (isset($_POST['year'])) echo $_POST['year']; ?>" />
-                    </div>
-                    <div class="mb-4">
-                        <label for="genre" class="block text-lg font-medium text-gray-700">Movie Genre:</label>
-                        <select id="genre" name="genre" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                            <option value="">Choose a movie genre</option>
-                            <option value="1" <?php if(isset($_POST['genre']) && $_POST['genre'] == "1") echo 'selected="selected"'; ?> >Action/Adventure</option>
-                            <option value="2" <?php if(isset($_POST['genre']) && $_POST['genre'] == "2") echo 'selected="selected"'; ?> >Comedy</option>
-                            <option value="3" <?php if(isset($_POST['genre']) && $_POST['genre'] == "3") echo 'selected="selected"'; ?> >Drama</option>
-                            <option value="4" <?php if(isset($_POST['genre']) && $_POST['genre'] == "4") echo 'selected="selected"'; ?> >Fantasy/Sci-Fi</option>
-                        </select>
-                    </div>
-                    <div class="mb-4">
-                        <label for="rating" class="block text-lg font-medium text-gray-700">Movie Rating:</label>
-                        <select id="rating" name="rating" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                            <option value="">Choose a movie rating</option>
-                            <option value="1" <?php if(isset($_POST['rating']) && $_POST['rating'] == "1") echo 'selected="selected"'; ?> >1</option>
-                            <option value="2" <?php if(isset($_POST['rating']) && $_POST['rating'] == "2") echo 'selected="selected"'; ?> >2</option>
-                            <option value="3" <?php if(isset($_POST['rating']) && $_POST['rating'] == "3") echo 'selected="selected"'; ?> >3</option>
-                            <option value="4" <?php if(isset($_POST['rating']) && $_POST['rating'] == "4") echo 'selected="selected"'; ?> >4</option>
-                            <option value="5" <?php if(isset($_POST['rating']) && $_POST['rating'] == "5") echo 'selected="selected"'; ?> >5</option>
-                        </select>
-                    </div>
-                    <div class="mb-4">
-                        <label for="ticket_price" class="block text-lg font-medium text-gray-700">Movie Ticket Price:</label>
-                        <input type="text" name="ticket_price" id="ticket_price" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" size="10" maxlength="10" value="<?php if(isset($_POST['ticket_price'])) echo $_POST['ticket_price']; ?>" />
-                    </div>
-                    <div class="mb-4">
-                        <label for="mdate" class="block text-lg font-medium text-gray-700">Movie Date:</label>
-                        <input type="date" name="mdate" id="mdate" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required />
-                    </div>
-                    <div class="mb-4">
-                        <label for="mtime" class="block text-lg font-medium text-gray-700">Movie Time:</label>
-                        <input type="time" name="mtime" id="mtime" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required />
-                    </div>
-                </fieldset>
-                <div class="mt-4">
-                    <input type="submit" name="submit" value="Add" class="px-4 py-2 bg-blue-600 text-white font-semibold rounded-md shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75" />
-                </div>
-            </form>
+                </form>
+            </section>
 
-            <fieldset class="bg-white shadow-md rounded-lg p-6 mb-8">
+            <!-- Feedback Section -->
+            <?php if (!empty($errors)): ?>
+                <section class="bg-white dark:bg-gray-800 rounded-xl p-8 mb-8 border border-gray-200 dark:border-gray-700">
+                    <h1 class="text-2xl font-semibold mb-4 text-red-600">Error!</h1>
+                    <div class="text-red-500">
+                        <p>The following error(s) occurred:</p>
+                        <ul class="list-disc list-inside mt-2">
+                            <?php foreach ($errors as $error): ?>
+                                <li><?= htmlspecialchars($error) ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                        <p class="mt-4">Please try again.</p>
+                    </div>
+                </section>
+            <?php elseif (!empty($successMessage)): ?>
+                <section class="bg-white dark:bg-gray-800 rounded-xl p-8 mb-8 border border-gray-200 dark:border-gray-700">
+                    <h1 class="text-2xl font-semibold mb-4 text-green-600">Success!</h1>
+                    <p class="text-green-500"><?= htmlspecialchars($successMessage) ?></p>
+                </section>
+            <?php endif; ?>
+
+            <section class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6 mb-8 border border-gray-200 dark:border-gray-700">
                 <?php
-
                 // Check if the form has been submitted.
                 if (isset($_POST['submit'])) {
-                    $errorMessage = array(); // Initialize error array.
                     
                     // Check for movie name.
                     if (empty($_POST['name'])) {
-                        $errorMessage[] = 'You forgot to enter movie name.';
+                        $errors[] = 'You forgot to enter movie name.';
                     } else {
-                        $name = ($_POST['name']);
+                        $name = trim($_POST['name']);
                     }
                     
-                    //Validate movie year
+                    // Validate movie year
                     if (!empty($_POST['year'])) {
                         if (is_numeric($_POST['year'])) {
-                            if ($_POST['year'] < 1){
-                                $year = NULL;
-                                $errorMessage[] = '<p>The movie year is invalid!</p>';
-                            } else {
-                                $year = $_POST['year'];
+                            $year = (int)$_POST['year'];
+                            if ($year < 1900 || $year > (date('Y') + 10)) {
+                                $errors[] = 'The movie year must be between 1900 and ' . (date('Y') + 10) . '.';
                             }
                         } else {
-                            $year = NULL;
-                            $errorMessage[] = '<p>You must enter the movie year in numeric only!</p>';
+                            $errors[] = 'You must enter the movie year in numeric format only!';
                         }
                     } else {
-                        $year = NULL;
-                        $errorMessage[] = '<p>You forgot to enter the movie year!</p>';
+                        $errors[] = 'You forgot to enter the movie year!';
                     }
                     
-                    //Validate movie genre
-                    if(isset($_POST['genre']) && $_POST['genre'] == ""){
-                        $genre = NULL;
-                        $errorMessage[] = '<p>You forgot to choose movie genre!</p>';
-                    }else{
-                        $genre = $_POST['genre'];
+                    // Validate movie genre
+                    if (empty($_POST['genre'])) {
+                        $errors[] = 'You forgot to choose movie genre!';
+                    } else {
+                        $genre = (int)$_POST['genre'];
+                        // Verify genre exists in database
+                        $genreCheck = $pdo->prepare("SELECT id FROM genres WHERE id = ?");
+                        $genreCheck->execute([$genre]);
+                        if (!$genreCheck->fetch()) {
+                            $errors[] = 'Invalid genre selected!';
+                        }
                     }
 
-                    //Validate movie rating
-                    if(isset($_POST['rating']) && $_POST['rating'] == ""){
-                        $rating = NULL;
-                        $errorMessage[] = '<p>You forgot to choose movie rating!</p>';
-                    }else{
-                        $rating = $_POST['rating'];
+                    // Validate movie rating
+                    if (empty($_POST['rating'])) {
+                        $errors[] = 'You forgot to choose movie rating!';
+                    } else {
+                        $rating = (int)$_POST['rating'];
+                        if ($rating < 1 || $rating > 5) {
+                            $errors[] = 'Movie rating must be between 1 and 5 stars!';
+                        }
                     }
 
-                    //Validate movie ticket price
+                    // Validate movie ticket price
                     if (!empty($_POST['ticket_price'])) {
                         if (is_numeric($_POST['ticket_price'])) {
-                            if ($_POST['ticket_price'] < 1){
-                                $ticket_price = NULL;
-                                $errorMessage[] = '<p>The ticket price value is invalid!</p>';
-                            } else {
-                                $ticket_price = $_POST['ticket_price'];
+                            $ticket_price = (float)$_POST['ticket_price'];
+                            if ($ticket_price <= 0) {
+                                $errors[] = 'The ticket price must be greater than 0!';
                             }
                         } else {
-                            $ticket_price = NULL;
-                            $errorMessage[] = '<p>You must enter the ticket price in numeric only!</p>';
+                            $errors[] = 'You must enter the ticket price in numeric format only!';
                         }
                     } else {
-                        $ticket_price = NULL;
-                        $errorMessage[] = '<p>You forgot to enter the ticket price!</p>';
+                        $errors[] = 'You forgot to enter the ticket price!';
                     }
-                        
-                    $mdate = ($_POST['mdate']);
-
-                    $mtime = ($_POST['mtime']);
-                        
                     
-                    if (empty($errorMessage)) { // If everything's okay.
-                        
-                        // Check for previous registration
-                        $query = "SELECT id FROM movies WHERE name='$name'";
-                        $result = @mysqli_query ($connect,$query); // Run the query.
-                        if (mysqli_num_rows($result) == 0) {
+                    // Validate date and time
+                    if (empty($_POST['mdate'])) {
+                        $errors[] = 'You forgot to enter the movie date!';
+                    } else {
+                        $mdate = $_POST['mdate'];
+                    }
+
+                    if (empty($_POST['mtime'])) {
+                        $errors[] = 'You forgot to enter the movie time!';
+                    } else {
+                        $mtime = $_POST['mtime'];
+                    }
+                    
+                    if (empty($errors)) { // If everything's okay.
+                        try {
+                            // Check for previous registration
+                            $checkStmt = $pdo->prepare("SELECT id FROM movies WHERE name = ?");
+                            $checkStmt->execute([$name]);
                             
-                            // Make the query.
-                            $query = "INSERT INTO movies (name, year, genre, rating, ticket_price, mdate, mtime) VALUES ('$name', '$year', '$genre','$rating', '$ticket_price', '$mdate', '$mtime')";
-                            $result = @mysqli_query ($connect,$query); // Run the query. // Run the query.
-                            if ($result) { // If it ran OK. == IF TRUE
+                            if ($checkStmt->rowCount() == 0) {
+                                // Insert the new movie
+                                $insertStmt = $pdo->prepare("INSERT INTO movies (name, year, genre, rating, ticket_price, mdate, mtime) VALUES (?, ?, ?, ?, ?, ?, ?)");
+                                $result = $insertStmt->execute([$name, $year, $genre, $rating, $ticket_price, $mdate, $mtime]);
                                 
-                                // Print a message.
-                                echo '<h1 class="text-2xl font-semibold mb-4">Thank you!</h1>
-                                <p>Movie is now registered. </p><p><br /></p>';	
-                            
-                                // Include the footer and quit the script (to not show the form).
-                                
-                                exit();
-                                
-                            } else { // If it did not run OK.
-                                echo '<h1 class="text-2xl font-semibold mb-4">System Error</h1>
-                                <p class="text-red-500">Movie could not be registered due to a system error. We apologize for any inconvenience.</p>'; // Public message.
-                                echo '<p>' . mysqli_error($connect)  . '<br /><br />Query: ' . $query . '</p>'; // Debugging message.
-                                
-                                exit();
+                                if ($result) {
+                                    $successMessage = "Movie '$name' has been successfully added to the database!";
+                                    // Clear form data
+                                    $_POST = [];
+                                } else {
+                                    $errors[] = 'Movie could not be registered due to a system error. We apologize for any inconvenience.';
+                                }
+                            } else {
+                                $errors[] = 'A movie with this name already exists in the database.';
                             }
-
-                        } else { // Already registered.
-                            echo '<h1 class="text-2xl font-semibold mb-4">Error!</h1>
-                            <p class="text-red-500">The movie record has already been added.</p>';
+                        } catch (PDOException $e) {
+                            $errors[] = 'Database error: ' . $e->getMessage();
                         }
-                        
-                    } else { // Report the errors.
-                    
-                        echo '<h1 class="text-2xl font-semibold mb-4">Error!</h1>
-                        <p class="text-red-500">The following error(s) occurred:<br />';
-                        foreach ($errorMessage as $msg) { // Print each error.
-                            echo " - $msg<br />\n";
-                        }
-                        echo '</p><p>Please try again.</p><p><br /></p>';
-                        
-                    } // End of if (empty($errors)) IF.
-
-                    mysqli_close($connect); // Close the database connection.
-                        
+                    }
                 } // End of the main Submit conditional.
                 ?>
-            </fieldset>
+                <script src="<?= $baseUrl ?>public/js/darkMode.js" defer></script>
+                <script src="<?= $baseUrl ?>public/js/mobileNav.js" defer></script>
+                <script src="<?= $baseUrl ?>public/js/all.min.js"></script>
+                <script src="<?= $baseUrl ?>public/js/accordion.js" defer></script>
+            </section>
         </div>
     </div>
 </body>

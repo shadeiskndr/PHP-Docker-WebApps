@@ -19,6 +19,7 @@ $routes = [
     '/boutique' => 'crud/BoutiqueInventory/boutiqueInventory.php',
     '/movies/list' => 'crud/admin_listMovie.php',
     '/movies/add' => 'crud/admin_addMovie.php',
+    '/movies/edit' => 'crud/admin_editMovie.php',
     '/cars/list' => 'crud/view_carList.php',
     '/cars/add' => 'crud/add_carManager.php',
     '/media/upload' => 'crud/MediaGallery/upload.php',
