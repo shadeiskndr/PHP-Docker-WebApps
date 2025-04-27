@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../includes/db.php';
+require_once __DIR__ . '/../../includes/db.php';
 
 $db = Database::getInstance();
 $pdo = $db->getConnection();
@@ -21,7 +21,7 @@ $showResults = false;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="../output.css" rel="stylesheet">
+    <link href="/output.css" rel="stylesheet">
     <title><?php echo $page_title; ?></title>
 </head>
 <body class="bg-gradient-to-br from-pink-200 to-purple-200 dark:from-gray-800 dark:to-gray-900 text-gray-900 dark:text-gray-100 min-h-screen transition-colors duration-200">
@@ -258,7 +258,7 @@ $showResults = false;
             <script src="<?= $baseUrl ?>public/js/mobileNav.js" defer></script>
             <script src="<?= $baseUrl ?>public/js/all.min.js"></script>
             <script src="<?= $baseUrl ?>public/js/accordion.js" defer></script>
-            <script src="<?= $baseUrl ?>public/js/movies/deleteMovie.js" defer></script>
+            <script src="<?= $baseUrl ?>crud/MovieList/js/deleteMovie.js" defer></script>
         </div>
     </div>
 </body>
