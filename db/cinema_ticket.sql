@@ -130,6 +130,13 @@ ALTER TABLE `user`
   MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
+-- Add poster_url column to movies table for movie poster support
+ALTER TABLE `movies` ADD COLUMN `poster_url` VARCHAR(255) NULL AFTER `mtime`;
+
+-- Add index for better performance when searching by poster
+ALTER TABLE `movies` ADD INDEX `idx_poster_url` (`poster_url`);
+
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

@@ -8,6 +8,8 @@ module.exports = {
     "./calculator/*.php",
     "./public/js/*.js",
     "./public/**/*.js",
+    "./crud/**/*.php",
+    "./crud/**/*.js",
   ],
   theme: {
     extend: {},
